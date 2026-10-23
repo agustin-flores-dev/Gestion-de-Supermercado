@@ -1,5 +1,5 @@
 public enum ETurno {
-    MAÑANA("Mañana"),
+    MANIANA("Mañana"),
     TARDE("Tarde"),
     NOCHE("Noche");
 
