@@ -17,7 +17,6 @@ public abstract class Empleados {
         this.turno = turno;
         this.id_empleado = contadorId++;
     }
-
     
 
 }
