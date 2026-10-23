@@ -34,6 +34,14 @@ public class GestoraEmpleados {
         return mensaje.toString();
     }
 
-    
+    public Empleados buscarEmpleado(int id_buscar){
+        for (Empleados emp : listaEmpleados){
+            //aqui va una excepcion
+            if (emp.getId_empleado() == id_buscar){
+                return emp;
+            }
+        }
+        return null;
+    }
 
 }
