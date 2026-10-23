@@ -17,6 +17,53 @@ public abstract class Empleados {
         this.turno = turno;
         this.id_empleado = contadorId++;
     }
-    
 
+    public int getId_empleado() {
+        return id_empleado;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getApellido() {
+        return apellido;
+    }
+
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
+    public int getDni() {
+        return dni;
+    }
+
+    public double getSueldo() {
+        return sueldo;
+    }
+
+    public void setSueldo(double sueldo) {
+        this.sueldo = sueldo;
+    }
+
+    public ETurno getTurno() {
+        return turno;
+    }
+
+    public void setTurno(ETurno turno) {
+        this.turno = turno;
+    }
+    
 }
