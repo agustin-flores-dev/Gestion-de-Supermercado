@@ -1,3 +1,5 @@
+import java.util.Objects;
+
 public abstract class Empleados {
     private int id_empleado;
     private String nombre;
@@ -19,8 +21,17 @@ public abstract class Empleados {
     }
 
     public String toString(){
-        return "Id :"+id_empleado+", Nombre :"+nombre+", Apellido :" +""+apellido+", Direccion :"
+        return "Id :"+id_empleado+", Nombre :"+nombre+", Apellido :"+apellido+", Direccion :"
                 +direccion+ ", DNI :"+dni+", Sueldo :"+sueldo+" , Turno :"+turno.getTurno_nombre();
+    }
+
+    public boolean equals(Object o){
+        if (!(o instanceof Empleados emp))return false;
+        return id_empleado == emp.id_empleado;
+    }
+
+    public int hashCode(){
+        return Objects.hashCode(id_empleado);
     }
 
     public int getId_empleado() {
