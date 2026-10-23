@@ -23,6 +23,17 @@ public class GestoraEmpleados {
         return false;
     }
 
+    public String mostrarEmpleados(){
+        if (listaEmpleados.isEmpty()){
+            //aqui va una excepcion
+        }
+        StringBuilder mensaje = new StringBuilder();
+        for (Empleados emp : listaEmpleados){
+            mensaje.append(emp.toString()+"\n");
+        }
+        return mensaje.toString();
+    }
+
     
 
 }
