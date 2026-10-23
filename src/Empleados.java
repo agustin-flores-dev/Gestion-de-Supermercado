@@ -18,6 +18,11 @@ public abstract class Empleados {
         this.id_empleado = contadorId++;
     }
 
+    public String toString(){
+        return "Id :"+id_empleado+", Nombre :"+nombre+", Apellido :" +""+apellido+", Direccion :"
+                +direccion+ ", DNI :"+dni+", Sueldo :"+sueldo+" , Turno :"+turno.getTurno_nombre();
+    }
+
     public int getId_empleado() {
         return id_empleado;
     }
@@ -65,5 +70,6 @@ public abstract class Empleados {
     public void setTurno(ETurno turno) {
         this.turno = turno;
     }
-    
+
+
 }
