@@ -23,9 +23,9 @@ public class GestoraEmpleados {
         return false;
     }
 
-    public String mostrarEmpleados(){
+    public String mostrarEmpleados() throws ListaVaciaException{
         if (listaEmpleados.isEmpty()){
-            //aqui va una excepcion
+            throw new ListaVaciaException("La lista Empleados esta vacia");
         }
         StringBuilder mensaje = new StringBuilder();
         for (Empleados emp : listaEmpleados){
