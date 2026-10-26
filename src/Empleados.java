@@ -20,8 +20,9 @@ public abstract class Empleados extends Persona{
         this.turno = null;
     }
 
-    public String toString(){
-        return "[ID]: "+id_empleado+"\n"
+    @Override
+    public String toString() {
+        return super.toString()+"[ID]: "+id_empleado+"\n"
                 +"[Sueldo]: $"+sueldo+"\n"
                 +"[Turno]: "+turno.getTurno_nombre();
     }
