@@ -7,12 +7,14 @@ public class GestoraEmpleados {
         this.listaEmpleados = new HashSet<>();
     }
 
-    public boolean agregarEmpleados(Empleados nuevo){
-        //faltan excepciones
+    public boolean agregarEmpleados(Empleados nuevo) throws ElementoVacioException, EEstadoYaIngresado{
+        if (nuevo.getNombre().equalsIgnoreCase("")){
+            throw new ElementoVacioException("empleado sin informacion cargada...");
+        }
         if (listaEmpleados.add(nuevo)){
             return true;
         }
-        return false;
+        throw new EEstadoYaIngresado("empleado ya ingresado previamente...");
     }
 
     public boolean eliminarEmpleados(Empleados eliminar) throws ElementoNoEncontradoException{
