@@ -27,7 +27,7 @@ void main() {
             limpiarPantalla(sc);
         } // Limpiar pantalla
     } while (opcion != 0); // Ciclo Menu
-
+    sc.close();
 }
 
 // Métodos
