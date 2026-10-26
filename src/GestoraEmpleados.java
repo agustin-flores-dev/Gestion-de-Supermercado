@@ -15,8 +15,10 @@ public class GestoraEmpleados {
         return false;
     }
 
-    public boolean eliminarEmpleados(Empleados eliminar){
-        //faltan excepciones
+    public boolean eliminarEmpleados(Empleados eliminar) throws ElementoNoEncontradoException{
+        if(!listaEmpleados.contains(eliminar)){
+            throw new ElementoNoEncontradoException("Elemento no encontrado");
+        }
         if (listaEmpleados.remove(eliminar)){
             return true;
         }
@@ -38,7 +40,6 @@ public class GestoraEmpleados {
 
         for (Empleados emp : listaEmpleados){
             if (emp.getId_empleado() == id_buscar){
-
                 return emp;
             }
         }
