@@ -21,7 +21,9 @@ public abstract class Empleados extends Persona{
     }
 
     public String toString(){
-        return "Id :"+id_empleado+", Sueldo :"+sueldo+" , Turno :"+turno.getTurno_nombre();
+        return "[ID]: "+id_empleado+"\n"
+                +"[Sueldo]: $"+sueldo+"\n"
+                +"[Turno]: "+turno.getTurno_nombre();
     }
 
     public boolean equals(Object o){
