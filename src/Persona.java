@@ -24,4 +24,11 @@ public abstract class Persona {
     public void setDireccion(String direccion) {
         this.direccion = direccion;
     }
+
+    @Override
+    public String toString() {
+        return "[Nombre]: " +nombre +"\n"
+                +"[DNI]: " +dni +"\n"
+                +"[Dirección]: " +direccion +"\n";
+    }
 }
