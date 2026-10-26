@@ -1,15 +1,23 @@
 import java.util.Objects;
 
-public abstract class Empleados {
+public abstract class Empleados extends Persona{
     private int id_empleado;
     private double sueldo;
     private ETurno turno;
     private static int contadorId=0;
 
-    public Empleados(double sueldo, ETurno turno){
+    public Empleados(String nombre, String dni, String direccion, double sueldo, ETurno turno) {
+        super(nombre, dni, direccion);
         this.sueldo = sueldo;
         this.turno = turno;
         this.id_empleado = contadorId++;
+    }
+
+    public Empleados(String dni, int id_empleado) {
+        super(dni);
+        this.id_empleado = id_empleado;
+        this.sueldo = 0;
+        this.turno = null;
     }
 
     public String toString(){
