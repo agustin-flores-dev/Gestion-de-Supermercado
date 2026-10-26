@@ -1,3 +1,5 @@
+import java.sql.Time;
+
 public class Producto {
     private static int contador = 0;
     private int id;
