@@ -11,9 +11,7 @@ public class Admin extends Empleados{
         try {
             gestor.agregarEmpleados(nuevo);
             return true;
-        } catch (ElementoVacioException e){
-            System.out.println(e.getMessage());
-        } catch (EEstadoYaIngresado e) {
+        } catch (ElementoVacioException | EEstadoYaIngresado e){
             System.out.println(e.getMessage());
         }
         return false;
