@@ -8,17 +8,22 @@ void main() {
     int opcion;
 
     GestoraEmpleados gestoraGeneral = new GestoraEmpleados();
-    Admin adminPrincipal = new Admin("Agustin Flores", "43.404.643", "Saturno", 2.50, ETurno.NOCHE, gestoraGeneral);
+
+    Admin admin1 = new Admin("Agustin Flores", "43.404.643", "Laboratorio 5", 2.50, ETurno.MANIANA, gestoraGeneral);
+    Admin admin2 = new Admin("Dylan Vicchio", "43.404.644", "Laboratorio 6", 2.50, ETurno.TARDE, gestoraGeneral);
+    Admin admin3 = new Admin("Juan Cruz Lezcano", "43.404.645", "Laboratorio 7", 2.50, ETurno.NOCHE, gestoraGeneral);
     Repositor repositor1 = new Repositor("Benjamin Burnley", "30.345.670", "Matheu 4500", 100000, ETurno.TARDE);
-    Repositor repositor2 = new Repositor("Keith Wallen", "34.469.231", "Perú 250", 100000, ETurno.MANIANA);
+    Cajero cajero1 = new Cajero("Keith Wallen", "34.469.231", "Perú 250", 100000, ETurno.MANIANA);
 
     try {
-        gestoraGeneral.agregarEmpleados(adminPrincipal);
+        gestoraGeneral.agregarEmpleados(admin1);
+        gestoraGeneral.agregarEmpleados(admin2);
+        gestoraGeneral.agregarEmpleados(admin3);
         gestoraGeneral.agregarEmpleados(repositor1);
-        gestoraGeneral.agregarEmpleados(repositor2);
+        gestoraGeneral.agregarEmpleados(cajero1);
     } catch (ElementoVacioException | EEstadoYaIngresado e) {
         throw new RuntimeException(e);
-    }
+    } // Instancia de Empleados.
 
     saltarLinea(1);
     do {
