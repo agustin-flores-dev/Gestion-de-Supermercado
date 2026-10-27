@@ -1,4 +1,6 @@
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 public class GestoraEmpleados {
     private HashSet<Empleados>listaEmpleados;
@@ -25,7 +27,7 @@ public class GestoraEmpleados {
             throw new ElementoVacioException("[!] Empleado sin informacion cargada...");
         }
         if(!listaEmpleados.contains(eliminar)){
-            throw new ElementoNoEncontradoException("[!] Elemento no encontrado");
+            throw new ElementoNoEncontradoException("[!] Elemento no encontrado...");
         }
         if (listaEmpleados.remove(eliminar)){
             return true;
@@ -33,15 +35,12 @@ public class GestoraEmpleados {
         return false;
     }
 
-    public String mostrarEmpleados() throws ListaVaciaException{
+    public List<Empleados> obtenerEmpleados() throws ListaVaciaException{
         if (listaEmpleados.isEmpty()){
-            throw new ListaVaciaException("[!] La lista Empleados esta vacia");
+            throw new ListaVaciaException("[!] La lista Empleados esta vacia...");
         }
-        StringBuilder mensaje = new StringBuilder();
-        for (Empleados emp : listaEmpleados){
-            mensaje.append(emp.toString()+"\n");
-        }
-        return mensaje.toString();
+
+        return new ArrayList<>(listaEmpleados);
     }
 
     public Empleados buscarEmpleado(int id_buscar)throws BusquedaFallidaException{
@@ -52,7 +51,7 @@ public class GestoraEmpleados {
             }
         }
 
-        throw new BusquedaFallidaException("[!] El id que busca no esta en la lista");
+        throw new BusquedaFallidaException("[!] El id que busca no esta en la lista...");
     }
 
 }
