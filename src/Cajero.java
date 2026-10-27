@@ -41,5 +41,9 @@ public class Cajero extends Empleados implements IGestionarCaja{
 
     }
 
-
+    @Override
+    public String toString() {
+        return super.toString() +"\n"
+                +"[Plata Recaudada en el día]: " +plataRecaudadaDia;
+    }
 }

@@ -1,3 +1,5 @@
+import java.util.List;
+
 public class Admin extends Empleados{
 
     private GestoraEmpleados gestor;
@@ -27,11 +29,9 @@ public class Admin extends Empleados{
         return false;
     }
 
-    public String mostrarEmpleados(){
-        String aux;
+    public List<Empleados> mostrarEmpleados() {
         try {
-            aux = gestor.mostrarEmpleados();
-            return aux;
+            return gestor.obtenerEmpleados();
         } catch (ListaVaciaException e) {
             System.out.println(e.getMessage());
         }
