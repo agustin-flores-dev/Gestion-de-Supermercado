@@ -1,4 +1,5 @@
 import java.util.HashSet;
+import java.util.Iterator;
 
 public class Repositor extends Empleados implements IGestionarProductos{
 
@@ -48,19 +49,12 @@ public class Repositor extends Empleados implements IGestionarProductos{
 
     @Override
     public boolean sacarVencido(String fechaActual, HashSet<Producto> pro) {
-        if (pro.isEmpty()){
-            return true;
-        } else {
-            for (Producto prod : pro) {
-
-                if (fechaActual.equalsIgnoreCase(prod.getFechaVencimiento())){
-                    pro.remove(prod);
-                }
-
-            }
-
+        if (pro.isEmpty()) {
             return true;
         }
+
+        pro.removeIf(prod -> fechaActual != null && fechaActual.equalsIgnoreCase(prod.getFechaVencimiento()));
+        return true;
     }
 
     @Override
