@@ -6,6 +6,7 @@ import java.util.HashSet;
 public class Supermercado {
 
     private String nombre;
+    private LocalDate hoy;
     private int id;
     private ArrayList<Double> dineroDelDia;
     private HashMap<Fecha, Double> dineroMes;
@@ -19,6 +20,7 @@ public class Supermercado {
         this.dineroMes = dineroMes;
         this.empleados = empleados;
         this.socios = socios;
+        this.hoy = LocalDate.now();
     }
 
     public String getNombre() {
@@ -39,8 +41,15 @@ public class Supermercado {
         boolean esUltimoDia = fecha.getDayOfMonth() == fecha.lengthOfMonth();
         if (esUltimoDia){
             for (int i = 0; i < dineroDelDia.size(); i++){
-
+                aux = aux+dineroDelDia.get(i);
             }
+            int mes = hoy.getMonthValue();
+            int anio = hoy.getYear();
+            Fecha fechaAUX = new Fecha(mes, anio);
+            this.dineroMes.put(fechaAUX, aux);
+            return aux;
+        } else {
+            throw new DateErrorExcepcion("error, no es el fin del mes");
         }
     }
 }
