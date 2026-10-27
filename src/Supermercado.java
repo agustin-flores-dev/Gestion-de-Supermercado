@@ -2,6 +2,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Set;
 
 public final class Supermercado {
 
@@ -52,4 +53,23 @@ public final class Supermercado {
             throw new DateErrorExcepcion("error, no es el fin del mes");
         }
     }
+
+    public double calcularPlataDia() throws EEstadoYaIngresado{
+        double aux = 0;
+        Set<Empleados> empAUX = empleados.obtenerTodos();
+        if (hoy.getDayOfMonth()-1 < empAUX.size()){
+            for (Empleados emp1 : empAUX){
+                if (emp1 instanceof Cajero) {
+                    aux = aux + ((Cajero) emp1).getPlataRecaudadaDia();
+                }
+            }
+            this.dineroDelDia.add(aux);
+            return dineroDelDia.getLast();
+        }else {
+            throw new EEstadoYaIngresado("dinero del dia ya calculado...");
+        }
+    }
+
+
+
 }
