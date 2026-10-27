@@ -47,18 +47,22 @@ public class Repositor extends Empleados implements IGestionarProductos{
         return true;
     }
 
-    @Override
-    public boolean sacarVencido(String fechaActual, HashSet<Producto> pro) {
+
+    public boolean sacarVencido(Fecha fechaActual, HashSet<Producto> pro) {
         if (pro.isEmpty()) {
             return true;
         }
 
-        pro.removeIf(prod -> fechaActual != null && fechaActual.equalsIgnoreCase(prod.getFechaVencimiento()));
+        pro.removeIf(prod -> fechaActual != null && fechaActual.equals(prod.getFechaVencimiento()));
         return true;
     }
 
     @Override
-    public boolean agregarProducto(HashSet<Producto> pro, Producto pr) {
-        return pro.add(pr);
+    public boolean agregarProducto(HashSet<Producto> pro, Producto pr) throws ElementoVacioException {
+        if (pr != null){
+            return pro.add(pr);
+        } else {
+        throw new ElementoVacioException("error, producto sin informacion o vacio...");
+        }
     }
 }
