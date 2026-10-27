@@ -8,6 +8,9 @@ public class GestoraEmpleados {
     }
 
     public boolean agregarEmpleados(Empleados nuevo) throws ElementoVacioException, EEstadoYaIngresado{
+        if (nuevo == null){
+            throw new ElementoVacioException("empleado sin informacion cargada...");
+        }
         if (nuevo.getNombre().equalsIgnoreCase("")){
             throw new ElementoVacioException("empleado sin informacion cargada...");
         }
@@ -17,7 +20,10 @@ public class GestoraEmpleados {
         throw new EEstadoYaIngresado("empleado ya ingresado previamente...");
     }
 
-    public boolean eliminarEmpleados(Empleados eliminar) throws ElementoNoEncontradoException{
+    public boolean eliminarEmpleados(Empleados eliminar) throws ElementoNoEncontradoException, ElementoVacioException{
+        if (eliminar == null || eliminar.getNombre().equalsIgnoreCase("")){
+            throw new ElementoVacioException("empleado sin informacion cargada...");
+        }
         if(!listaEmpleados.contains(eliminar)){
             throw new ElementoNoEncontradoException("Elemento no encontrado");
         }
