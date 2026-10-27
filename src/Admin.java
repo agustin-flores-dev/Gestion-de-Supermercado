@@ -1,6 +1,6 @@
 import java.util.List;
 
-public class Admin extends Empleados{
+public final class Admin extends Empleados{
 
     private GestoraEmpleados gestor;
 
@@ -47,4 +47,9 @@ public class Admin extends Empleados{
         return null;
     }
 
+    @Override
+    public String toString() {
+        return "[ROL]: " +ERol.CAJERO.toString() +"\n"
+                +super.toString();
+    }
 }

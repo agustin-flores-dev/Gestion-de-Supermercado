@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
-public class Supermercado {
+public final class Supermercado {
 
     private String nombre;
     private LocalDate hoy;

@@ -1,7 +1,7 @@
 import java.util.Set;
 import java.util.HashSet;
 
-public class RepositorioGenerico<T> {
+public final class RepositorioGenerico<T> {
     private Set<T> elementos;
 
     public RepositorioGenerico(Set<T> elementos) {

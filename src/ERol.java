@@ -1,6 +1,6 @@
 public enum ERol {
 
-    ADMIN("admin"), CAJERO("cajero"), REPOSITOR("repositor");
+    ADMIN("Admin"), CAJERO("Cajero"), REPOSITOR("Repositor");
 
     private String nombre;
 

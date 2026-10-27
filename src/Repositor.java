@@ -1,7 +1,7 @@
 import java.util.HashSet;
 import java.util.Iterator;
 
-public class Repositor extends Empleados implements IGestionarProductos{
+public final class Repositor extends Empleados implements IGestionarProductos{
 
     public Repositor(String nombre, String dni, String direccion, double sueldo, ETurno turno) {
         super(nombre, dni, direccion, sueldo, turno);
@@ -64,5 +64,11 @@ public class Repositor extends Empleados implements IGestionarProductos{
         } else {
         throw new ElementoVacioException("error, producto sin informacion o vacio...");
         }
+    }
+
+    @Override
+    public String toString() {
+        return "[ROL]: " +ERol.REPOSITOR.toString() +"\n"
+                +super.toString();
     }
 }

@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class Cajero extends Empleados implements IGestionarCaja{
+public final class Cajero extends Empleados implements IGestionarCaja{
 
     private double plataRecaudadaDia;
 
@@ -43,7 +43,8 @@ public class Cajero extends Empleados implements IGestionarCaja{
 
     @Override
     public String toString() {
-        return super.toString() +"\n"
-                +"[Plata Recaudada en el día]: " +plataRecaudadaDia;
+        return "[ROL]: " +ERol.CAJERO.toString() +"\n"
+                +super.toString() +"\n"
+                +"[Plata Recaudada en el día]: $" +plataRecaudadaDia;
     }
 }

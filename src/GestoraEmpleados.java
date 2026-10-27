@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-public class GestoraEmpleados {
+public final class GestoraEmpleados {
     private HashSet<Empleados>listaEmpleados;
 
     public GestoraEmpleados(){

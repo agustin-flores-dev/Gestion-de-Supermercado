@@ -1,6 +1,6 @@
 import java.util.Objects;
 
-public class Socio extends Persona{
+public final class Socio extends Persona{
 
     private static int idAUX = 1;
     private int id;
