@@ -4,7 +4,7 @@ public class Admin extends Empleados{
 
     public Admin(String nombre, String dni, String direccion, double sueldo, ETurno turno, GestoraEmpleados gestora) {
         super(nombre, dni, direccion, sueldo, turno);
-        this.gestor = gestor;
+        this.gestor = gestora;
     }
 
     public boolean agregarEmpleado (Empleados nuevo){
