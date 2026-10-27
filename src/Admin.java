@@ -2,9 +2,9 @@ public class Admin extends Empleados{
 
     private GestoraEmpleados gestor;
 
-    public Admin(String nombre, String dni, String direccion, double sueldo, ETurno turno) {
+    public Admin(String nombre, String dni, String direccion, double sueldo, ETurno turno, GestoraEmpleados gestora) {
         super(nombre, dni, direccion, sueldo, turno);
-        this.gestor = new GestoraEmpleados();
+        this.gestor = gestor;
     }
 
     public boolean agregarEmpleado (Empleados nuevo){

@@ -7,6 +7,9 @@ void main() {
     Scanner sc = new Scanner(System.in);
     int opcion;
 
+    GestoraEmpleados gestoraGeneral = new GestoraEmpleados();
+    Admin adminPrincipal = new Admin("Agustin Flores", 43404643, "Saturno", 2.50, ETurno.NOCHE, gestoraGeneral);
+
     saltarLinea(1);
     do {
         opcion = menu(sc);
