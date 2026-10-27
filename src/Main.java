@@ -8,7 +8,8 @@ void main() {
     int opcion;
 
     GestoraEmpleados gestoraGeneral = new GestoraEmpleados();
-    Admin adminPrincipal = new Admin("Agustin Flores", "43404643", "Saturno", 2.50, ETurno.NOCHE, gestoraGeneral);
+    Admin adminPrincipal = new Admin("Agustin Flores", "43.404.643", "Saturno", 2.50, ETurno.NOCHE, gestoraGeneral);
+    Repositor repositor1 = new Repositor("Benjamin Burnley", "30.345.670", "Matheu 4500", 100000, ETurno.TARDE);
 
     saltarLinea(1);
     do {
@@ -19,6 +20,7 @@ void main() {
                 break;
             } // Salir
             case 1: {
+               
                 break;
             }
             default: {
@@ -38,10 +40,17 @@ public static int menu(Scanner sc) {
     System.out.println("[ GESTION SUPERMERCADO ´NOMBRE ?´ ]");
     separador(20);
     System.out.println("[0.] SALIR");
-    System.out.println("[1.] ");
+    System.out.println("[1.] Mostrar Empleados");
     separador(20);
     System.out.print("- Ingrese una opción: ");
-    int opcion = sc.nextInt();
+
+    int opcion = -1;
+    try {
+        opcion = sc.nextInt();
+    } catch (java.util.InputMismatchException e) {
+        System.out.println("! Por favor, ingrese un número válido !");
+        sc.next();
+    }
     sc.nextLine();
     return opcion;
 }

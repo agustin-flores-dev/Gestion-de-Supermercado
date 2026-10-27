@@ -23,7 +23,7 @@ public class Admin extends Empleados{
         try {
             gestor.eliminarEmpleados(eliminar);
             return true;
-        } catch (ElementoNoEncontradoException e) {
+        } catch (ElementoNoEncontradoException | ElementoVacioException e) {
             System.out.println(e.getMessage());
         }
         return false;

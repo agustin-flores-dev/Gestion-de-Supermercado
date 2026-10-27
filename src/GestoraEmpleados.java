@@ -9,23 +9,23 @@ public class GestoraEmpleados {
 
     public boolean agregarEmpleados(Empleados nuevo) throws ElementoVacioException, EEstadoYaIngresado{
         if (nuevo == null){
-            throw new ElementoVacioException("empleado sin informacion cargada...");
+            throw new ElementoVacioException("[!] Empleado sin informacion cargada...");
         }
         if (nuevo.getNombre().equalsIgnoreCase("")){
-            throw new ElementoVacioException("empleado sin informacion cargada...");
+            throw new ElementoVacioException("[!] Empleado sin informacion cargada...");
         }
         if (listaEmpleados.add(nuevo)){
             return true;
         }
-        throw new EEstadoYaIngresado("empleado ya ingresado previamente...");
+        throw new EEstadoYaIngresado("[!] Empleado ya ingresado previamente...");
     }
 
     public boolean eliminarEmpleados(Empleados eliminar) throws ElementoNoEncontradoException, ElementoVacioException{
         if (eliminar == null || eliminar.getNombre().equalsIgnoreCase("")){
-            throw new ElementoVacioException("empleado sin informacion cargada...");
+            throw new ElementoVacioException("[!] Empleado sin informacion cargada...");
         }
         if(!listaEmpleados.contains(eliminar)){
-            throw new ElementoNoEncontradoException("Elemento no encontrado");
+            throw new ElementoNoEncontradoException("[!] Elemento no encontrado");
         }
         if (listaEmpleados.remove(eliminar)){
             return true;
@@ -35,7 +35,7 @@ public class GestoraEmpleados {
 
     public String mostrarEmpleados() throws ListaVaciaException{
         if (listaEmpleados.isEmpty()){
-            throw new ListaVaciaException("La lista Empleados esta vacia");
+            throw new ListaVaciaException("[!] La lista Empleados esta vacia");
         }
         StringBuilder mensaje = new StringBuilder();
         for (Empleados emp : listaEmpleados){
@@ -52,7 +52,7 @@ public class GestoraEmpleados {
             }
         }
 
-        throw new BusquedaFallidaException("El id que busca no esta en la lista");
+        throw new BusquedaFallidaException("[!] El id que busca no esta en la lista");
     }
 
 }
