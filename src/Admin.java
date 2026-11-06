@@ -1,5 +1,4 @@
-import java.util.HashSet;
-import java.util.List;
+import java.util.Set;
 
 public final class Admin extends Empleados{
 
@@ -30,7 +29,7 @@ public final class Admin extends Empleados{
         return false;
     }
 
-    public HashSet<Empleados> mostrarEmpleados() {
+    public Set<Empleados> mostrarEmpleados() {
         try {
             return gestor.obtenerEmpleados();
         } catch (ListaVaciaException e) {
@@ -50,7 +49,7 @@ public final class Admin extends Empleados{
 
     @Override
     public String toString() {
-        return "[ROL]: " +ERol.CAJERO.toString() +"\n"
+        return "[ROL]: " +ERol.ADMIN.toString() +"\n"
                 +super.toString();
     }
 }

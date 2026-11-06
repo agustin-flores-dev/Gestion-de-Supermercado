@@ -8,16 +8,9 @@ public abstract class Empleados extends Persona{
 
     public Empleados(String nombre, String dni, String direccion, double sueldo, ETurno turno) {
         super(nombre, dni, direccion);
+        this.id_empleado = contadorId++;
         this.sueldo = sueldo;
         this.turno = turno;
-        this.id_empleado = contadorId++;
-    }
-
-    public Empleados(String dni, int id_empleado) {
-        super(dni);
-        this.id_empleado = id_empleado;
-        this.sueldo = 0;
-        this.turno = null;
     }
 
     @Override

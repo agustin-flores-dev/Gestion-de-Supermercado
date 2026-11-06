@@ -10,11 +10,9 @@ public abstract class Persona {
     }
 
     public Persona(String dni){
-
         this.nombre = "";
         this.dni = dni;
         this.direccion = "";
-
     }
 
     public String getNombre() {

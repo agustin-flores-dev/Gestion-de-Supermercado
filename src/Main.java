@@ -7,7 +7,7 @@ void main() {
     Scanner sc = new Scanner(System.in);
     int opcion;
 
-    GestoraEmpleados gestoraGeneral = new GestoraEmpleados();
+    GestoraEmpleados gestoraGeneral = new GestoraEmpleados(new HashSet<>());
 
     Admin admin1 = new Admin("Agustin Flores", "43.404.643", "Laboratorio 5", 2.50, ETurno.MANIANA, gestoraGeneral);
     Admin admin2 = new Admin("Dylan Vicchio", "43.404.644", "Laboratorio 6", 2.50, ETurno.TARDE, gestoraGeneral);
@@ -22,7 +22,7 @@ void main() {
         gestoraGeneral.agregarEmpleados(repositor1);
         gestoraGeneral.agregarEmpleados(cajero1);
     } catch (ElementoVacioException | EEstadoYaIngresado e) {
-        throw new RuntimeException(e);
+        System.out.println(e.getMessage());
     } // Instancia de Empleados.
 
     saltarLinea(1);
@@ -37,7 +37,7 @@ void main() {
             case 1: {
                 System.out.println("<< Empleados >>");
                 try {
-                    List<Empleados> lista = gestoraGeneral.obtenerEmpleados();
+                    Set<Empleados> lista = gestoraGeneral.obtenerEmpleados();
                     mostrarEmpleados(lista);
                 } catch (ListaVaciaException e) {
                     System.out.println(e.getMessage());
@@ -61,7 +61,7 @@ public static int menu(Scanner sc) {
     System.out.println("[ GESTION SUPERMERCADO ´NOMBRE ?´ ]");
     separador(20);
     System.out.println("[0.] SALIR");
-    System.out.println("[1.] Mostrar Empleados");
+    System.out.println("[1.] Mostrar Empleados.");
     separador(20);
     System.out.print("- Ingrese una opción: ");
 
@@ -75,7 +75,7 @@ public static int menu(Scanner sc) {
     sc.nextLine();
     return opcion;
 }
-public static void mostrarEmpleados(List<Empleados> listaEmpleados) {
+public static void mostrarEmpleados(Set<Empleados> listaEmpleados) {
     for(Empleados e : listaEmpleados) {
         System.out.println(e);
         separador(20);

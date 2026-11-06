@@ -9,11 +9,6 @@ public final class Cajero extends Empleados implements IGestionarCaja{
         this.plataRecaudadaDia = 0;
     }
 
-    public Cajero(String dni, int id_empleado) {
-        super(dni, id_empleado);
-        this.plataRecaudadaDia = 0;
-    }
-
     public double getPlataRecaudadaDia() {
         return plataRecaudadaDia;
     }

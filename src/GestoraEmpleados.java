@@ -1,6 +1,5 @@
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
+import java.util.Set;
 
 public final class GestoraEmpleados {
     private HashSet<Empleados>listaEmpleados;
@@ -36,8 +35,8 @@ public final class GestoraEmpleados {
         return false;
     }
 
-    public HashSet<Empleados> obtenerEmpleados() throws ListaVaciaException{
-        if (listaEmpleados.isEmpty()){
+    public Set<Empleados> obtenerEmpleados() throws ListaVaciaException{
+        if (listaEmpleados == null || listaEmpleados.isEmpty()){
             throw new ListaVaciaException("[!] La lista Empleados esta vacia...");
         }
 
