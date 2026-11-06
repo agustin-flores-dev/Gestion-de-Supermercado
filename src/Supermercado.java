@@ -84,6 +84,52 @@ public final class Supermercado {
 
     }
 
+    public boolean funcionAdminRemoveEmp (int id, Empleados emp) throws BusquedaFallidaException{
+
+        for (Empleados empAUX : empleados.obtenerTodos()){
+            if (empAUX.getId_empleado() == id && empAUX instanceof Admin){
+                if (((Admin) empAUX).despedirEmpleado(emp)){
+                    return empleados.eliminar(emp);
+                }
+            }
+        } throw new BusquedaFallidaException("ID ingresada no pertenece a un empleado ingresado/autorizado para realiza esta operacion...");
+
+    }
+
+    public String funcionAdminMostrarDataEmp(int id) throws BusquedaFallidaException{
+
+        for (Empleados empAUX : empleados.obtenerTodos()){
+            if (empAUX.getId_empleado() == id && empAUX instanceof Admin){
+                StringBuilder str = new StringBuilder();
+                for (Empleados emp : ((Admin) empAUX).mostrarEmpleados()){
+                    str.append(emp.toString());
+                }
+                return str.toString();
+            }
+        }
+
+        throw new BusquedaFallidaException("ID ingresada no pertenece a un empleado ingresado/autorizado para realiza esta operacion...");
+
+    }
+
+    public String funcionAdminMostrarEmp(int id, int idEmp) throws BusquedaFallidaException{
+
+        for (Empleados empAUX : empleados.obtenerTodos()){
+            if (empAUX.getId_empleado() == id && empAUX instanceof Admin){
+
+                for (Empleados empleados1 : empleados.obtenerTodos()){
+                    if (empleados1.getId_empleado() == idEmp){
+                        return empleados1.toString();
+                    }
+                }
+                throw new BusquedaFallidaException("el empleado a buscar, no se encuentra registrado, por favor cheque la id correspondiente");
+            }
+        }
+
+        throw new BusquedaFallidaException("ID ingresada no pertenece a un empleado ingresado/autorizado para realiza esta operacion...");
+
+    }
+
 
 
 

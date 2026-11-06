@@ -36,12 +36,12 @@ public final class GestoraEmpleados {
         return false;
     }
 
-    public List<Empleados> obtenerEmpleados() throws ListaVaciaException{
+    public HashSet<Empleados> obtenerEmpleados() throws ListaVaciaException{
         if (listaEmpleados.isEmpty()){
             throw new ListaVaciaException("[!] La lista Empleados esta vacia...");
         }
 
-        return new ArrayList<>(listaEmpleados);
+        return listaEmpleados;
     }
 
     public Empleados buscarEmpleado(int id_buscar)throws BusquedaFallidaException{

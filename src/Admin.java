@@ -1,3 +1,4 @@
+import java.util.HashSet;
 import java.util.List;
 
 public final class Admin extends Empleados{
@@ -29,7 +30,7 @@ public final class Admin extends Empleados{
         return false;
     }
 
-    public List<Empleados> mostrarEmpleados() {
+    public HashSet<Empleados> mostrarEmpleados() {
         try {
             return gestor.obtenerEmpleados();
         } catch (ListaVaciaException e) {
