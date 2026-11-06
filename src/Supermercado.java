@@ -12,6 +12,7 @@ public final class Supermercado {
     private ArrayList<Double> dineroDelDia;
     private HashMap<Fecha, Double> dineroMes;
     private RepositorioGenerico<Empleados> empleados;
+    private GestoraEmpleados gestoraEmpleados;
     private HashSet<Socio> socios;
 
     public Supermercado(String nombre, int id, ArrayList<Double> dineroDelDia, HashMap<Fecha, Double> dineroMes, RepositorioGenerico<Empleados> empleados, HashSet<Socio> socios) {
@@ -20,6 +21,7 @@ public final class Supermercado {
         this.dineroDelDia = dineroDelDia;
         this.dineroMes = dineroMes;
         this.empleados = empleados;
+        this.gestoraEmpleados = new GestoraEmpleados(this.empleados.obtenerTodos());
         this.socios = socios;
         this.hoy = LocalDate.now();
     }
@@ -69,6 +71,17 @@ public final class Supermercado {
             throw new EEstadoYaIngresado("dinero del dia ya calculado...");
         }
     }
+
+    public boolean funcionAdminAddEmp(int id, Empleados emp) throws BusquedaFallidaException{
+
+        for (Empleados empAUX : empleados.obtenerTodos()){
+            if (empAUX.getId_empleado() == id && empAUX instanceof Admin){
+                return ((Admin) empAUX).agregarEmpleado(emp);
+            }
+        } throw new BusquedaFallidaException("ID ingresada no pertenece a un empleado ingresado/autorizado para realiza esta operacion...");
+
+    }
+
 
 
 

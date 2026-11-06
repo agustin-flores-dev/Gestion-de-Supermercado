@@ -5,8 +5,9 @@ import java.util.List;
 public final class GestoraEmpleados {
     private HashSet<Empleados>listaEmpleados;
 
-    public GestoraEmpleados(){
-        this.listaEmpleados = new HashSet<>();
+    // agregue el que tome el set de uno preexistente para conectarlo con nuestra clase generica
+    public GestoraEmpleados(HashSet<Empleados> emp){
+        this.listaEmpleados = emp;
     }
 
     public boolean agregarEmpleados(Empleados nuevo) throws ElementoVacioException, EEstadoYaIngresado{

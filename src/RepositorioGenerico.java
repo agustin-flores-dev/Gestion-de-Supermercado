@@ -2,9 +2,9 @@ import java.util.Set;
 import java.util.HashSet;
 
 public final class RepositorioGenerico<T> {
-    private Set<T> elementos;
+    private HashSet<T> elementos;
 
-    public RepositorioGenerico(Set<T> elementos) {
+    public RepositorioGenerico(HashSet<T> elementos) {
         this.elementos = new HashSet<>();
     }
 
@@ -16,7 +16,7 @@ public final class RepositorioGenerico<T> {
         return this.elementos.remove(elemento);
     }
 
-    public Set<T> obtenerTodos() {
+    public HashSet<T> obtenerTodos() {
         return this.elementos;
     }
 
