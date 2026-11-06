@@ -76,7 +76,9 @@ public final class Supermercado {
 
         for (Empleados empAUX : empleados.obtenerTodos()){
             if (empAUX.getId_empleado() == id && empAUX instanceof Admin){
-                return ((Admin) empAUX).agregarEmpleado(emp);
+                if (((Admin) empAUX).agregarEmpleado(emp)){
+                    return empleados.agregar(emp);
+                }
             }
         } throw new BusquedaFallidaException("ID ingresada no pertenece a un empleado ingresado/autorizado para realiza esta operacion...");
 
