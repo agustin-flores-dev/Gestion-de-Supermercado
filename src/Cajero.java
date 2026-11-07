@@ -15,25 +15,41 @@ public final class Cajero extends Empleados implements IGestionarCaja{
 
     @Override
     public double chequearPrecio(Producto pro) {
+        if(pro == null) return 0;
+
         return pro.getPrecioUnitario();
     }
 
     @Override
     public boolean realizarVenta(ArrayList<Producto> producto, ArrayList<Integer> cantidad) throws ListaVaciaException {
+        if (producto == null || cantidad == null || producto.isEmpty() || cantidad.isEmpty()) {
+            throw new ListaVaciaException("[!] La lista de productos está vacía o es inexistente.");
+        }
+
+        if (producto.size() != cantidad.size()) {
+            throw new IllegalArgumentException("[!] Las listas no contienen la misma cantidad.");
+        }
+
         double valorVenta = 0;
-        if (producto.isEmpty() || cantidad.isEmpty()){
-            throw new ListaVaciaException("la lista de productos o su cantidad es no existente");
+        for (int i = 0; i < producto.size(); i++) {
+            Producto p = producto.get(i);
+            int cantVendida = cantidad.get(i);
+
+            if (p.getStock() < cantVendida) {
+                throw new IllegalArgumentException("[!] Stock insuficiente para el producto: " +p.getNombre());
+            }
+
+            // Actualizamos valorVenta y el stock.
+            valorVenta += (p.getPrecioUnitario() * cantVendida);
+            p.setStock(p.getStock() - cantVendida);
         }
-        for(int i = 0; i < producto.size(); i++){
-            valorVenta = valorVenta+(producto.get(i).getPrecioUnitario()*cantidad.get(i));
-        }
-        if (valorVenta != 0){
-            plataRecaudadaDia = plataRecaudadaDia+valorVenta;
+
+        if (valorVenta > 0) {
+            plataRecaudadaDia += valorVenta;
             return true;
         }
 
         return false;
-
     }
 
     @Override

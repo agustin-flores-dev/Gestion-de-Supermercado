@@ -7,6 +7,7 @@ void main() {
     Scanner sc = new Scanner(System.in);
     int opcion;
 
+    HashSet<Producto> stockSupermercado = new HashSet<>();
     GestoraEmpleados gestoraGeneral = new GestoraEmpleados(new HashSet<>());
 
     Admin admin1 = new Admin("Agustin Flores", "43.404.643", "Laboratorio 5", 2.50, ETurno.MANIANA, gestoraGeneral);
@@ -14,6 +15,12 @@ void main() {
     Admin admin3 = new Admin("Juan Cruz Lezcano", "43.404.645", "Laboratorio 7", 2.50, ETurno.NOCHE, gestoraGeneral);
     Repositor repositor1 = new Repositor("Benjamin Burnley", "30.345.670", "Matheu 4500", 100000, ETurno.TARDE);
     Cajero cajero1 = new Cajero("Keith Wallen", "34.469.231", "Perú 250", 100000, ETurno.MANIANA);
+
+    Fecha fecha1 = new Fecha(7, 11, 2026);
+    Fecha fecha2 = new Fecha(6, 10, 2026);
+    Fecha fecha3 = new Fecha(11, 2026);
+    Producto producto1 = new Producto("Cassancrem Light", "Queso blanco untable bajo en grasas.", fecha1, 10, 3500);
+    Producto producto2 = new Producto("Dulce de Leche", "Producto lácteo concentrado azucarado.", fecha2, 15, 4000);
 
     try {
         gestoraGeneral.agregarEmpleados(admin1);
@@ -24,6 +31,13 @@ void main() {
     } catch (ElementoVacioException | EEstadoYaIngresado e) {
         System.out.println(e.getMessage());
     } // Instancia de Empleados.
+
+    try {
+        repositor1.agregarProducto(stockSupermercado, producto1);
+        repositor1.agregarProducto(stockSupermercado, producto2);
+    } catch (ElementoVacioException e) {
+        System.out.println(e.getMessage());
+    } // Instancia de Productos
 
     saltarLinea(1);
     do {
@@ -41,6 +55,16 @@ void main() {
                     mostrarEmpleados(lista);
                 } catch (ListaVaciaException e) {
                     System.out.println(e.getMessage());
+                }
+                break;
+            }
+            case 2: {
+                Fecha hoy = new Fecha(7, 11, 2026);
+                if(repositor1.sacarVencido(hoy, stockSupermercado)) {
+                    System.out.println("Se eliminaron los productos vencidos.");
+                }
+                else {
+                    System.out.println("No hubo productos vencidos para eliminar.");
                 }
                 break;
             }
@@ -62,6 +86,7 @@ public static int menu(Scanner sc) {
     separador(20);
     System.out.println("[0.] SALIR");
     System.out.println("[1.] Mostrar Empleados.");
+    System.out.println("[2.] Prueba.");
     separador(20);
     System.out.print("- Ingrese una opción: ");
 

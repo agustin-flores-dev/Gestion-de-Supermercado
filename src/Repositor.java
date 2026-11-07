@@ -1,5 +1,4 @@
 import java.util.HashSet;
-import java.util.Iterator;
 
 public final class Repositor extends Empleados implements IGestionarProductos{
 
@@ -8,16 +7,16 @@ public final class Repositor extends Empleados implements IGestionarProductos{
     }
 
     @Override
-    public Producto buscarProducto(HashSet<Producto> productos, int id) throws ElementoNoEncontradoException, ListaVaciaException {
-        if (productos.isEmpty()){
-            throw new ListaVaciaException("no hay productos cargados en el momento");
+    public Producto buscarProducto(HashSet<Producto> lista, int id) throws ElementoNoEncontradoException, ListaVaciaException {
+        if (lista == null || lista.isEmpty()){
+            throw new ListaVaciaException("[!] No hay productos cargados hasta el momento...");
         }
-        for (Producto pro : productos){
+        for (Producto pro : lista){
             if (pro.getId() == id){
                 return pro;
             }
         }
-        throw new ElementoNoEncontradoException("producto no encontrado...");
+        throw new ElementoNoEncontradoException("[!] Producto no encontrado...");
     }
 
     @Override
@@ -26,43 +25,48 @@ public final class Repositor extends Empleados implements IGestionarProductos{
             pro.setStock(pro.getStock()+stock);
             return true;
         }
-        throw new EValorFueraDeRango("cantidad de stock fuera de rango...");
+        throw new EValorFueraDeRango("[!] Cantidad de stock fuera de rango...");
     }
 
     @Override
     public boolean aumentarPrecioProducto(Producto pro, double aumento) throws EValorFueraDeRango {
-        if(aumento <= 0 || aumento > 100){
-            throw new EValorFueraDeRango("aumento fuera de rango");
+        if(pro == null ||aumento <= 0 || aumento > 100){
+            throw new EValorFueraDeRango("[!] Aumento fuera de rango...");
         }
-        pro.setPrecioUnitario(pro.getPrecioUnitario()+(pro.getPrecioUnitario()*aumento));
+
+        double precio = pro.getPrecioUnitario();
+        pro.setPrecioUnitario(precio + precio*aumento /100);
         return true;
     }
 
     @Override
     public boolean reducirPrecioProducto(Producto pro, double descuento) throws EValorFueraDeRango {
-        if(descuento <= 0 || descuento > 1){
-            throw new EValorFueraDeRango("aumento fuera de rango");
+        if(pro == null || descuento <= 0 || descuento > 100){
+            throw new EValorFueraDeRango("[!] Descuento fuera de rango...");
         }
-        pro.setPrecioUnitario(pro.getPrecioUnitario()-(pro.getPrecioUnitario()*descuento));
+        double precio = pro.getPrecioUnitario();
+        pro.setPrecioUnitario(precio - precio*descuento /100);
         return true;
     }
 
 
-    public boolean sacarVencido(Fecha fechaActual, HashSet<Producto> pro) {
-        if (pro.isEmpty()) {
-            return true;
+    // Debug
+    @Override
+    public boolean sacarVencido(Fecha fechaActual, HashSet<Producto> lista) {
+        if (fechaActual == null || lista == null || lista.isEmpty()) {
+            return false;
         }
 
-        pro.removeIf(prod -> fechaActual != null && fechaActual.equals(prod.getFechaVencimiento()));
-        return true;
+        return lista.removeIf(prod -> prod.getFechaVencimiento() != null &&
+                prod.getFechaVencimiento().vencido(fechaActual));
     }
 
     @Override
-    public boolean agregarProducto(HashSet<Producto> pro, Producto pr) throws ElementoVacioException {
-        if (pr != null){
-            return pro.add(pr);
+    public boolean agregarProducto(HashSet<Producto> lista, Producto pro) throws ElementoVacioException {
+        if (pro != null){
+            return lista.add(pro);
         } else {
-        throw new ElementoVacioException("error, producto sin informacion o vacio...");
+        throw new ElementoVacioException("[!] Producto vacío o sin información...");
         }
     }
 
