@@ -49,8 +49,6 @@ public final class Repositor extends Empleados implements IGestionarProductos{
         return true;
     }
 
-
-    // Debug
     @Override
     public boolean sacarVencido(Fecha fechaActual, HashSet<Producto> lista) {
         if (fechaActual == null || lista == null || lista.isEmpty()) {

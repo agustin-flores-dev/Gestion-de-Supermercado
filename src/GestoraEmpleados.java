@@ -9,30 +9,46 @@ public final class GestoraEmpleados {
         this.listaEmpleados = emp;
     }
 
+    // Metodo auxiliar
+    private Empleados buscarPorDni(String dni) {
+        for (Empleados e : listaEmpleados) {
+            if (e.getDni().equalsIgnoreCase(dni)) {
+                return e;
+            }
+        }
+
+        return null;
+    }
+
+    public Empleados buscarPorID(int id_buscar)throws BusquedaFallidaException{
+
+        if(id_buscar > 0) {
+            for (Empleados emp : listaEmpleados){
+                if (emp.getId_empleado() == id_buscar){
+                    return emp;
+                }
+            }
+        }
+
+        throw new BusquedaFallidaException("[!] El ID que busca no se encuentra en la lista...");
+    }
+
     public boolean agregarEmpleados(Empleados nuevo) throws ElementoVacioException, EEstadoYaIngresado{
-        if (nuevo == null){
+        if (nuevo == null || nuevo.getNombre().equalsIgnoreCase("")){
             throw new ElementoVacioException("[!] Empleado sin informacion cargada...");
         }
-        if (nuevo.getNombre().equalsIgnoreCase("")){
-            throw new ElementoVacioException("[!] Empleado sin informacion cargada...");
-        }
-        if (listaEmpleados.add(nuevo)){
+
+        if(buscarPorDni(nuevo.getDni()) == null) {
+            listaEmpleados.add(nuevo);
             return true;
         }
+
         throw new EEstadoYaIngresado("[!] Empleado ya ingresado previamente...");
     }
 
-    public boolean eliminarEmpleados(Empleados eliminar) throws ElementoNoEncontradoException, ElementoVacioException{
-        if (eliminar == null || eliminar.getNombre().equalsIgnoreCase("")){
-            throw new ElementoVacioException("[!] Empleado sin informacion cargada...");
-        }
-        if(!listaEmpleados.contains(eliminar)){
-            throw new ElementoNoEncontradoException("[!] Elemento no encontrado...");
-        }
-        if (listaEmpleados.remove(eliminar)){
-            return true;
-        }
-        return false;
+    public boolean eliminarEmpleados(int id_buscar) throws ElementoNoEncontradoException, BusquedaFallidaException {
+        Empleados emp = buscarPorID(id_buscar);
+        return listaEmpleados.remove(emp);
     }
 
     public Set<Empleados> obtenerEmpleados() throws ListaVaciaException{
@@ -41,17 +57,6 @@ public final class GestoraEmpleados {
         }
 
         return listaEmpleados;
-    }
-
-    public Empleados buscarEmpleado(int id_buscar)throws BusquedaFallidaException{
-
-        for (Empleados emp : listaEmpleados){
-            if (emp.getId_empleado() == id_buscar){
-                return emp;
-            }
-        }
-
-        throw new BusquedaFallidaException("[!] El id que busca no esta en la lista...");
     }
 
 }

@@ -1,5 +1,3 @@
-import java.sql.Time;
-
 public final class Producto {
     private static int contador = 0;
     private int id;
@@ -57,7 +55,7 @@ public final class Producto {
         return "[ID]: " +id +"\n"
                 +"[Nombre]: " +nombre +"\n"
                 +"[Descripción]: " +descripcion +"\n"
-                +"[Fecha de Vencimiento]: " +fechaVencimiento.toString() +"\n"
+                +"[Fecha de Vencimiento]: " +String.valueOf(fechaVencimiento) +"\n"
                 +"[Stock]: " +stock +"\n"
                 +"[Precio Unitario]: $" +precioUnitario;
     }

@@ -1,3 +1,4 @@
+import java.util.Collections;
 import java.util.Set;
 
 public final class Admin extends Empleados{
@@ -9,7 +10,7 @@ public final class Admin extends Empleados{
         this.gestor = gestora;
     }
 
-    public boolean agregarEmpleado (Empleados nuevo){
+    public boolean agregarEmpleado(Empleados nuevo){
         try {
             gestor.agregarEmpleados(nuevo);
             return true;
@@ -19,28 +20,37 @@ public final class Admin extends Empleados{
         return false;
     }
 
-    public boolean despedirEmpleado(Empleados eliminar){
+    public boolean despedirEmpleado(Empleados emp){
         try {
-            gestor.eliminarEmpleados(eliminar);
+            if (emp == null) {
+                throw new ElementoVacioException("[!] Empleado no válido...");
+            }
+
+            // Un admin no puede despedirse a sí mismo.
+            if(emp.equals(this)) {
+                return false;
+            }
+
+            gestor.eliminarEmpleados(emp.getId_empleado());
             return true;
-        } catch (ElementoNoEncontradoException | ElementoVacioException e) {
+        } catch (ElementoNoEncontradoException | ElementoVacioException | BusquedaFallidaException e) {
             System.out.println(e.getMessage());
         }
         return false;
     }
 
-    public Set<Empleados> mostrarEmpleados() {
+    public Set<Empleados> obtenerEmpleados() {
         try {
             return gestor.obtenerEmpleados();
         } catch (ListaVaciaException e) {
             System.out.println(e.getMessage());
         }
-        return null;
+        return Collections.emptySet();
     }
 
-    public Empleados buscarEmpleado(int id){
+    public Empleados buscarEmpleadoPorID(int id){
         try{
-            return gestor.buscarEmpleado(id);
+            return gestor.buscarPorID(id);
         } catch (BusquedaFallidaException e) {
             System.out.println(e.getMessage());
         }

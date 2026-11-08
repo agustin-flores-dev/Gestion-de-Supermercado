@@ -52,7 +52,7 @@ public final class Supermercado {
             this.dineroMes.put(fechaAUX, aux);
             return aux;
         } else {
-            throw new DateErrorExcepcion("error, no es el fin del mes");
+            throw new DateErrorExcepcion("[!]] No es el fin del mes");
         }
     }
 
@@ -68,7 +68,7 @@ public final class Supermercado {
             this.dineroDelDia.add(aux);
             return dineroDelDia.getLast();
         }else {
-            throw new EEstadoYaIngresado("dinero del dia ya calculado...");
+            throw new EEstadoYaIngresado("[!] Dinero del dia ya calculado...");
         }
     }
 
@@ -80,7 +80,7 @@ public final class Supermercado {
                     return empleados.agregar(emp);
                 }
             }
-        } throw new BusquedaFallidaException("ID ingresada no pertenece a un empleado ingresado/autorizado para realiza esta operacion...");
+        } throw new BusquedaFallidaException("[!] El ID ingresado no pertenece a un empleado autorizado para realiza esta operación...");
 
     }
 
@@ -92,24 +92,27 @@ public final class Supermercado {
                     return empleados.eliminar(emp);
                 }
             }
-        } throw new BusquedaFallidaException("ID ingresada no pertenece a un empleado ingresado/autorizado para realiza esta operacion...");
+        } throw new BusquedaFallidaException("[!] El ID ingresado no pertenece a un empleado autorizado para realiza esta operación...");
 
     }
 
     public String funcionAdminMostrarDataEmp(int id) throws BusquedaFallidaException{
 
-        for (Empleados empAUX : empleados.obtenerTodos()){
-            if (empAUX.getId_empleado() == id && empAUX instanceof Admin){
+        for (Empleados emp : empleados.obtenerTodos()){
+            if (emp.getId_empleado() == id && emp instanceof Admin){
                 StringBuilder str = new StringBuilder();
-                for (Empleados emp : ((Admin) empAUX).mostrarEmpleados()){
-                    str.append(emp.toString());
+                Set<Empleados> listaEmpleadosAdmin = ((Admin) emp).obtenerEmpleados();
+
+                if (listaEmpleadosAdmin != null) {
+                    for (Empleados e : listaEmpleadosAdmin){
+                        str.append(e.toString()).append("\n");
+                    }
                 }
                 return str.toString();
             }
         }
 
-        throw new BusquedaFallidaException("ID ingresada no pertenece a un empleado ingresado/autorizado para realiza esta operacion...");
-
+        throw new BusquedaFallidaException("[!] El ID ingresado no pertenece a un empleado autorizado para realiza esta operación...");
     }
 
     public String funcionAdminMostrarEmp(int id, int idEmp) throws BusquedaFallidaException{
@@ -122,15 +125,11 @@ public final class Supermercado {
                         return empleados1.toString();
                     }
                 }
-                throw new BusquedaFallidaException("el empleado a buscar, no se encuentra registrado, por favor cheque la id correspondiente");
+                throw new BusquedaFallidaException("[!] El empleado a buscar no se encuentra registrado...");
             }
         }
 
-        throw new BusquedaFallidaException("ID ingresada no pertenece a un empleado ingresado/autorizado para realiza esta operacion...");
+        throw new BusquedaFallidaException("[!] El ID ingresado no pertenece a un empleado autorizado para realiza esta operación...");
 
     }
-
-
-
-
 }

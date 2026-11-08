@@ -1,16 +1,15 @@
 import java.util.Objects;
 
-public final class Socio extends Persona{
+public final class Socio extends Persona implements Comparable<Socio>{
 
-    private static int idAUX = 1;
+    private static int contadorId = 1;
     private int id;
     private boolean estadoSocio;
 
     public Socio(String nombre, String dni, String direccion, boolean estadoSocio) {
         super(nombre, dni, direccion);
         this.estadoSocio = estadoSocio;
-        this.id = idAUX;
-        idAUX++;
+        this.id = contadorId ++;
     }
 
     public Socio(String dni) {
@@ -45,15 +44,12 @@ public final class Socio extends Persona{
     @Override
     public int hashCode() {
 
-        return Objects.hash(super.getDni());
-
+        return Objects.hash(super.getDni().toLowerCase());
     }
 
+    @Override
     public int compareTo(Socio socioAUX){
 
         return super.getDni().compareTo(socioAUX.getDni());
-
     }
-
-
 }

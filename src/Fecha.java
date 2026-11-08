@@ -2,17 +2,25 @@ import java.util.Objects;
 
 public final class Fecha {
 
-    private int dia;
-    private int mes;
-    private int anio;
+    private final int dia;
+    private final int mes;
+    private final int anio;
 
     public Fecha(int dia, int mes, int anio) {
+        if (dia < 1 || dia >= 31) throw new IllegalArgumentException("[!] Día inválido...");
+        if (mes < 1 || mes > 12) throw new IllegalArgumentException("[!] Mes inválido...");
+        if (anio < 1) throw new IllegalArgumentException("[!] Año inválido...");
+
         this.dia = dia;
         this.mes = mes;
         this.anio = anio;
+
     }
 
     public Fecha(int mes, int anio) {
+        if (mes < 1 || mes > 12) throw new IllegalArgumentException("[!] Mes inválido...");
+        if (anio < 1) throw new IllegalArgumentException("[!] Año inválido...");
+
         this.dia = 1;
         this.mes = mes;
         this.anio = anio;
@@ -21,20 +29,11 @@ public final class Fecha {
     public int getDia() {
         return dia;
     }
-    public void setDia(int dia) {
-        this.dia = dia;
-    }
     public int getMes() {
         return mes;
     }
-    public void setMes(int mes) {
-        this.mes = mes;
-    }
     public int getAnio() {
         return anio;
-    }
-    public void setAnio(int anio) {
-        this.anio = anio;
     }
 
     @Override
@@ -51,7 +50,7 @@ public final class Fecha {
 
     @Override
     public String toString() {
-        return dia+ "/" +mes + "/" +anio;
+        return dia +"/" +mes +"/" +anio;
     }
 
     public boolean vencido(Fecha otra) {

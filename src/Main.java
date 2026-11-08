@@ -93,7 +93,7 @@ public static int menu(Scanner sc) {
     int opcion = -1;
     try {
         opcion = sc.nextInt();
-    } catch (java.util.InputMismatchException e) {
+    } catch (InputMismatchException e) {
         System.out.println("! Por favor, ingrese un número válido !");
         sc.next();
     }
