@@ -21,12 +21,12 @@ void main() {
     HashSet<Producto> productos = new HashSet<>();
 
     Supermercado mardel = new Supermercado(NOMBRE_SUPERMERCADO, 1, dineroDelDia, dineroMes, repoEmpleados, sociosSuper, productos);
-    Admin admin1 = new Admin("Agustin Flores", "43.404.643", "Laboratorio 5", 2.50, ETurno.MANIANA, gestoraGeneral);
-    Admin admin2 = new Admin("Dylan Vicchio", "43.404.644", "Laboratorio 6", 2.50, ETurno.TARDE, gestoraGeneral);
-    Admin admin3 = new Admin("Juan Cruz Lezcano", "43.404.645", "Laboratorio 7", 2.50, ETurno.NOCHE, gestoraGeneral);
-    Repositor repositor1 = new Repositor("Benjamin Burnley", "30.345.670", "Matheu 4500", 100000, ETurno.TARDE);
-    Cajero cajero1 = new Cajero("Keith Wallen", "34.469.231", "Perú 250", 100000, ETurno.MANIANA);
-    Socio socio1 = new Socio("Pepe", "30.501.458", "Ricardo Rojas 356", true);
+    Admin admin1 = new Admin("Agustin Flores", "43.404.643", "Laboratorio 5", "123", 2.50, ETurno.MANIANA, gestoraGeneral);
+    Admin admin2 = new Admin("Dylan Vicchio", "43.404.644", "Laboratorio 6", "123",2.50, ETurno.TARDE, gestoraGeneral);
+    Admin admin3 = new Admin("Juan Cruz Lezcano", "43.404.645", "Laboratorio 7", "123",2.50, ETurno.NOCHE, gestoraGeneral);
+    Repositor repositor1 = new Repositor("Benjamin Burnley", "30.345.670", "123", "Matheu 4500", 100000, ETurno.TARDE);
+    Cajero cajero1 = new Cajero("Keith Wallen", "34.469.231", "123","Perú 250", 100000, ETurno.MANIANA);
+    Socio socio1 = new Socio("Pepe", "30.501.458", "123", "Ricardo Rojas 356", true);
 
     LocalDate hoy = LocalDate.now();
     Fecha fechaActual = new Fecha(hoy.getMonthValue(), hoy.getYear());
@@ -73,13 +73,23 @@ void main() {
                 System.out.print("- Ingrese su ID de empleado: ");
                 try {
                     int idLogin = validacionInt(sc);
+                    Empleados emp = gestoraGeneral.buscarPorID(idLogin);
                     saltarLinea(1);
 
-                    usuario = gestoraGeneral.buscarPorID(idLogin);
+                    System.out.print("- Ingrese su contraseña: ");
+                    String contrasenia = sc.nextLine();
+                    if (emp.getContrasenia().equals(contrasenia)) {
+                        usuario = emp;
+                        saltarLinea(1);
+                        
+                        System.out.println("< Sesión iniciada con éxito >");
+                        System.out.println("[¡Bienvenido/a, " + usuario.getNombre() + "!]");
+                        System.out.println("[Rol detectado: " + usuario.getClass().getSimpleName() + "]");
+                    }
+                    else {
+                        System.out.println("[!] Contraseña incorrecta...");
+                    }
 
-                    System.out.println("< Sesión iniciada con éxito >");
-                    System.out.println("[¡Bienvenido/a, " +usuario.getNombre() +"!]");
-                    System.out.println("[Rol detectado: " +usuario.getClass().getSimpleName() +"]");
                 } catch (BusquedaFallidaException e) {
                     System.out.println("[!] No se encontró ningún empleado con ese ID...");
                     usuario = null;
@@ -144,6 +154,8 @@ void main() {
                             String nombre = sc.nextLine();
                             System.out.print("- DNI (Con puntos): ");
                             String dni = sc.nextLine();
+                            System.out.println("- Contraseña: ");
+                            String contrasenia = sc.nextLine();
                             System.out.print("- Dirección: ");
                             String direccion = sc.nextLine();
                             System.out.print("- Sueldo: ");
@@ -172,9 +184,9 @@ void main() {
                             }
 
                             Empleados nuevo = switch (opcionRol) {
-                                case 2 -> new Repositor(nombre, dni, direccion, sueldo, turno);
-                                case 3 -> new Admin(nombre, dni, direccion, sueldo, turno, gestoraGeneral);
-                                default -> new Cajero(nombre, dni, direccion, sueldo, turno);
+                                case 2 -> new Repositor(nombre, dni, direccion, contrasenia, sueldo, turno);
+                                case 3 -> new Admin(nombre, dni, contrasenia, direccion, sueldo, turno, gestoraGeneral);
+                                default -> new Cajero(nombre, dni, contrasenia, direccion, sueldo, turno);
                             };
 
                             if (admin1.agregarEmpleado(nuevo)) {

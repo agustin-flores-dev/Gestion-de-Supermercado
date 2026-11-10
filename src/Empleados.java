@@ -3,18 +3,29 @@ import java.util.Objects;
 public abstract class Empleados extends Persona{
     private static int contadorId = 1;
     private int id_empleado;
+    protected String contrasenia;
     private double sueldo;
     private ETurno turno;
 
-    public Empleados(String nombre, String dni, String direccion, double sueldo, ETurno turno) {
+    public Empleados(String nombre, String dni, String direccion,String contrasenia, double sueldo, ETurno turno) {
         super(nombre, dni, direccion);
         if (turno == null) throw new IllegalArgumentException("[!] Turno inválido...");
 
         this.id_empleado = contadorId++;
+        this.contrasenia = contrasenia;
         this.sueldo = sueldo;
         this.turno = turno;
     }
 
+    public static int getContadorId() {
+        return contadorId;
+    }
+    public String getContrasenia() {
+        return contrasenia;
+    }
+    public void setContrasenia(String contrasenia) {
+        this.contrasenia = contrasenia;
+    }
     public double getSueldo() {
         return sueldo;
     }
