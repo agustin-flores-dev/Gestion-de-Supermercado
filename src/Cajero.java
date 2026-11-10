@@ -14,8 +14,8 @@ public final class Cajero extends Empleados implements IGestionarCaja{
     }
 
     @Override
-    public double chequearPrecio(Producto pro) {
-        if(pro == null) return 0;
+    public double chequearPrecio(Producto pro) throws ElementoVacioException{
+        if(pro == null) throw new ElementoVacioException("producto ingresado, no posee informacion cargada");
 
         return pro.getPrecioUnitario();
     }

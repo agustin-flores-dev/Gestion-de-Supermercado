@@ -10,12 +10,13 @@ public final class Supermercado {
     private LocalDate hoy;
     private int id;
     private ArrayList<Double> dineroDelDia;
+    private HashSet<Producto> productos;
     private HashMap<Fecha, Double> dineroMes;
     private RepositorioGenerico<Empleados> empleados;
     private GestoraEmpleados gestoraEmpleados;
     private HashSet<Socio> socios;
 
-    public Supermercado(String nombre, int id, ArrayList<Double> dineroDelDia, HashMap<Fecha, Double> dineroMes, RepositorioGenerico<Empleados> empleados, HashSet<Socio> socios) {
+    public Supermercado(String nombre, int id, ArrayList<Double> dineroDelDia, HashMap<Fecha, Double> dineroMes, RepositorioGenerico<Empleados> empleados, HashSet<Socio> socios, HashSet<Producto> productos) {
         this.nombre = nombre;
         this.id = id;
         this.dineroDelDia = dineroDelDia;
@@ -24,6 +25,7 @@ public final class Supermercado {
         this.gestoraEmpleados = new GestoraEmpleados(this.empleados.obtenerTodos());
         this.socios = socios;
         this.hoy = LocalDate.now();
+        this.productos = productos;
     }
 
     public String getNombre() {
@@ -77,7 +79,8 @@ public final class Supermercado {
 
     public boolean funcionAdminRemoveEmp (int id, Empleados emp) throws BusquedaFallidaException{
 
-        for (Empleados empAUX : empleados.obtenerTodos()){
+        Set<Empleados> lista = empleados.obtenerTodos();
+        for (Empleados empAUX : lista){
             if (empAUX.getId_empleado() == id && empAUX instanceof Admin){
                 if (((Admin) empAUX).despedirEmpleado(emp)){
                     return ((Admin) empAUX).despedirEmpleado(emp);
@@ -89,7 +92,8 @@ public final class Supermercado {
 
     public String funcionAdminMostrarDataEmp(int id) throws BusquedaFallidaException{
 
-        for (Empleados emp : empleados.obtenerTodos()){
+        Set<Empleados> lista = empleados.obtenerTodos();
+        for (Empleados emp : lista){
             if (emp.getId_empleado() == id && emp instanceof Admin){
                 StringBuilder str = new StringBuilder();
                 Set<Empleados> listaEmpleadosAdmin = ((Admin) emp).obtenerEmpleados();
@@ -108,7 +112,8 @@ public final class Supermercado {
 
     public String funcionAdminMostrarEmp(int id, int idEmp) throws BusquedaFallidaException{
 
-        for (Empleados empAUX : empleados.obtenerTodos()){
+        Set<Empleados> lista = empleados.obtenerTodos();
+        for (Empleados empAUX : lista){
             if (empAUX.getId_empleado() == id && empAUX instanceof Admin){
 
                 for (Empleados empleados1 : empleados.obtenerTodos()){
@@ -123,4 +128,35 @@ public final class Supermercado {
         throw new BusquedaFallidaException("[!] El ID ingresado no pertenece a un empleado autorizado para realiza esta operación...");
 
     }
+
+    public boolean realizarVenta (int id, ArrayList<Producto> prod, ArrayList<Integer> cant) throws BusquedaFallidaException{
+
+        Set<Empleados> lista = empleados.obtenerTodos();
+        for (Empleados empAUX : lista){
+            if (empAUX.getId_empleado() == id && empAUX instanceof Cajero)  {
+                try{
+                    return ((Cajero) empAUX).realizarVenta(prod, cant);
+                } catch (ListaVaciaException e) {
+                    System.out.println(e.getMessage());
+                } catch (IllegalArgumentException e){
+                    System.out.println(e.getMessage());
+                }
+            }
+        }
+        throw new BusquedaFallidaException("[!] El ID ingresado no pertenece a un empleado autorizado para realiza esta operación...");
+    }
+
+    public double chequearPrecios(Producto prod) throws ElementoVacioException, ListaVaciaException{
+
+        Set<Empleados> lista = empleados.obtenerTodos();
+        for (Empleados emp : lista){
+            if (emp instanceof Cajero){
+                return ((Cajero) emp).chequearPrecio(prod);
+            }
+        }
+        throw new ListaVaciaException("No hay cajero ingresado para realizar la operacion, por favor contacte con el admin");
+    }
+
+
+
 }
