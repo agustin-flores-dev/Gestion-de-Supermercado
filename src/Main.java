@@ -63,12 +63,37 @@ void main() {
                 break;
             } // Salir.
             case 1: {
+                if(validacionUsuario()) {
+                    System.out.println("[!] Sesión ya iniciada...");
+                    break;
+                } // Validacion
+
+                System.out.println("<< INICIAR SESIÓN >>");
+                System.out.print("- Ingrese su ID de empleado: ");
+                try {
+                    int idLogin = validacionInt(sc);
+                    sc.nextLine();
+
+                    Empleados emp = gestoraGeneral.buscarPorID(idLogin);
+                    usuario = emp;
+
+                    saltarLinea(1);
+                    System.out.println("[¡Sesión iniciada con éxito! Bienvenido/a, " +usuario.getNombre() +"]");
+                    System.out.println("[Rol detectado: " +usuario.getClass().getSimpleName() +"]");
+                } catch (BusquedaFallidaException e) {
+                    System.out.println("[!] No se encontró ningún empleado con ese ID...");
+                    usuario = null;
+                } catch (InputMismatchException e) {
+                    System.out.println("[!] Entrada inválida...");
+                    sc.next();
+                }
+
                 break;
             } // Iniciar sesion.
             case 2: {
                 if(!validacionUsuario()) {
                     break;
-                }
+                } // Validacion
 
                 saltarLinea(20);
                 int opcionEmpleados;
@@ -111,7 +136,7 @@ void main() {
                         case 3: {
                             if(!validacionRol(Admin.class)) {
                                 break;
-                            }
+                            } // Validacion
 
                             System.out.println("<< Agregar Empleado Nuevo >>");
                             System.out.print("- Nombre: ");
@@ -162,7 +187,7 @@ void main() {
                         case 4: {
                             if(!validacionRol(Admin.class)) {
                                 break;
-                            }
+                            } // Validacion
 
                             System.out.println("<< Despedir Empleado >>");
                             System.out.print("- Ingrese el ID del empleado a despedir: ");
@@ -198,7 +223,7 @@ void main() {
             case 3: {
                 if(!validacionUsuario()) {
                     break;
-                }
+                } // Validacion
 
                 saltarLinea(20);
                 int opcionSuper;
@@ -234,7 +259,7 @@ void main() {
                             break;
                         } // Calcular recaudacion del mes (Admin).
                         case 3: {
-                            if(!validacionRol(Admin.class) || !validacionRol(Repositor.class)) {
+                            if(!validacionRol(Admin.class) && !validacionRol(Repositor.class)) {
                                 break;
                             }
 
@@ -258,6 +283,13 @@ void main() {
                 break;
             } // Menu Supermercado.
             case 4: {
+                if(!validacionUsuario()) {
+                    System.out.println("[!] No se pudo cerrar sesión...");
+                    break;
+                } // Validacion
+
+                usuario = null;
+                System.out.println("< Sesión cerrada con éxito >");
                 break;
             } // Cerrar sesion.
             default: {
@@ -404,7 +436,7 @@ public static boolean validacionUsuario() {
     return true;
 }
 public static boolean validacionRol(Class<?> rol) {
-    if (usuario == null || rol.isInstance(usuario)) {
+    if (usuario == null || !rol.isInstance(usuario)) {
         System.out.println("[!] ACCESO DENEGADO: No tienes los permisos para hacer esta acción.");
         return false;
     }
