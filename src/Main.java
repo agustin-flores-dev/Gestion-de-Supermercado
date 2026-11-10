@@ -72,26 +72,25 @@ void main() {
                 System.out.print("- Ingrese su ID de empleado: ");
                 try {
                     int idLogin = validacionInt(sc);
-                    sc.nextLine();
-
-                    Empleados emp = gestoraGeneral.buscarPorID(idLogin);
-                    usuario = emp;
-
                     saltarLinea(1);
-                    System.out.println("[¡Sesión iniciada con éxito! Bienvenido/a, " +usuario.getNombre() +"]");
+
+                    usuario = gestoraGeneral.buscarPorID(idLogin);
+
+                    System.out.println("< Sesión iniciada con éxito >");
+                    System.out.println("[¡Bienvenido/a, " +usuario.getNombre() +"!]");
                     System.out.println("[Rol detectado: " +usuario.getClass().getSimpleName() +"]");
                 } catch (BusquedaFallidaException e) {
                     System.out.println("[!] No se encontró ningún empleado con ese ID...");
                     usuario = null;
                 } catch (InputMismatchException e) {
                     System.out.println("[!] Entrada inválida...");
-                    sc.next();
                 }
 
                 break;
             } // Iniciar sesion.
             case 2: {
                 if(!validacionUsuario()) {
+                    System.out.println("[!] Debes iniciar sesión para acceder...");
                     break;
                 } // Validacion
 
@@ -135,6 +134,7 @@ void main() {
                         } // Buscar Empleado.
                         case 3: {
                             if(!validacionRol(Admin.class)) {
+                                System.out.println("[!] ACCESSO DENEGADO: No posees los permisos para realizar esta acción.");
                                 break;
                             } // Validacion
 
@@ -186,6 +186,7 @@ void main() {
                         } // Agregar Empleado nuevo (Admin).
                         case 4: {
                             if(!validacionRol(Admin.class)) {
+                                System.out.println("[!] ACCESSO DENEGADO: No posees los permisos para realizar esta acción.");
                                 break;
                             } // Validacion
 
@@ -222,6 +223,7 @@ void main() {
             } // Menu Empleados.
             case 3: {
                 if(!validacionUsuario()) {
+                    System.out.println("[!] Debes iniciar sesión para acceder...");
                     break;
                 } // Validacion
 
@@ -236,8 +238,9 @@ void main() {
                         } // Salir.
                         case 1: {
                             if(!validacionRol(Admin.class)) {
+                                System.out.println("[!] ACCESSO DENEGADO: No posees los permisos para realizar esta acción.");
                                 break;
-                            }
+                            } // Validacion
 
                             System.out.println("<< Calcular Plata del Día >>");
                             double recaudadoDia = mardel.calcularPlataDia();
@@ -248,8 +251,9 @@ void main() {
                         } // Calcular recaudacion del dia (Admin).
                         case 2: {
                             if(!validacionRol(Admin.class)) {
+                                System.out.println("[!] ACCESSO DENEGADO: No posees los permisos para realizar esta acción.");
                                 break;
-                            }
+                            } // Validacion
 
                             System.out.println("<< Calcular Plata del Mes >>");
                             double recaudadoMes = mardel.calcularPlataMes();
@@ -260,8 +264,9 @@ void main() {
                         } // Calcular recaudacion del mes (Admin).
                         case 3: {
                             if(!validacionRol(Admin.class) && !validacionRol(Repositor.class)) {
+                                System.out.println("[!] ACCESSO DENEGADO: No posees los permisos para realizar esta acción.");
                                 break;
-                            }
+                            } // Validacion
 
                             System.out.println("<< Borrar Productos Vencidos >>");
                             if (repositor1.sacarVencido(fechaActual, stockSupermercado)) {
@@ -315,10 +320,10 @@ public static int menuPrincipal(Scanner sc) {
     System.out.printf("[ GESTION SUPERMERCADO %s ]\n", NOMBRE_SUPERMERCADO);
     separador(20);
     System.out.println("[0.] SALIR");
-    System.out.println("[1.] (!) Iniciar sesión.");
+    System.out.println("[1.] Iniciar sesión.");
     System.out.println("[2.] Menu Empleados.");
     System.out.println("[3.] Menu Supermercado.");
-    System.out.println("[4.] (!) Cerrar Sesión.");
+    System.out.println("[4.] Cerrar Sesión.");
     separador(20);
     System.out.print("- Ingrese una opción: ");
 
@@ -428,18 +433,8 @@ public static double validacionDouble(Scanner sc) {
     return opcion;
 }
 public static boolean validacionUsuario() {
-    if (usuario == null) {
-        System.out.println("[!] ACCESO DENEGADO: Debe iniciar sesión para acceder a este menú.");
-        return false;
-    }
-
-    return true;
+    return usuario != null;
 }
 public static boolean validacionRol(Class<?> rol) {
-    if (usuario == null || !rol.isInstance(usuario)) {
-        System.out.println("[!] ACCESO DENEGADO: No tienes los permisos para hacer esta acción.");
-        return false;
-    }
-
-    return true;
+    return rol.isInstance(usuario);
 }
