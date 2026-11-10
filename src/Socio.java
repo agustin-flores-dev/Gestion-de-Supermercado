@@ -20,6 +20,10 @@ public final class Socio extends Persona implements Comparable<Socio>{
         return id;
     }
 
+    public boolean isEstadoSocio() {
+        return estadoSocio;
+    }
+
     public boolean activarEstado() throws EEstadoYaIngresado{
         if (this.estadoSocio){
             throw new EEstadoYaIngresado("el socio ya esta activo");
