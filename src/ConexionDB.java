@@ -10,18 +10,19 @@ public class ConexionDB {
 
     public static Connection getConexion(){
         try {
+            if(conexion != null) conexion.close();
             conexion = DriverManager.getConnection(url, userName, password);
         }catch (SQLException e){
-            throw new ConexionFallidaException();
+            throw new ConexionFallidaException("[!] No se pudo conectar con la base de datos...");
         }
         return conexion;
     }
 
     public static void closeConexion(){
         try {
-            conexion.close();
+            if(conexion != null) conexion.close();
         }catch(SQLException e){
-            throw new ConexionFallidaException();
+            throw new ConexionFallidaException("[!] No existe una conexión para cerrar...");
         }
     }
 }

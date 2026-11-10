@@ -12,8 +12,8 @@ void main() {
     int opcion;
 
     HashSet<Producto> stockSupermercado = new HashSet<>();
-    GestoraEmpleados gestoraGeneral = new GestoraEmpleados(new HashSet<>());
     RepositorioGenerico<Empleados> repoEmpleados = new RepositorioGenerico<>();
+    GestoraEmpleados gestoraGeneral = new GestoraEmpleados(repoEmpleados.obtenerTodos());
     ArrayList<Double> dineroDelDia = new ArrayList<>();
     HashMap<Fecha, Double> dineroMes = new HashMap<>();
     HashSet<Socio> sociosSuper = new HashSet<>();
@@ -26,21 +26,14 @@ void main() {
     Cajero cajero1 = new Cajero("Keith Wallen", "34.469.231", "Perú 250", 100000, ETurno.MANIANA);
     Socio socio1 = new Socio("Pepe", "30.501.458", "Ricardo Rojas 356", true);
 
+    LocalDate hoy = LocalDate.now();
+    Fecha fechaActual = new Fecha(hoy.getMonthValue(), hoy.getYear());
     Fecha fecha1 = new Fecha(7, 11, 2026);
     Fecha fecha2 = new Fecha(6, 10, 2026);
     Fecha fecha3 = new Fecha(11, 2026);
+
     Producto producto1 = new Producto("Cassancrem Light", "Queso blanco untable bajo en grasas.", fecha1, 10, 3500);
     Producto producto2 = new Producto("Dulce de Leche", "Producto lácteo concentrado azucarado.", fecha2, 15, 4000);
-
-    try {
-        repoEmpleados.agregar(admin1);
-        repoEmpleados.agregar(admin2);
-        repoEmpleados.agregar(admin3);
-        repoEmpleados.agregar(repositor1);
-        repoEmpleados.agregar(cajero1);
-    } catch (Exception e) {
-        System.out.println(e.getMessage());
-    } // Instancia Genérica.
 
     try {
         gestoraGeneral.agregarEmpleados(admin1);
@@ -116,7 +109,7 @@ void main() {
                             System.out.print("- Dirección: ");
                             String direccion = sc.nextLine();
                             System.out.print("- Sueldo: ");
-                            double sueldo = sc.nextDouble();
+                            double sueldo = validacionDouble(sc);
                             sc.nextLine();
 
                             saltarLinea(1);
@@ -214,8 +207,7 @@ void main() {
                         } // Calcular recaudacion del mes.
                         case 3: {
                             System.out.println("<< Borrar Productos Vencidos >>");
-                            Fecha hoy = new Fecha(7, 11, 2026);
-                            if (repositor1.sacarVencido(hoy, stockSupermercado)) {
+                            if (repositor1.sacarVencido(fechaActual, stockSupermercado)) {
                                 System.out.println("> Se eliminaron los productos vencidos del stock.");
                             } else {
                                 System.out.println("[!] No hubo productos vencidos para eliminar...");
@@ -232,7 +224,7 @@ void main() {
                     } // Limpiar pantalla.
                 } while (opcionSuper != 0);
                 break;
-            } // Fin Menu Supermercado
+            } // Menu Supermercado
             default: {
                 System.out.println("! INGRESE UNA OPCIÓN VÁLIDA !");
                 break;
@@ -335,6 +327,22 @@ public static int validacionInt(Scanner sc) {
     while (!entradaValida) {
         try {
             opcion = sc.nextInt();
+            entradaValida = true;
+        } catch (InputMismatchException e) {
+            System.out.print("[!] Por favor, ingrese un número válido: ");
+            sc.next();
+        }
+    }
+    sc.nextLine();
+    return opcion;
+}
+public static double validacionDouble(Scanner sc) {
+    double opcion = 0.0;
+    boolean entradaValida = false;
+
+    while (!entradaValida) {
+        try {
+            opcion = sc.nextDouble();
             entradaValida = true;
         } catch (InputMismatchException e) {
             System.out.print("[!] Por favor, ingrese un número válido: ");

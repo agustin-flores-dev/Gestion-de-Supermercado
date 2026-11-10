@@ -1,5 +1,10 @@
 public class ConexionFallidaException extends RuntimeException {
-    public ConexionFallidaException() {
-        super("No se pudo conectar ");
+
+    public ConexionFallidaException(String message) {
+        super(message);
+    }
+
+    public ConexionFallidaException(String message, Throwable cause) {
+        super(message, cause);
     }
 }

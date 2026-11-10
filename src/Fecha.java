@@ -1,3 +1,5 @@
+import java.time.DateTimeException;
+import java.time.LocalDate;
 import java.util.Objects;
 
 public final class Fecha {
@@ -7,9 +9,11 @@ public final class Fecha {
     private final int anio;
 
     public Fecha(int dia, int mes, int anio) {
-        if (dia < 1 || dia >= 31) throw new IllegalArgumentException("[!] Día inválido...");
-        if (mes < 1 || mes > 12) throw new IllegalArgumentException("[!] Mes inválido...");
-        if (anio < 1) throw new IllegalArgumentException("[!] Año inválido...");
+        try {
+            LocalDate.of(anio, mes, dia);
+        } catch (DateTimeException e) {
+            throw new IllegalArgumentException("[!] Fecha inválida");
+        }
 
         this.dia = dia;
         this.mes = mes;
@@ -18,10 +22,13 @@ public final class Fecha {
     }
 
     public Fecha(int mes, int anio) {
-        if (mes < 1 || mes > 12) throw new IllegalArgumentException("[!] Mes inválido...");
-        if (anio < 1) throw new IllegalArgumentException("[!] Año inválido...");
-
         this.dia = 1;
+        try {
+            LocalDate.of(anio, mes, dia);
+        } catch (DateTimeException e) {
+            throw new IllegalArgumentException("[!] Fecha inválida");
+        }
+
         this.mes = mes;
         this.anio = anio;
     }
@@ -60,6 +67,6 @@ public final class Fecha {
         if (this.mes != otra.mes) {
             return this.mes < otra.mes;
         }
-        return this.dia <= otra.dia;
+        return this.dia < otra.dia;
     }
 }

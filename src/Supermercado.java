@@ -44,7 +44,10 @@ public final class Supermercado {
         int mes = hoy.getMonthValue();
         int anio = hoy.getYear();
         Fecha fechaAUX = new Fecha(mes, anio);
+
+        if (dineroMes.containsKey(fechaAUX)) throw new IllegalStateException("[!] El mes ya fue cerrado...");
         this.dineroMes.put(fechaAUX, plata);
+        dineroDelDia.clear();
         return plata;
     }
 
@@ -65,7 +68,7 @@ public final class Supermercado {
         for (Empleados empAUX : empleados.obtenerTodos()){
             if (empAUX.getId_empleado() == id && empAUX instanceof Admin){
                 if (((Admin) empAUX).agregarEmpleado(emp)){
-                    return empleados.agregar(emp);
+                    return ((Admin) empAUX).agregarEmpleado(emp);
                 }
             }
         } throw new BusquedaFallidaException("[!] El ID ingresado no pertenece a un empleado autorizado para realiza esta operación...");
@@ -77,7 +80,7 @@ public final class Supermercado {
         for (Empleados empAUX : empleados.obtenerTodos()){
             if (empAUX.getId_empleado() == id && empAUX instanceof Admin){
                 if (((Admin) empAUX).despedirEmpleado(emp)){
-                    return empleados.eliminar(emp);
+                    return ((Admin) empAUX).despedirEmpleado(emp);
                 }
             }
         } throw new BusquedaFallidaException("[!] El ID ingresado no pertenece a un empleado autorizado para realiza esta operación...");
