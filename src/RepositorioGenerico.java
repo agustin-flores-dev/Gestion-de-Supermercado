@@ -4,7 +4,7 @@ import java.util.HashSet;
 public final class RepositorioGenerico<T> {
     private HashSet<T> elementos;
 
-    public RepositorioGenerico(HashSet<T> elementos) {
+    public RepositorioGenerico() {
         this.elementos = new HashSet<>();
     }
 

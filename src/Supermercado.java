@@ -29,47 +29,35 @@ public final class Supermercado {
     public String getNombre() {
         return nombre;
     }
-
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-
     public int getId() {
         return id;
     }
 
-    public Double calcularPlataMes() throws DateErrorExcepcion{
-        double aux = 0;
-        LocalDate fecha = LocalDate.now();
-        boolean esUltimoDia = fecha.getDayOfMonth() == fecha.lengthOfMonth();
-        if (esUltimoDia){
-            for (int i = 0; i < dineroDelDia.size(); i++){
-                aux = aux+dineroDelDia.get(i);
-            }
-            int mes = hoy.getMonthValue();
-            int anio = hoy.getYear();
-            Fecha fechaAUX = new Fecha(mes, anio);
-            this.dineroMes.put(fechaAUX, aux);
-            return aux;
-        } else {
-            throw new DateErrorExcepcion("[!]] No es el fin del mes");
+    public Double calcularPlataMes() {
+        double plata = 0.0;
+        for (int i = 0; i < dineroDelDia.size(); i++){
+            plata += dineroDelDia.get(i);
         }
+        int mes = hoy.getMonthValue();
+        int anio = hoy.getYear();
+        Fecha fechaAUX = new Fecha(mes, anio);
+        this.dineroMes.put(fechaAUX, plata);
+        return plata;
     }
 
-    public double calcularPlataDia() throws EEstadoYaIngresado{
-        double aux = 0;
-        Set<Empleados> empAUX = empleados.obtenerTodos();
-        if (hoy.getDayOfMonth()-1 < empAUX.size()){
-            for (Empleados emp1 : empAUX){
-                if (emp1 instanceof Cajero) {
-                    aux = aux + ((Cajero) emp1).getPlataRecaudadaDia();
-                }
+    public double calcularPlataDia() {
+        double plata = 0.0;
+        Set<Empleados> lista = empleados.obtenerTodos();
+        for (Empleados emp : lista) {
+            if (emp instanceof Cajero) {
+                plata += ((Cajero) emp).getPlataRecaudadaDia();
             }
-            this.dineroDelDia.add(aux);
-            return dineroDelDia.getLast();
-        }else {
-            throw new EEstadoYaIngresado("[!] Dinero del dia ya calculado...");
         }
+        this.dineroDelDia.add(plata);
+        return plata;
     }
 
     public boolean funcionAdminAddEmp(int id, Empleados emp) throws BusquedaFallidaException{

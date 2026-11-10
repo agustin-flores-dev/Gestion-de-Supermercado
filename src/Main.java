@@ -13,18 +13,34 @@ void main() {
 
     HashSet<Producto> stockSupermercado = new HashSet<>();
     GestoraEmpleados gestoraGeneral = new GestoraEmpleados(new HashSet<>());
+    RepositorioGenerico<Empleados> repoEmpleados = new RepositorioGenerico<>();
+    ArrayList<Double> dineroDelDia = new ArrayList<>();
+    HashMap<Fecha, Double> dineroMes = new HashMap<>();
+    HashSet<Socio> sociosSuper = new HashSet<>();
 
+    Supermercado mardel = new Supermercado(NOMBRE_SUPERMERCADO, 1, dineroDelDia, dineroMes, repoEmpleados, sociosSuper);
     Admin admin1 = new Admin("Agustin Flores", "43.404.643", "Laboratorio 5", 2.50, ETurno.MANIANA, gestoraGeneral);
     Admin admin2 = new Admin("Dylan Vicchio", "43.404.644", "Laboratorio 6", 2.50, ETurno.TARDE, gestoraGeneral);
     Admin admin3 = new Admin("Juan Cruz Lezcano", "43.404.645", "Laboratorio 7", 2.50, ETurno.NOCHE, gestoraGeneral);
     Repositor repositor1 = new Repositor("Benjamin Burnley", "30.345.670", "Matheu 4500", 100000, ETurno.TARDE);
     Cajero cajero1 = new Cajero("Keith Wallen", "34.469.231", "Perú 250", 100000, ETurno.MANIANA);
+    Socio socio1 = new Socio("Pepe", "30.501.458", "Ricardo Rojas 356", true);
 
     Fecha fecha1 = new Fecha(7, 11, 2026);
     Fecha fecha2 = new Fecha(6, 10, 2026);
     Fecha fecha3 = new Fecha(11, 2026);
     Producto producto1 = new Producto("Cassancrem Light", "Queso blanco untable bajo en grasas.", fecha1, 10, 3500);
     Producto producto2 = new Producto("Dulce de Leche", "Producto lácteo concentrado azucarado.", fecha2, 15, 4000);
+
+    try {
+        repoEmpleados.agregar(admin1);
+        repoEmpleados.agregar(admin2);
+        repoEmpleados.agregar(admin3);
+        repoEmpleados.agregar(repositor1);
+        repoEmpleados.agregar(cajero1);
+    } catch (Exception e) {
+        System.out.println(e.getMessage());
+    } // Instancia Genérica.
 
     try {
         gestoraGeneral.agregarEmpleados(admin1);
@@ -61,7 +77,7 @@ void main() {
                     switch (opcionEmpleados) {
                         case 0: {
                             break;
-                        } // Salir
+                        } // Salir.
                         case 1: {
                             System.out.println("<< Listado de Empleados >>");
                             try {
@@ -115,7 +131,6 @@ void main() {
                             saltarLinea(1);
                             int opcionRol = menuSeleccionarRol(sc);
 
-
                             saltarLinea(1);
                             if (opcionTurno < 1 || opcionTurno > 3) {
                                 System.out.println("[!] Opción inválida. Se asignará el Turno por defecto...");
@@ -132,7 +147,7 @@ void main() {
                             };
 
                             if (admin1.agregarEmpleado(nuevo)) {
-                                System.out.println("[!] El Empleado fue agregado al sistema.");
+                                System.out.println("> El Empleado fue agregado al sistema.");
                             } else {
                                 System.out.println("[!] No se pudo completar la operación...");
                             }
@@ -148,7 +163,7 @@ void main() {
                                 Empleados emp = admin1.buscarEmpleadoPorID(id);
                                 if (emp != null) {
                                     if (admin1.despedirEmpleado(emp)) {
-                                        System.out.println("[!] Empleado despedido correctamente.");
+                                        System.out.println("> Empleado despedido correctamente.");
                                     }
                                     else {
                                         System.out.println("[!] No se pudo completar la operación...");
@@ -163,14 +178,61 @@ void main() {
                         default: {
                             System.out.println("! OPCIÓN INVÁLIDA EN MENÚ EMPLEADOS !");
                             break;
-                        } // Error
+                        } // Error.
                     }
                     if (opcionEmpleados != 0) {
                         limpiarPantalla(sc);
-                    } // Limpiar pantalla
+                    } // Limpiar pantalla.
                 } while (opcionEmpleados != 0);
                 break;
             } // Menu Empleados
+            case 2: {
+                saltarLinea(20);
+                int opcionSuper;
+                do {
+                    opcionSuper = menuSupermercado(sc);
+                    saltarLinea(1);
+                    switch (opcionSuper) {
+                        case 0: {
+                            break;
+                        } // Salir.
+                        case 1: {
+                            System.out.println("<< Calcular Plata del Día >>");
+                            double recaudadoDia = mardel.calcularPlataDia();
+                            System.out.println("> Recaudación total del día registrada.");
+                            System.out.println("$ " + recaudadoDia);
+
+                            break;
+                        } // Calcular recaudacion del dia.
+                        case 2: {
+                            System.out.println("<< Calcular Plata del Mes >>");
+                            double recaudadoMes = mardel.calcularPlataMes();
+                            System.out.println("< Cierre mensual registrado >");
+                            System.out.println("$ " + recaudadoMes);
+
+                            break;
+                        } // Calcular recaudacion del mes.
+                        case 3: {
+                            System.out.println("<< Borrar Productos Vencidos >>");
+                            Fecha hoy = new Fecha(7, 11, 2026);
+                            if (repositor1.sacarVencido(hoy, stockSupermercado)) {
+                                System.out.println("> Se eliminaron los productos vencidos del stock.");
+                            } else {
+                                System.out.println("[!] No hubo productos vencidos para eliminar...");
+                            }
+                            break;
+                        } // Borrar productos vencidos.
+                        default: {
+                            System.out.println("! OPCIÓN INVÁLIDA EN MENÚ SUPERMERCADO !");
+                            break;
+                        } // Error.
+                    }
+                    if (opcionSuper != 0) {
+                        limpiarPantalla(sc);
+                    } // Limpiar pantalla.
+                } while (opcionSuper != 0);
+                break;
+            } // Fin Menu Supermercado
             default: {
                 System.out.println("! INGRESE UNA OPCIÓN VÁLIDA !");
                 break;
@@ -189,7 +251,7 @@ public static int menuPrincipal(Scanner sc) {
     separador(20);
     System.out.println("[0.] SALIR");
     System.out.println("[1.] Menu Empleados.");
-    System.out.println("[2.] (!) Menu Supermercado.");
+    System.out.println("[2.] Menu Supermercado.");
     separador(20);
     System.out.print("- Ingrese una opción: ");
 
@@ -228,6 +290,18 @@ public static int menuSeleccionarRol(Scanner sc) {
 
     return validacionInt(sc);
 }
+public static int menuSupermercado(Scanner sc) {
+    System.out.println("[ MENU SUPERMERCADO ]");
+    separador(20);
+    System.out.println("[0.] Volver al Menú Principal.");
+    System.out.println("[1.] Calcular la plata del día.");
+    System.out.println("[2.] Calcular la plata del mes.");
+    System.out.println("[3.] Borrar productos vencidos (vía Repositor).");
+    separador(20);
+    System.out.print("- Ingrese una opción: ");
+
+    return validacionInt(sc);
+}
 public static void mostrarEmpleados(Set<Empleados> listaEmpleados) {
     for(Empleados e : listaEmpleados) {
         System.out.println(e);
@@ -255,13 +329,17 @@ public static void separador(int num) {
     System.out.println();
 }
 public static int validacionInt(Scanner sc) {
-
     int opcion = -1;
-    try {
-        opcion = sc.nextInt();
-    } catch (InputMismatchException e) {
-        System.out.println("[!] Por favor, ingrese un número válido...");
-        sc.next();
+    boolean entradaValida = false;
+
+    while (!entradaValida) {
+        try {
+            opcion = sc.nextInt();
+            entradaValida = true;
+        } catch (InputMismatchException e) {
+            System.out.print("[!] Por favor, ingrese un número válido: ");
+            sc.next();
+        }
     }
     sc.nextLine();
     return opcion;
