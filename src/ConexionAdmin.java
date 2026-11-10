@@ -44,5 +44,49 @@ public class ConexionAdmin {
         }
     }
 
+    public static void crearTablaCajero()throws CreacionDeTablaException{
+        try {
+
+            Connection conexion = ConexionDB.getConexion();
+            String query = "CREATE TABLE IF NOT EXISTS Cajero ("+
+                    "dni VARCHAR(15) NOT NULL,"+
+                    "nombre VARCHAR(15) NOT NULL,"+
+                    "direccion VARCHAR(15) NOT NULL,"+
+                    "sueldo DOUBLE(15) NOT NULL ,"+
+                    "turno VARCHAR(15) NOT NULL ,"+
+                    "plataRecaudadaDia DOUBLE(15) NOT NULL ,"+
+                    "PRIMARY KEY (dni))";
+            Statement pt = conexion.createStatement();
+            pt.execute(query);
+        } catch (SQLException e) {
+            throw new CreacionDeTablaException("[!] no se pudo crear la tabla producto");
+        }finally {
+            ConexionDB.closeConexion();
+        }
+
+    }
+
+    public static void insertarCajero(Cajero cajero) throws CreacionDeTablaException{
+        try {
+            crearTablaCajero();
+            Connection conexion = ConexionDB.getConexion();
+            String query = "INSERT INTO Cajero values (?, ?, ?, ?, ?, ?)";
+            PreparedStatement pt = conexion.prepareStatement(query);
+            pt.setString(1, cajero.getDni());
+            pt.setString(2, cajero.getNombre());
+            pt.setString(3, cajero.getDireccion());
+            pt.setDouble(4, cajero.getSueldo());
+            pt.setString(5, cajero.getTurno().getTurno_nombre());
+            pt.setDouble(6, cajero.getPlataRecaudadaDia());
+            pt.executeUpdate();
+        } catch (SQLException e) {
+            throw new CreacionDeTablaException("[!] no se pudo crear la tabla producto");
+        }finally{
+            ConexionDB.closeConexion();
+        }
+    }
+
+    /*repositor, socio, admin*/
+
 
 }
