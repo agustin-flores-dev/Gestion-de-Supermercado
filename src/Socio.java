@@ -52,4 +52,15 @@ public final class Socio extends Persona implements Comparable<Socio>{
 
         return super.getDni().compareTo(socioAUX.getDni());
     }
+
+    @Override
+    public String toString() {
+        return "Socio{" +
+                " id= " + id +
+                ", nombre= " + super.getNombre() +
+                ", DNI= " + super.getDni() +
+                ", Dirreccion= " + super.getDireccion() +
+                ", estadoSocio= " + estadoSocio +
+                '}';
+    }
 }
