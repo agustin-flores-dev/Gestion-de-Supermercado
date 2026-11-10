@@ -69,6 +69,19 @@ public final class Repositor extends Empleados implements IGestionarProductos{
     }
 
     @Override
+    public Producto buscarProductoNombre(HashSet<Producto> lista, String nombre) throws ElementoNoEncontradoException, ListaVaciaException {
+        if (lista == null || lista.isEmpty()){
+            throw new ListaVaciaException("[!] No hay productos cargados hasta el momento...");
+        }
+        for (Producto pro : lista){
+            if (pro.getNombre().equalsIgnoreCase(nombre)){
+                return pro;
+            }
+        }
+        throw new ElementoNoEncontradoException("[!] Producto no encontrado...");
+    }
+
+    @Override
     public String toString() {
         return "[ROL]: " +ERol.REPOSITOR.toString() +"\n"
                 +super.toString();

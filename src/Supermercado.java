@@ -8,6 +8,7 @@ public final class Supermercado {
 
     private String nombre;
     private LocalDate hoy;
+    private Fecha fechaHoy;
     private int id;
     private ArrayList<Double> dineroDelDia;
     private HashSet<Producto> productos;
@@ -26,6 +27,7 @@ public final class Supermercado {
         this.socios = socios;
         this.hoy = LocalDate.now();
         this.productos = productos;
+        this.fechaHoy = new Fecha(hoy.getDayOfMonth(), hoy.getMonthValue(), hoy.getYear());
     }
 
     public String getNombre() {
@@ -157,6 +159,84 @@ public final class Supermercado {
         throw new ListaVaciaException("No hay cajero ingresado para realizar la operacion, por favor contacte con el admin");
     }
 
+    public Producto buscarProductoPorID (int idProdu) throws IllegalArgumentException, ListaVaciaException, ElementoNoEncontradoException{
+        Set<Empleados> lista = empleados.obtenerTodos();
+        for (Empleados emp : lista){
+            if (emp instanceof Repositor){
+                return ((Repositor) emp).buscarProducto(productos, idProdu);
+            }
+        }
+        throw new IllegalArgumentException(" no hay ningun repositor cargado acualmente, comuniquese con su admin para resolverlo");
+    }
 
+    public Producto buscarProductoPorNombre (String nombre) throws IllegalArgumentException, ListaVaciaException, ElementoNoEncontradoException{
+        Set<Empleados> lista = empleados.obtenerTodos();
+        for (Empleados emp : lista){
+            if (emp instanceof Repositor){
+                return ((Repositor) emp).buscarProductoNombre(productos, nombre);
+            }
+        }
+        throw new IllegalArgumentException(" no hay ningun repositor cargado acualmente, comuniquese con su admin para resolverlo");
+    }
+
+    public boolean aumetarStockID (int id, int cant) throws ListaVaciaException, ElementoNoEncontradoException, EValorFueraDeRango {
+        Set<Empleados> lista = empleados.obtenerTodos();
+        for (Empleados emp : lista){
+            if (emp instanceof Repositor){
+                return ((Repositor) emp).agregarStock(((Repositor) emp).buscarProducto(productos, id), cant);
+            }
+        }
+        throw new IllegalArgumentException(" no hay ningun repositor cargado acualmente, comuniquese con su admin para resolverlo");
+    }
+
+    public boolean aumetarStockNombre (String nombre, int cant) throws ListaVaciaException, ElementoNoEncontradoException, EValorFueraDeRango {
+        Set<Empleados> lista = empleados.obtenerTodos();
+        for (Empleados emp : lista){
+            if (emp instanceof Repositor){
+                return ((Repositor) emp).agregarStock(((Repositor) emp).buscarProductoNombre(productos, nombre), cant);
+            }
+        }
+        throw new IllegalArgumentException(" no hay ningun repositor cargado acualmente, comuniquese con su admin para resolverlo");
+    }
+
+    public boolean sacarVencido() throws IllegalArgumentException{
+        Set<Empleados> lista = empleados.obtenerTodos();
+        for (Empleados emp : lista){
+            if (emp instanceof Repositor){
+                return ((Repositor) emp).sacarVencido(fechaHoy, productos);
+            }
+        }
+        throw new IllegalArgumentException(" no hay ningun repositor cargado acualmente, comuniquese con su admin para resolverlo");
+    }
+
+    public boolean reducirPrecioProducto (int idProducto, int descuento) throws ListaVaciaException, ElementoNoEncontradoException, EValorFueraDeRango {
+        Set<Empleados> lista = empleados.obtenerTodos();
+        for (Empleados emp : lista){
+            if (emp instanceof Repositor){
+                return ((Repositor) emp).reducirPrecioProducto(((Repositor) emp).buscarProducto(productos, idProducto), descuento);
+            }
+        }
+        throw new IllegalArgumentException(" no hay ningun repositor cargado acualmente, comuniquese con su admin para resolverlo");
+    }
+
+    public boolean aumentarPrecioProducto(int idProducto, int aumento) throws ListaVaciaException, ElementoNoEncontradoException, EValorFueraDeRango {
+        Set<Empleados> lista = empleados.obtenerTodos();
+        for (Empleados emp : lista){
+            if (emp instanceof Repositor){
+                return ((Repositor) emp).reducirPrecioProducto(((Repositor) emp).buscarProducto(productos, idProducto), aumento);
+            }
+        }
+        throw new IllegalArgumentException(" no hay ningun repositor cargado acualmente, comuniquese con su admin para resolverlo");
+    }
+
+    public boolean agregarProducto (Producto pro) throws ElementoVacioException {
+        Set<Empleados> lista = empleados.obtenerTodos();
+        for (Empleados emp : lista){
+            if (emp instanceof Repositor){
+                return ((Repositor) emp).agregarProducto(productos, pro);
+            }
+        }
+        throw new IllegalArgumentException(" no hay ningun repositor cargado acualmente, comuniquese con su admin para resolverlo");
+    }
 
 }
