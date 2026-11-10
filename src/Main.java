@@ -18,8 +18,9 @@ void main() {
     ArrayList<Double> dineroDelDia = new ArrayList<>();
     HashMap<Fecha, Double> dineroMes = new HashMap<>();
     HashSet<Socio> sociosSuper = new HashSet<>();
+    HashSet<Producto> productos = new HashSet<>();
 
-    Supermercado mardel = new Supermercado(NOMBRE_SUPERMERCADO, 1, dineroDelDia, dineroMes, repoEmpleados, sociosSuper);
+    Supermercado mardel = new Supermercado(NOMBRE_SUPERMERCADO, 1, dineroDelDia, dineroMes, repoEmpleados, sociosSuper, productos);
     Admin admin1 = new Admin("Agustin Flores", "43.404.643", "Laboratorio 5", 2.50, ETurno.MANIANA, gestoraGeneral);
     Admin admin2 = new Admin("Dylan Vicchio", "43.404.644", "Laboratorio 6", 2.50, ETurno.TARDE, gestoraGeneral);
     Admin admin3 = new Admin("Juan Cruz Lezcano", "43.404.645", "Laboratorio 7", 2.50, ETurno.NOCHE, gestoraGeneral);
