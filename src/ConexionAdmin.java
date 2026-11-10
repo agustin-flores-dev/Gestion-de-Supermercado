@@ -36,6 +36,7 @@ public class ConexionAdmin {
             //pt.setDate(4, producto.getFechaVencimiento()); falta buscar como hacerlo
             pt.setInt(5, producto.getStock());
             pt.setDouble(6, producto.getPrecioUnitario());
+            pt.executeUpdate();
         }catch (SQLException e){
             throw new CreacionDeTablaException("[!] no se pudo crear la tabla producto");
         }finally{
