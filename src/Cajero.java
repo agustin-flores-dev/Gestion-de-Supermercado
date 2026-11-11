@@ -4,10 +4,12 @@ public final class Cajero extends Empleados implements IGestionarCaja{
 
     private double plataRecaudadaDia;
 
-    public Cajero(String nombre, String dni, String contrasenia, String direccion, double sueldo, ETurno turno) {
-        super(nombre, dni, contrasenia, direccion, sueldo, turno);
+    public Cajero(String dni, String nombre, String contrasenia, String direccion, double sueldo, ETurno turno) {
+        super(dni, nombre,contrasenia, direccion, sueldo, turno);
         this.plataRecaudadaDia = 0;
     }
+
+
 
     public double getPlataRecaudadaDia() {
         return plataRecaudadaDia;

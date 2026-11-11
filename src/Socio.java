@@ -7,7 +7,7 @@ public final class Socio extends Persona implements Comparable<Socio>{
     protected String contrasenia;
     private boolean estadoSocio;
 
-    public Socio(String nombre, String dni, String contrasenia, String direccion, boolean estadoSocio) {
+    public Socio(String dni, String nombre, String contrasenia, String direccion, boolean estadoSocio) {
         super(nombre, dni, direccion);
         this.id = contadorId ++;
         this.contrasenia = contrasenia;

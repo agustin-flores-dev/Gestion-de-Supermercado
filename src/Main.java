@@ -25,8 +25,8 @@ void main() {
     Admin admin2 = new Admin("Dylan Vicchio", "43.404.644", "Laboratorio 6", "123",2.50, ETurno.TARDE, gestoraGeneral);
     Admin admin3 = new Admin("Juan Cruz Lezcano", "43.404.645", "Laboratorio 7", "123",2.50, ETurno.NOCHE, gestoraGeneral);
     Repositor repositor1 = new Repositor("Benjamin Burnley", "30.345.670", "123", "Matheu 4500", 100000, ETurno.TARDE);
-    Cajero cajero1 = new Cajero("Keith Wallen", "34.469.231", "123","Perú 250", 100000, ETurno.MANIANA);
-    Socio socio1 = new Socio("Pepe", "30.501.458", "123", "Ricardo Rojas 356", true);
+    Cajero cajero1 = new Cajero("34.469.231","Keith Wallen", "123","Perú 250", 100000, ETurno.MANIANA);
+    Socio socio1 = new Socio( "30.501.458", "Pepe", "123", "Ricardo Rojas 356", true);
 
     LocalDate hoy = LocalDate.now();
     Fecha fechaActual = new Fecha(hoy.getMonthValue(), hoy.getYear());

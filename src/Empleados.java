@@ -7,8 +7,8 @@ public abstract class Empleados extends Persona{
     private double sueldo;
     private ETurno turno;
 
-    public Empleados(String nombre, String dni, String direccion,String contrasenia, double sueldo, ETurno turno) {
-        super(nombre, dni, direccion);
+    public Empleados(String dni, String nombre, String direccion,String contrasenia, double sueldo, ETurno turno) {
+        super(dni, nombre, direccion);
         if (turno == null) throw new IllegalArgumentException("[!] Turno inválido...");
 
         this.id_empleado = contadorId++;
