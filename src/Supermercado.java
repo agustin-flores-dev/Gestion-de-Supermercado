@@ -7,15 +7,15 @@ import java.util.Set;
 public final class Supermercado {
 
     private String nombre;
-    private LocalDate hoy;
-    private Fecha fechaHoy;
-    private int id;
-    private ArrayList<Double> dineroDelDia;
-    private HashSet<Producto> productos;
-    private HashMap<Fecha, Double> dineroMes;
-    private RepositorioGenerico<Empleados> empleados;
-    private GestoraEmpleados gestoraEmpleados;
-    private HashSet<Socio> socios;
+    private final LocalDate hoy;
+    private final Fecha fechaHoy;
+    private final int id;
+    private final ArrayList<Double> dineroDelDia;
+    private final HashSet<Producto> productos;
+    private final HashMap<Fecha, Double> dineroMes;
+    private final RepositorioGenerico<Empleados> empleados;
+    private final GestoraEmpleados gestoraEmpleados;
+    private final HashSet<Socio> socios;
 
     public Supermercado(String nombre, int id, ArrayList<Double> dineroDelDia, HashMap<Fecha, Double> dineroMes, RepositorioGenerico<Empleados> empleados, HashSet<Socio> socios, HashSet<Producto> productos) {
         this.nombre = nombre;
@@ -79,7 +79,7 @@ public final class Supermercado {
 
     }
 
-    public boolean funcionAdminRemoveEmp (int id, Empleados emp) throws BusquedaFallidaException{
+    public boolean funcionAdminRemoveEmp(int id, Empleados emp) throws BusquedaFallidaException{
 
         Set<Empleados> lista = empleados.obtenerTodos();
         for (Empleados empAUX : lista){
@@ -131,7 +131,7 @@ public final class Supermercado {
 
     }
 
-    public boolean realizarVenta (int id, ArrayList<Producto> prod, ArrayList<Integer> cant) throws BusquedaFallidaException{
+    public boolean realizarVenta(int id, ArrayList<Producto> prod, ArrayList<Integer> cant) throws BusquedaFallidaException{
 
         Set<Empleados> lista = empleados.obtenerTodos();
         for (Empleados empAUX : lista){
@@ -156,27 +156,27 @@ public final class Supermercado {
                 return ((Cajero) emp).chequearPrecio(prod);
             }
         }
-        throw new ListaVaciaException("No hay cajero ingresado para realizar la operacion, por favor contacte con el admin");
+        throw new ListaVaciaException(" [!]No hay cajero ingresado para realizar la operacion, por favor contacte con el admin");
     }
 
-    public Producto buscarProductoPorID (int idProdu) throws IllegalArgumentException, ListaVaciaException, ElementoNoEncontradoException{
+    public Producto buscarProductoPorID(int idProdu) throws IllegalArgumentException, ListaVaciaException, ElementoNoEncontradoException{
         Set<Empleados> lista = empleados.obtenerTodos();
         for (Empleados emp : lista){
             if (emp instanceof Repositor){
                 return ((Repositor) emp).buscarProducto(productos, idProdu);
             }
         }
-        throw new IllegalArgumentException(" no hay ningun repositor cargado acualmente, comuniquese con su admin para resolverlo");
+        throw new IllegalArgumentException(" [!]No hay ningun repositor cargado acualmente, comuniquese con su admin para resolverlo");
     }
 
-    public Producto buscarProductoPorNombre (String nombre) throws IllegalArgumentException, ListaVaciaException, ElementoNoEncontradoException{
+    public Producto buscarProductoPorNombre(String nombre) throws IllegalArgumentException, ListaVaciaException, ElementoNoEncontradoException{
         Set<Empleados> lista = empleados.obtenerTodos();
         for (Empleados emp : lista){
             if (emp instanceof Repositor){
                 return ((Repositor) emp).buscarProductoNombre(productos, nombre);
             }
         }
-        throw new IllegalArgumentException(" no hay ningun repositor cargado acualmente, comuniquese con su admin para resolverlo");
+        throw new IllegalArgumentException(" [!]No hay ningun repositor cargado acualmente, comuniquese con su admin para resolverlo");
     }
 
     public boolean aumetarStockID (int id, int cant) throws ListaVaciaException, ElementoNoEncontradoException, EValorFueraDeRango {
@@ -186,17 +186,17 @@ public final class Supermercado {
                 return ((Repositor) emp).agregarStock(((Repositor) emp).buscarProducto(productos, id), cant);
             }
         }
-        throw new IllegalArgumentException(" no hay ningun repositor cargado acualmente, comuniquese con su admin para resolverlo");
+        throw new IllegalArgumentException(" [!]No hay ningun repositor cargado acualmente, comuniquese con su admin para resolverlo");
     }
 
-    public boolean aumetarStockNombre (String nombre, int cant) throws ListaVaciaException, ElementoNoEncontradoException, EValorFueraDeRango {
+    public boolean aumetarStockNombre(String nombre, int cant) throws ListaVaciaException, ElementoNoEncontradoException, EValorFueraDeRango {
         Set<Empleados> lista = empleados.obtenerTodos();
         for (Empleados emp : lista){
             if (emp instanceof Repositor){
                 return ((Repositor) emp).agregarStock(((Repositor) emp).buscarProductoNombre(productos, nombre), cant);
             }
         }
-        throw new IllegalArgumentException(" no hay ningun repositor cargado acualmente, comuniquese con su admin para resolverlo");
+        throw new IllegalArgumentException(" [!]No hay ningun repositor cargado acualmente, comuniquese con su admin para resolverlo");
     }
 
     public boolean sacarVencido() throws IllegalArgumentException{
@@ -206,17 +206,17 @@ public final class Supermercado {
                 return ((Repositor) emp).sacarVencido(fechaHoy, productos);
             }
         }
-        throw new IllegalArgumentException(" no hay ningun repositor cargado acualmente, comuniquese con su admin para resolverlo");
+        throw new IllegalArgumentException(" [!]No hay ningun repositor cargado acualmente, comuniquese con su admin para resolverlo");
     }
 
-    public boolean reducirPrecioProducto (int idProducto, int descuento) throws ListaVaciaException, ElementoNoEncontradoException, EValorFueraDeRango {
+    public boolean reducirPrecioProducto(int idProducto, int descuento) throws ListaVaciaException, ElementoNoEncontradoException, EValorFueraDeRango {
         Set<Empleados> lista = empleados.obtenerTodos();
         for (Empleados emp : lista){
             if (emp instanceof Repositor){
                 return ((Repositor) emp).reducirPrecioProducto(((Repositor) emp).buscarProducto(productos, idProducto), descuento);
             }
         }
-        throw new IllegalArgumentException(" no hay ningun repositor cargado acualmente, comuniquese con su admin para resolverlo");
+        throw new IllegalArgumentException(" [!]No hay ningun repositor cargado acualmente, comuniquese con su admin para resolverlo");
     }
 
     public boolean aumentarPrecioProducto(int idProducto, int aumento) throws ListaVaciaException, ElementoNoEncontradoException, EValorFueraDeRango {
@@ -226,17 +226,17 @@ public final class Supermercado {
                 return ((Repositor) emp).reducirPrecioProducto(((Repositor) emp).buscarProducto(productos, idProducto), aumento);
             }
         }
-        throw new IllegalArgumentException(" no hay ningun repositor cargado acualmente, comuniquese con su admin para resolverlo");
+        throw new IllegalArgumentException(" [!]No hay ningun repositor cargado acualmente, comuniquese con su admin para resolverlo");
     }
 
-    public boolean agregarProducto (Producto pro) throws ElementoVacioException {
+    public boolean agregarProducto(Producto pro) throws ElementoVacioException {
         Set<Empleados> lista = empleados.obtenerTodos();
         for (Empleados emp : lista){
             if (emp instanceof Repositor){
                 return ((Repositor) emp).agregarProducto(productos, pro);
             }
         }
-        throw new IllegalArgumentException(" no hay ningun repositor cargado acualmente, comuniquese con su admin para resolverlo");
+        throw new IllegalArgumentException(" [!]No hay ningun repositor cargado acualmente, comuniquese con su admin para resolverlo");
     }
 
 }

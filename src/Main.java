@@ -10,7 +10,7 @@ void main() {
 
     // Variables
     Scanner sc = new Scanner(System.in);
-    int opcion;
+    boolean salirApp = false;
 
     HashSet<Producto> stockSupermercado = new HashSet<>();
     RepositorioGenerico<Empleados> repoEmpleados = new RepositorioGenerico<>();
@@ -55,288 +55,285 @@ void main() {
     } // Instancia de Productos
 
     saltarLinea(1);
-    do {
-        opcion = menuPrincipal(sc);
-        saltarLinea(1);
-        switch (opcion) {
-            case 0: {
-                System.out.println("< Cerrando programa... >");
-                break;
-            } // Salir.
-            case 1: {
-                if(validacionUsuario()) {
-                    System.out.println("[!] Sesión ya iniciada...");
+    while (!salirApp) {
+
+        while (usuario == null && !salirApp) {
+            saltarLinea(1);
+            int opcionInicio = menuIncio(sc);
+            saltarLinea(1);
+            switch (opcionInicio) {
+                case 0: {
+                    System.out.println("< Cerrando programa... >");
+                    salirApp = true;
                     break;
-                } // Validacion
+                } // Salir.
+                case 1: {
+                    System.out.println("<< INICIAR SESIÓN >>");
+                    System.out.print("- Ingrese su ID de empleado: ");
+                    try {
+                        int idLogin = validacionInt(sc);
+                        Empleados emp = gestoraGeneral.buscarPorID(idLogin);
+                        System.out.print("- Ingrese su contraseña: ");
+                        String contrasenia = sc.nextLine();
+                        if (emp.getContrasenia().equals(contrasenia)) {
+                            usuario = emp;
+                            saltarLinea(1);
+                            System.out.println("< Sesión iniciada con éxito >");
+                            System.out.println("[¡Bienvenido/a, " + usuario.getNombre() + "!]");
+                            System.out.println("[Rol detectado: " + usuario.getClass().getSimpleName() + "]");
+                        } else {
+                            System.out.println("[!] Contraseña incorrecta...");
+                        }
 
-                System.out.println("<< INICIAR SESIÓN >>");
-                System.out.print("- Ingrese su ID de empleado: ");
-                try {
-                    int idLogin = validacionInt(sc);
-                    Empleados emp = gestoraGeneral.buscarPorID(idLogin);
-                    saltarLinea(1);
-
-                    System.out.print("- Ingrese su contraseña: ");
-                    String contrasenia = sc.nextLine();
-                    if (emp.getContrasenia().equals(contrasenia)) {
-                        usuario = emp;
-                        saltarLinea(1);
-                        
-                        System.out.println("< Sesión iniciada con éxito >");
-                        System.out.println("[¡Bienvenido/a, " + usuario.getNombre() + "!]");
-                        System.out.println("[Rol detectado: " + usuario.getClass().getSimpleName() + "]");
+                    } catch (BusquedaFallidaException e) {
+                        System.out.println("[!] No se encontró ningún empleado con ese ID...");
+                    } catch (InputMismatchException e) {
+                        System.out.println("[!] Entrada inválida...");
                     }
-                    else {
-                        System.out.println("[!] Contraseña incorrecta...");
-                    }
+                    break;
+                } // Iniciar sesión.
+                default: {
+                    System.out.println("! OPCIÓN INVÁLIDA !");
+                    break;
+                } // Error.
+            }
 
-                } catch (BusquedaFallidaException e) {
-                    System.out.println("[!] No se encontró ningún empleado con ese ID...");
+            if(opcionInicio != 0) limpiarPantalla(sc, "< Abriendo aplicación >"); // Limpiar pantalla.
+        } // Inicio de sesión.
+
+        if (salirApp) break; // Salir.
+
+        int opcionPrincipal;
+        do {
+            saltarLinea(1);
+            opcionPrincipal = menuPrincipal(sc);
+            saltarLinea(1);
+            switch (opcionPrincipal) {
+                case 0: {
                     usuario = null;
-                } catch (InputMismatchException e) {
-                    System.out.println("[!] Entrada inválida...");
-                }
-
-                break;
-            } // Iniciar sesion.
-            case 2: {
-                if(!validacionUsuario()) {
-                    System.out.println("[!] Debes iniciar sesión para acceder...");
+                    System.out.println("< Sesión cerrada con éxito >");
                     break;
-                } // Validacion
-
-                saltarLinea(20);
-                int opcionEmpleados;
-                do {
-                    opcionEmpleados = menuEmpleados(sc);
-                    saltarLinea(1);
-                    switch (opcionEmpleados) {
-                        case 0: {
-                            break;
-                        } // Salir.
-                        case 1: {
-                            System.out.println("<< Listado de Empleados >>");
-                            try {
-                                Set<Empleados> lista = gestoraGeneral.obtenerEmpleados();
-                                mostrarEmpleados(lista);
-                            } catch (ListaVaciaException e) {
-                                System.out.println(e.getMessage());
-                            }
-                            break;
-                        } // Mostrar Empleados.
-                        case 2: {
-                            System.out.println("<< Buscar Empleado por ID >>");
-                            System.out.print("- Ingrese el ID a buscar: ");
-                            try {
-                                int id = sc.nextInt();
-                                sc.nextLine();
-                                Empleados emp = admin1.buscarEmpleadoPorID(id);
-
-                                if (emp != null) {
-                                    System.out.println("< Empleado Encontrado >");
-                                    saltarLinea(1);
-                                    System.out.println(emp);
+                } // Cerrar sesión.
+                case 1: {
+                    // Menú Empleados.
+                    saltarLinea(20);
+                    int opcionEmpleados;
+                    do {
+                        opcionEmpleados = menuEmpleados(sc);
+                        saltarLinea(1);
+                        switch (opcionEmpleados) {
+                            case 0: {
+                                break;
+                            } // Salir.
+                            case 1: {
+                                // Mostrar lista Empleados.
+                                System.out.println("<< Listado de Empleados >>");
+                                try {
+                                    Set<Empleados> lista = gestoraGeneral.obtenerEmpleados();
+                                    mostrarEmpleados(lista);
+                                } catch (ListaVaciaException e) {
+                                    System.out.println(e.getMessage());
                                 }
-                            } catch (InputMismatchException e) {
-                                System.out.println("[!] ID no fue encontrado / es inválido...]");
-                                sc.next();
-                            }
-                            break;
-                        } // Buscar Empleado.
-                        case 3: {
-                            if(!validacionRol(Admin.class)) {
-                                System.out.println("[!] ACCESSO DENEGADO: No posees los permisos para realizar esta acción.");
                                 break;
-                            } // Validacion
+                            } // Mostrar lista Empleados.
+                            case 2: {
+                                // Buscar Empleados.
+                                System.out.println("<< Buscar Empleado por ID >>");
+                                System.out.print("- Ingrese el ID a buscar: ");
+                                try {
+                                    int id = sc.nextInt();
+                                    sc.nextLine();
+                                    Empleados emp = admin1.buscarEmpleadoPorID(id);
 
-                            System.out.println("<< Agregar Empleado Nuevo >>");
-                            System.out.print("- Nombre: ");
-                            String nombre = sc.nextLine();
-                            System.out.print("- DNI (Con puntos): ");
-                            String dni = sc.nextLine();
-                            System.out.println("- Contraseña: ");
-                            String contrasenia = sc.nextLine();
-                            System.out.print("- Dirección: ");
-                            String direccion = sc.nextLine();
-                            System.out.print("- Sueldo: ");
-                            double sueldo = validacionDouble(sc);
-                            sc.nextLine();
-
-                            saltarLinea(1);
-                            int opcionTurno = menuSeleccionarTurno(sc);
-                            ETurno turno = switch (opcionTurno) {
-                                case 1 -> ETurno.MANIANA;
-                                case 2 -> ETurno.TARDE;
-                                case 3 -> ETurno.NOCHE;
-                                default -> TURNO_DEFAULT;
-                            };
-
-                            saltarLinea(1);
-                            int opcionRol = menuSeleccionarRol(sc);
-
-                            saltarLinea(1);
-                            if (opcionTurno < 1 || opcionTurno > 3) {
-                                System.out.println("[!] Opción inválida. Se asignará el Turno por defecto...");
-                            }
-                            if (opcionRol < 1 || opcionRol > 3) {
-                                System.out.println("[!] Opción inválida. Se asignará el Rol por defecto...");
-                                opcionRol = ROL_DEFAULT;
-                            }
-
-                            Empleados nuevo = switch (opcionRol) {
-                                case 2 -> new Repositor(nombre, dni, direccion, contrasenia, sueldo, turno);
-                                case 3 -> new Admin(nombre, dni, contrasenia, direccion, sueldo, turno, gestoraGeneral);
-                                default -> new Cajero(nombre, dni, contrasenia, direccion, sueldo, turno);
-                            };
-
-                            if (admin1.agregarEmpleado(nuevo)) {
-                                System.out.println("> El Empleado fue agregado al sistema.");
-                            } else {
-                                System.out.println("[!] No se pudo completar la operación...");
-                            }
-
-                            break;
-                        } // Agregar Empleado nuevo (Admin).
-                        case 4: {
-                            if(!validacionRol(Admin.class)) {
-                                System.out.println("[!] ACCESSO DENEGADO: No posees los permisos para realizar esta acción.");
-                                break;
-                            } // Validacion
-
-                            System.out.println("<< Despedir Empleado >>");
-                            System.out.print("- Ingrese el ID del empleado a despedir: ");
-                            try {
-                                int id = sc.nextInt();
-                                sc.nextLine();
-                                Empleados emp = admin1.buscarEmpleadoPorID(id);
-                                if (emp != null) {
-                                    if (admin1.despedirEmpleado(emp)) {
-                                        System.out.println("> Empleado despedido correctamente.");
+                                    if (emp != null) {
+                                        System.out.println("< Empleado Encontrado >");
+                                        saltarLinea(1);
+                                        System.out.println(emp);
                                     }
-                                    else {
-                                        System.out.println("[!] No se pudo completar la operación...");
-                                    }
+                                } catch (InputMismatchException e) {
+                                    System.out.println("[!] ID no fue encontrado / es inválido...");
+                                    sc.next();
                                 }
-                            } catch (InputMismatchException e) {
-                                System.out.println("[!] El ID no fue encontrado / es inválido...]");
-                                sc.next();
-                            }
-                            break;
-                        } // Despedir Empleado (Admin).
-                        default: {
-                            System.out.println("! OPCIÓN INVÁLIDA EN MENÚ EMPLEADOS !");
-                            break;
-                        } // Error.
-                    }
-                    if (opcionEmpleados != 0) {
-                        limpiarPantalla(sc);
-                    } // Limpiar pantalla.
-                } while (opcionEmpleados != 0);
-                break;
-            } // Menu Empleados.
-            case 3: {
-                if(!validacionUsuario()) {
-                    System.out.println("[!] Debes iniciar sesión para acceder...");
+                                break;
+                            } // Buscar Empleados.
+                            case 3: {
+                                // Agregar Empleado nuevo.
+                                if(!validacionRol(Admin.class)) {
+                                    System.out.println("[!] ACCESO DENEGADO: No posees los permisos para realizar esta acción.");
+                                    break;
+                                } // Validacion
+
+                                System.out.println("<< Agregar Empleado Nuevo >>");
+                                System.out.print("- Nombre: ");
+                                String nombre = sc.nextLine();
+                                System.out.print("- DNI (Con puntos): ");
+                                String dni = sc.nextLine();
+                                System.out.print("- Contraseña: ");
+                                String contrasenia = sc.nextLine();
+                                System.out.print("- Dirección: ");
+                                String direccion = sc.nextLine();
+                                System.out.print("- Sueldo: ");
+                                double sueldo = validacionDouble(sc);
+                                sc.nextLine();
+
+                                int opcionTurno = menuSeleccionarTurno(sc);
+                                ETurno turno = switch (opcionTurno) {
+                                    case 1 -> ETurno.MANIANA;
+                                    case 2 -> ETurno.TARDE;
+                                    case 3 -> ETurno.NOCHE;
+                                    default -> TURNO_DEFAULT;
+                                };
+
+                                int opcionRol = menuSeleccionarRol(sc);
+                                if (opcionRol < 1 || opcionRol > 3) {
+                                    opcionRol = ROL_DEFAULT;
+                                }
+
+                                Empleados nuevo = switch (opcionRol) {
+                                    case 2 -> new Repositor(nombre, dni, direccion, contrasenia, sueldo, turno);
+                                    case 3 -> new Admin(nombre, dni, contrasenia, direccion, sueldo, turno, gestoraGeneral);
+                                    default -> new Cajero(nombre, dni, contrasenia, direccion, sueldo, turno);
+                                };
+
+                                if (admin1.agregarEmpleado(nuevo)) {
+                                    System.out.println("> El Empleado fue agregado al sistema.");
+                                } else {
+                                    System.out.println("[!] No se pudo completar la operación...");
+                                }
+                                break;
+                            } // Agregar Empleado nuevo.
+                            case 4: {
+                                // Despedir Empleado.
+                                if(!validacionRol(Admin.class)) {
+                                    System.out.println("[!] ACCESO DENEGADO: No posees los permisos para realizar esta acción.");
+                                    break;
+                                } // Validacion
+
+                                System.out.println("<< Despedir Empleado >>");
+                                System.out.print("- Ingrese el ID del empleado a despedir: ");
+                                try {
+                                    int id = sc.nextInt();
+                                    sc.nextLine();
+                                    Empleados emp = admin1.buscarEmpleadoPorID(id);
+                                    if (emp != null) {
+                                        if (admin1.despedirEmpleado(emp)) {
+                                            System.out.println("> Empleado despedido correctamente.");
+                                        } else {
+                                            System.out.println("[!] No se pudo completar la operación...");
+                                        }
+                                    }
+                                } catch (InputMismatchException e) {
+                                    System.out.println("[!] El ID no fue encontrado / es inválido...");
+                                    sc.next();
+                                }
+                                break;
+                            } // Despedir Empleado.
+                            default: {
+                                System.out.println("! OPCIÓN INVÁLIDA EN MENÚ EMPLEADOS !");
+                                break;
+                            } // Error.
+                        }
+                        if (opcionEmpleados != 0) {
+                            limpiarPantalla(sc, "< Volviendo al menú principal... >");
+                        } // Limpiar pantalla.
+                    } while (opcionEmpleados != 0); // Ciclo Menú Empleados.
                     break;
-                } // Validacion
-
-                saltarLinea(20);
-                int opcionSuper;
-                do {
-                    opcionSuper = menuSupermercado(sc);
-                    saltarLinea(1);
-                    switch (opcionSuper) {
-                        case 0: {
-                            break;
-                        } // Salir.
-                        case 1: {
-                            if(!validacionRol(Admin.class)) {
-                                System.out.println("[!] ACCESSO DENEGADO: No posees los permisos para realizar esta acción.");
+                } // Menu Empleados.
+                case 2: {
+                    // Menú Supermercado.
+                    saltarLinea(20);
+                    int opcionSuper;
+                    do {
+                        opcionSuper = menuSupermercado(sc);
+                        saltarLinea(1);
+                        switch (opcionSuper) {
+                            case 0: {
                                 break;
-                            } // Validacion
-
-                            System.out.println("<< Calcular Plata del Día >>");
-                            double recaudadoDia = mardel.calcularPlataDia();
-                            System.out.println("> Recaudación total del día registrada.");
-                            System.out.println("$ " + recaudadoDia);
-
-                            break;
-                        } // Calcular recaudacion del dia (Admin).
-                        case 2: {
-                            if(!validacionRol(Admin.class)) {
-                                System.out.println("[!] ACCESSO DENEGADO: No posees los permisos para realizar esta acción.");
+                            } // Salir.
+                            case 1: {
+                                // Calcular plata del día.
+                                if(!validacionRol(Admin.class)) {
+                                    System.out.println("[!] ACCESO DENEGADO: No posees los permisos para realizar esta acción.");
+                                    break;
+                                } // Validacion
+                                System.out.println("<< Calcular Plata del Día >>");
+                                double recaudadoDia = mardel.calcularPlataDia();
+                                System.out.println("> Recaudación total del día registrada: $" + recaudadoDia);
                                 break;
-                            } // Validacion
-
-                            System.out.println("<< Calcular Plata del Mes >>");
-                            double recaudadoMes = mardel.calcularPlataMes();
-                            System.out.println("< Cierre mensual registrado >");
-                            System.out.println("$ " + recaudadoMes);
-
-                            break;
-                        } // Calcular recaudacion del mes (Admin).
-                        case 3: {
-                            if(!validacionRol(Admin.class) && !validacionRol(Repositor.class)) {
-                                System.out.println("[!] ACCESSO DENEGADO: No posees los permisos para realizar esta acción.");
+                            } // Calcular plata del día.
+                            case 2: {
+                                // Calcular plata del mes.
+                                if(!validacionRol(Admin.class)) {
+                                    System.out.println("[!] ACCESO DENEGADO: No posees los permisos para realizar esta acción.");
+                                    break;
+                                } // Validacion.
+                                System.out.println("<< Calcular Plata del Mes >>");
+                                double recaudadoMes = mardel.calcularPlataMes();
+                                System.out.println("< Cierre mensual registrado >: $" + recaudadoMes);
                                 break;
-                            } // Validacion
+                            } // Calcular plata del mes.
+                            case 3: {
+                                // Borrar productos vencidos.
+                                if(!validacionRol(Admin.class) && !validacionRol(Repositor.class)) {
+                                    System.out.println("[!] ACCESO DENEGADO: No posees los permisos para realizar esta acción.");
+                                    break;
+                                } // Validacion
 
-                            System.out.println("<< Borrar Productos Vencidos >>");
-                            if (repositor1.sacarVencido(fechaActual, stockSupermercado)) {
-                                System.out.println("> Se eliminaron los productos vencidos del stock.");
-                            } else {
-                                System.out.println("[!] No hubo productos vencidos para eliminar...");
-                            }
-                            break;
-                        } // Borrar productos vencidos (Repositor).
-                        default: {
-                            System.out.println("! OPCIÓN INVÁLIDA EN MENÚ SUPERMERCADO !");
-                            break;
-                        } // Error.
-                    }
-                    if (opcionSuper != 0) {
-                        limpiarPantalla(sc);
-                    } // Limpiar pantalla.
-                } while (opcionSuper != 0);
-                break;
-            } // Menu Supermercado.
-            case 4: {
-                if(!validacionUsuario()) {
-                    System.out.println("[!] No se pudo cerrar sesión...");
+                                System.out.println("<< Borrar Productos Vencidos >>");
+                                if (repositor1.sacarVencido(fechaActual, stockSupermercado)) {
+                                    System.out.println("> Se eliminaron los productos vencidos del stock.");
+                                } else {
+                                    System.out.println("[!] No hubo productos vencidos para eliminar...");
+                                }
+                                break;
+                            } // Borrar productos vencidos.
+                            default: {
+                                System.out.println("! OPCIÓN INVÁLIDA EN MENÚ SUPERMERCADO !");
+                                break;
+                            } // Error.
+                        }
+                        if (opcionSuper != 0) {
+                            limpiarPantalla(sc, "< Volviendo al menú principal... >");
+                        } // Limpiar pantalla.
+                    } while (opcionSuper != 0); // Ciclo Menú Supermercado.
                     break;
-                } // Validacion
+                } // Menu Supermercado.
+                default: {
+                    System.out.println("! INGRESE UNA OPCIÓN VÁLIDA !");
+                    break;
+                } // Error.
+            }
 
-                usuario = null;
-                System.out.println("< Sesión cerrada con éxito >");
-                break;
-            } // Cerrar sesion.
-            default: {
-                System.out.println("! INGRESE UNA OPCIÓN VÁLIDA !");
-                break;
-            } // Error
-        }
-        if (opcion != 0) {
-            limpiarPantalla(sc);
-        } // Limpiar pantalla
-    } while (opcion != 0); // Ciclo Menu
+            if(opcionPrincipal != 0) {
+                limpiarPantalla(sc, "< Volviendo al Menú Principal >");
+            } else {
+                limpiarPantalla(sc, "< Volviendo al Inicio de sesión >");
+            } // Limpiar pantalla.
+        } while (opcionPrincipal != 0 && usuario != null); // Ciclo Menú principal.
+    }
     sc.close();
 }
 
 // Metodos
-public static int menuPrincipal(Scanner sc) {
-    if (usuario != null) {
-        System.out.println("[ Sesión activa: " +usuario.getNombre() +" (" +usuario.getClass().getSimpleName() +") ]");
-    } else {
-        System.out.println("[ Sesión: Sin usuario activo ]");
-    }
-
+public static int menuIncio(Scanner sc) {
     System.out.printf("[ GESTION SUPERMERCADO %s ]\n", NOMBRE_SUPERMERCADO);
     separador(20);
     System.out.println("[0.] SALIR");
     System.out.println("[1.] Iniciar sesión.");
-    System.out.println("[2.] Menu Empleados.");
-    System.out.println("[3.] Menu Supermercado.");
-    System.out.println("[4.] Cerrar Sesión.");
+    separador(20);
+    System.out.print("- Ingrese una opción: ");
+
+    return validacionInt(sc);
+}
+public static int menuPrincipal(Scanner sc) {
+    if (usuario != null)
+        System.out.println("[ Sesión activa: " +usuario.getNombre() +" (" +usuario.getClass().getSimpleName() +") ]");
+
+    System.out.printf("[ GESTION SUPERMERCADO %s ]\n", NOMBRE_SUPERMERCADO);
+    separador(20);
+    System.out.println("[0.] Cerrar sesión.");
+    System.out.println("[1.] Menu Empleados.");
+    System.out.println("[2.] Menu Supermercado.");
     separador(20);
     System.out.print("- Ingrese una opción: ");
 
@@ -395,9 +392,9 @@ public static void mostrarEmpleados(Set<Empleados> listaEmpleados) {
 }
 
 // Metodos Auxiliares
-public static void limpiarPantalla(Scanner sc) {
+public static void limpiarPantalla(Scanner sc, String mensaje) {
     saltarLinea(1);
-    System.out.println("< Volviendo al menu principal >");
+    System.out.println(mensaje);
     System.out.print("> Presione Enter para continuar...");
     sc.nextLine();
     saltarLinea(15);
