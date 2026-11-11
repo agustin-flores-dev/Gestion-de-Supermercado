@@ -19,6 +19,7 @@ public class ConexionAdmin {
                 "PRIMARY KEY (id))";
         Statement pt = conexion.createStatement();
         pt.execute(query);
+        pt.close();
     }catch (SQLException e){
         throw new CreacionDeTablaException("[!] no se pudo crear la tabla Producto");
     }finally{
@@ -41,12 +42,42 @@ public class ConexionAdmin {
             pt.setInt(7, producto.getStock());
             pt.setDouble(8, producto.getPrecioUnitario());
             pt.executeUpdate();
+            pt.close();
         }catch (SQLException e){
-            throw new CreacionDeTablaException("[!] no se pudo crear la tabla producto");
+            throw new CreacionDeTablaException("[!] no se pudo crear l producto");
         }finally{
             ConexionDB.closeConexion();
         }
     }
+
+
+    public static void actualizarProducto(int id, String nuevoNombre, String nuevaDescripcion,
+            int nuevoDia, int nuevoMes, int nuevoAnio, int nuevoStock, double nuevoPrecioUnitario) throws ActualizacionUpdateException {
+        try {
+            Connection conexion = ConexionDB.getConexion();
+
+            String query = "UPDATE Producto SET nombre = ?, descripcion = ?, " +
+                    "dia = ?, mes = ?, anio = ?, stock = ?, precioUnitario = ? " +
+                    "WHERE id = ?";
+
+            PreparedStatement pt = conexion.prepareStatement(query);
+            pt.setInt(1, id);
+            pt.setString(2, nuevoNombre);
+            pt.setString(3, nuevaDescripcion);
+            pt.setInt(4, nuevoDia);
+            pt.setInt(5, nuevoMes);
+            pt.setInt(6, nuevoAnio);
+            pt.setInt(7, nuevoStock);
+            pt.setDouble(8, nuevoPrecioUnitario);
+            pt.executeUpdate();
+            pt.close();
+        } catch (SQLException e) {
+            throw new ActualizacionUpdateException("[!] Hubo un error al actualizar Producto");
+        } finally {
+            ConexionDB.closeConexion();
+        }
+    }
+
 
     public static void crearTablaCajero()throws CreacionDeTablaException{
         try {
@@ -62,8 +93,9 @@ public class ConexionAdmin {
                     "PRIMARY KEY (dni))";
             Statement pt = conexion.createStatement();
             pt.execute(query);
+            pt.close();
         } catch (SQLException e) {
-            throw new CreacionDeTablaException("[!] Hubo un error a UPDATEAR los datos");
+            throw new CreacionDeTablaException("[!] no se pudo crear la tabla cajero");
         }finally {
             ConexionDB.closeConexion();
         }
@@ -83,9 +115,39 @@ public class ConexionAdmin {
             pt.setString(5, cajero.getTurno().getTurno_nombre());
             pt.setDouble(6, cajero.getPlataRecaudadaDia());
             pt.executeUpdate();
+            pt.close();
         } catch (SQLException e) {
             throw new CreacionDeTablaException("[!] Hubo un error a UPDATEAR los datos");
         }finally{
+            ConexionDB.closeConexion();
+        }
+    }
+
+
+    public static void actualizarCajero(String dni, String nuevoNombre, String nuevaDireccion,
+            double nuevoSueldo, ETurno nuevoTurno, double nuevaPlataRecaudadaDia) throws ActualizacionUpdateException {
+
+        try {
+            Connection conexion = ConexionDB.getConexion();
+
+            String query = "UPDATE Cajero SET nombre = ?, direccion = ?, " +
+                    "sueldo = ?, turno = ?, plataRecaudadaDia = ? " +
+                    "WHERE dni = ?";
+
+            PreparedStatement pt = conexion.prepareStatement(query);
+
+            pt.setString(1, dni);
+            pt.setString(2, nuevoNombre);
+            pt.setString(3, nuevaDireccion);
+            pt.setDouble(4, nuevoSueldo);
+            pt.setString(5, nuevoTurno.getTurno_nombre());
+            pt.setDouble(6, nuevaPlataRecaudadaDia);
+            pt.executeUpdate();
+            pt.close();
+
+        } catch (SQLException e) {
+            throw new ActualizacionUpdateException("[!] no se pudo actualizar cajero");
+        } finally {
             ConexionDB.closeConexion();
         }
     }
@@ -102,6 +164,7 @@ public class ConexionAdmin {
                     "PRIMARY KEY (id))";
             Statement pt = conexion.createStatement();
             pt.execute(query);
+            pt.close();
         }catch(SQLException e){
             throw new CreacionDeTablaException("[!] no se pudo crear la tabla Socio");
         }finally {
@@ -121,6 +184,7 @@ public class ConexionAdmin {
             pt.setString(4, socio.getDireccion());
             pt.setBoolean(5, socio.isEstadoSocio());
             pt.executeUpdate();
+            pt.close();
         }catch (SQLException e){
             throw new CreacionDeTablaException("[!] Hubo un error a UPDATEAR los datos");
         }finally{
@@ -129,6 +193,30 @@ public class ConexionAdmin {
 
     }
 
+
+    public static void actualizarSocio(int id, String nuevoNombre, String nuevoDni, String nuevaDireccion,
+            boolean nuevoEstadoSocio) throws ActualizacionUpdateException{
+
+        try {
+            Connection conexion = ConexionDB.getConexion();
+
+            String query = "UPDATE Socio SET nombre = ?, dni = ?, " +
+                    "direccion = ?, estadoSocio = ? WHERE id = ?";
+
+            PreparedStatement pt = conexion.prepareStatement(query);
+            pt.setInt(1, id);
+            pt.setString(2, nuevoNombre);
+            pt.setString(3, nuevoDni);
+            pt.setString(4, nuevaDireccion);
+            pt.setBoolean(5, nuevoEstadoSocio);
+            pt.executeUpdate();
+            pt.close();
+        } catch (SQLException e) {
+            throw new ActualizacionUpdateException("[!] no se pudo actualizar Socio");
+        } finally {
+            ConexionDB.closeConexion();
+        }
+    }
     public static void crearTablaRepositor() throws CreacionDeTablaException{
         try {
            Connection conexion = ConexionDB.getConexion();
@@ -142,6 +230,7 @@ public class ConexionAdmin {
                    "PRIMARY KEY (dni))";
            Statement pt = conexion.createStatement();
            pt.execute(query);
+           pt.close();
         }catch(SQLException e){
             throw new CreacionDeTablaException("[!] Hubo un error en la creacion de la Tabla Repositor");
         }finally{
@@ -163,9 +252,35 @@ public class ConexionAdmin {
             pt.setDouble(5, repositor.getSueldo());
             pt.setString(6, repositor.getTurno().getTurno_nombre());
             pt.executeUpdate();
+            pt.close();
         }catch (SQLException e){
             throw new CreacionDeTablaException("[!] Hubo un error a UPDATEar los datos");
         }finally {
+            ConexionDB.closeConexion();
+        }
+    }
+
+
+    public static void actualizarRepositor(String dni, String nuevoNombre, String nuevaDireccion, String nuevaContrasenia, double nuevoSueldo,
+            ETurno nuevoTurno) throws ActualizacionUpdateException {
+
+        try {
+            Connection conexion = ConexionDB.getConexion();
+            String query = "UPDATE Repositor SET nombre = ?, direccion = ?, " +
+                    "contrasenia = ?, sueldo = ?, turno = ? WHERE dni = ?";
+
+            PreparedStatement pt = conexion.prepareStatement(query);
+            pt.setString(1, dni);
+            pt.setString(2, nuevoNombre);
+            pt.setString(3, nuevaDireccion);
+            pt.setString(4, nuevaContrasenia);
+            pt.setDouble(5, nuevoSueldo);
+            pt.setString(6, nuevoTurno.getTurno_nombre());
+            pt.executeUpdate();
+            pt.close();
+        } catch (SQLException e) {
+            throw new ActualizacionUpdateException("[!] no se pudo actualizar Repositor");
+        } finally {
             ConexionDB.closeConexion();
         }
     }
@@ -184,6 +299,7 @@ public class ConexionAdmin {
                     "PRIMARY KEY (dni))";
             Statement pt = conexion.createStatement();
             pt.execute(query);
+            pt.close();
         }catch (SQLException e){
             throw new CreacionDeTablaException("[!] Hubo un error al crear la Tabla Admin");
         }finally {
@@ -205,9 +321,35 @@ public class ConexionAdmin {
             pt.setDouble(5, admin.getSueldo());
             pt.setString(6, admin.getTurno().getTurno_nombre());
             pt.executeUpdate();
+            pt.close();
         }catch (SQLException e){
             throw new CreacionDeTablaException("[!] Hubo un error al UPDATEAR los datos");
         }finally {
+            ConexionDB.closeConexion();
+        }
+    }
+
+
+
+    public static void actualizarAdmin(String dni, String nuevoNombre, String nuevaDireccion,
+            String nuevaContrasenia, double nuevoSueldo, ETurno nuevoTurno)throws ActualizacionUpdateException {
+        try {
+            Connection conexion = ConexionDB.getConexion();
+            String query = "UPDATE Admin SET nombre = ?, direccion = ?, " +
+                    "contrasenia = ?, sueldo = ?, turno = ? WHERE dni = ?";
+
+            PreparedStatement pt = conexion.prepareStatement(query);
+            pt.setString(1, dni);
+            pt.setString(2, nuevoNombre);
+            pt.setString(3, nuevaDireccion);
+            pt.setString(4, nuevaContrasenia);
+            pt.setDouble(5, nuevoSueldo);
+            pt.setString(6, nuevoTurno.getTurno_nombre());
+            pt.executeUpdate();
+            pt.close();
+        } catch (SQLException e) {
+            throw new ActualizacionUpdateException("[!] no se pudo administrar Administrador");
+        } finally {
             ConexionDB.closeConexion();
         }
     }
