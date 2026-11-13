@@ -9,7 +9,7 @@ public class ConexionAdmin {
         Connection conexion = ConexionDB.getConexion();
         String query = "CREATE TABLE IF NOT EXISTS Producto ("+
                 "id INT(10) NOT NULL,"+
-                "nombre VARCHAR(15) NOT NULL,"+
+                "nombre VARCHAR(50) NOT NULL,"+
                 "descripcion VARCHAR(100) NOT NULL,"+
                 "dia INT(10) NOT NULL,"+
                 "mes INT(10) NOT NULL,"+
@@ -129,9 +129,9 @@ public class ConexionAdmin {
             String query = "CREATE TABLE IF NOT EXISTS Cajero ("+
                     "id_empleado INT (15)NOT NULL)"+
                     "dni VARCHAR(15) NOT NULL,"+
-                    "nombre VARCHAR(15) NOT NULL,"+
+                    "nombre VARCHAR(50) NOT NULL,"+
                     "contrasenia VARCHAR(15) NOT NULL,"+
-                    "direccion VARCHAR(15) NOT NULL,"+
+                    "direccion VARCHAR(50) NOT NULL,"+
                     "sueldo DOUBLE(15) NOT NULL ,"+
                     "turno VARCHAR(15) NOT NULL ,"+
                     "plataRecaudadaDia DOUBLE(15) NOT NULL ,"+
@@ -243,10 +243,10 @@ public class ConexionAdmin {
             Connection conexion = ConexionDB.getConexion();
             String query = "CREATE TABLE IF NOT EXISTS Socio ("+
                     "id INT(15) NOT NULL,"+
-                    "nombre VARCHAR(15) NOT NULL"+
+                    "nombre VARCHAR(50) NOT NULL"+
                     "dni VARCHAR(15) NOT NULL"+
                     "contrasenia VARCHAR(15) NOT NULL"+
-                    "direccion VARCHAR(15) NOT NULL"+
+                    "direccion VARCHAR(50) NOT NULL"+
                     "estadoSocio BOOLEAN NOT NULL"+
                     "PRIMARY KEY (id))";
             Statement pt = conexion.createStatement();
@@ -350,8 +350,8 @@ public class ConexionAdmin {
            String query ="CREATE TABLE IF NOT EXISTS Repositor ("+
                    "id_empleado INT(15) NOT NULL"+
                    "dni VARCHAR(15) NOT NULL,"+
-                   "nombre VARCHAR(15) NOT NULL,"+
-                   "direccion VARCHAR(15) NOT NULL ,"+
+                   "nombre VARCHAR(50) NOT NULL,"+
+                   "direccion VARCHAR(50) NOT NULL ,"+
                    "contrasenia VARCHAR(15) NOT NULL ,"+
                    "sueldo DOUBLE(15) NOT NULL,"+
                    "turno VARCHAR(15) NOT NULL ,"+
@@ -459,8 +459,8 @@ public class ConexionAdmin {
             String query = "CREATE TABLE IF NOT EXISTS Admin ("+
                     "id_empleado VARCHAR(15) NOT NULL,"+
                     "dni VARCHAR(15) NOT NULL," +
-                    "nombre VARCHAR(15) NOT NULL," +
-                    "direccion VARCHAR(15) NOT NULL ," +
+                    "nombre VARCHAR(50) NOT NULL," +
+                    "direccion VARCHAR(50) NOT NULL ," +
                     "contrasenia VARCHAR(15) NOT NULL ," +
                     "sueldo DOUBLE(15) NOT NULL," +
                     "turno VARCHAR(15) NOT NULL ," +
