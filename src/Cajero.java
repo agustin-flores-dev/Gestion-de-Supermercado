@@ -23,10 +23,13 @@ public final class Cajero extends Empleados implements IGestionarCaja{
     }
 
     @Override
-    public boolean realizarVenta(ArrayList<Producto> producto, ArrayList<Integer> cantidad) throws ListaVaciaException {
+    public boolean realizarVenta(ArrayList<Producto> producto, ArrayList<Integer> cantidad) throws ListaVaciaException, ActualizacionUpdateException {
         if (producto == null || cantidad == null || producto.isEmpty() || cantidad.isEmpty()) {
             throw new ListaVaciaException("[!] La lista de productos está vacía o es inexistente.");
         }
+
+        boolean alerta = false;
+        String nombreP = "";
 
         if (producto.size() != cantidad.size()) {
             throw new IllegalArgumentException("[!] Las listas no contienen la misma cantidad.");
@@ -38,7 +41,8 @@ public final class Cajero extends Empleados implements IGestionarCaja{
             int cantVendida = cantidad.get(i);
 
             if (p.getStock() < cantVendida) {
-                throw new IllegalArgumentException("[!] Stock insuficiente para el producto: " +p.getNombre());
+                alerta = true;
+                nombreP = p.getNombre();
             }
 
             // Actualizamos valorVenta y el stock.
@@ -46,8 +50,16 @@ public final class Cajero extends Empleados implements IGestionarCaja{
             p.setStock(p.getStock() - cantVendida);
         }
 
+        for (int i = 0; i < producto.size(); i++){
+            ConexionAdmin.actualizarProducto(producto.get(i).getId(), producto.get(i).getNombre(), producto.get(i).getDescripcion(), producto.get(i).getFechaVencimiento().getDia(), producto.get(i).getFechaVencimiento().getMes(), producto.get(i).getFechaVencimiento().getAnio(), producto.get(i).getStock(), producto.get(i).getPrecioUnitario());
+        }
+
         if (valorVenta > 0) {
             plataRecaudadaDia += valorVenta;
+            if (alerta){
+                throw new IllegalArgumentException("[!] Stock desactualisado para el producto: " + nombreP +
+                        " llame al repositor para actualisar el stock") ;
+            }
             return true;
         }
 

@@ -142,6 +142,8 @@ public final class Supermercado {
                     System.out.println(e.getMessage());
                 } catch (IllegalArgumentException e){
                     System.out.println(e.getMessage());
+                } catch (ActualizacionUpdateException e){
+                    System.out.println(e.getMessage());
                 }
             }
         }
