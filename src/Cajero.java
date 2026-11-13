@@ -56,6 +56,7 @@ public final class Cajero extends Empleados implements IGestionarCaja{
 
         if (valorVenta > 0) {
             plataRecaudadaDia += valorVenta;
+            ConexionAdmin.actualizarCajero(super.getId_empleado(), super.getDni(), super.getNombre(), super.getContrasenia(), super.getDireccion(), super.getSueldo(), super.getTurno(), this.plataRecaudadaDia);
             if (alerta){
                 throw new IllegalArgumentException("[!] Stock desactualisado para el producto: " + nombreP +
                         " llame al repositor para actualisar el stock") ;

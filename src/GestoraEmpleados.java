@@ -40,14 +40,28 @@ public final class GestoraEmpleados {
 
         if(buscarPorDni(nuevo.getDni()) == null) {
             listaEmpleados.add(nuevo);
+            if (nuevo instanceof Admin){
+                ConexionAdmin.insertarAdmin((Admin) nuevo);
+            } else if(nuevo instanceof Repositor){
+                ConexionAdmin.insertarRepositor((Repositor) nuevo);
+            } else {
+                ConexionAdmin.insertarCajero((Cajero) nuevo);
+            }
             return true;
         }
 
         throw new EEstadoYaIngresado("[!] Empleado ya ingresado previamente...");
     }
 
-    public boolean eliminarEmpleados(int id_buscar) throws ElementoNoEncontradoException, BusquedaFallidaException {
+    public boolean eliminarEmpleados(int id_buscar) throws ElementoNoEncontradoException, BusquedaFallidaException, ActualizacionUpdateException {
         Empleados emp = buscarPorID(id_buscar);
+        if (emp instanceof Admin){
+            ConexionAdmin.actualizarAdmin(emp.getId_empleado(), emp.getDni(), emp.getNombre(), emp.getDireccion(), "", 0.00, null);
+        } else if(emp instanceof Repositor){
+            ConexionAdmin.actualizarRepositor(emp.getId_empleado(), emp.getDni(), emp.getNombre(), emp.getDireccion(), "", 0.00, null);
+        } else {
+            ConexionAdmin.actualizarCajero(emp.getId_empleado(), emp.getDni(), emp.getNombre(), "", emp.getDireccion(), 0.00, null, 0.00);
+        }
         return listaEmpleados.remove(emp);
     }
 
