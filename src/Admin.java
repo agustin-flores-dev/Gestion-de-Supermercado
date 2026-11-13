@@ -20,7 +20,7 @@ public final class Admin extends Empleados{
         return false;
     }
 
-    public boolean despedirEmpleado(Empleados emp){
+    public boolean despedirEmpleado(Empleados emp) {
         try {
             if (emp == null) {
                 throw new ElementoVacioException("[!] Empleado no válido...");
@@ -34,6 +34,8 @@ public final class Admin extends Empleados{
             gestor.eliminarEmpleados(emp.getId_empleado());
             return true;
         } catch (ElementoNoEncontradoException | ElementoVacioException | BusquedaFallidaException e) {
+            System.out.println(e.getMessage());
+        } catch (ActualizacionUpdateException e){
             System.out.println(e.getMessage());
         }
         return false;
