@@ -2,8 +2,8 @@ import java.util.HashSet;
 
 public final class Repositor extends Empleados implements IGestionarProductos{
 
-    public Repositor(String nombre, String dni, String contrasenia, String direccion, double sueldo, ETurno turno) {
-        super(nombre, dni, direccion, contrasenia, sueldo, turno);
+    public Repositor(String dni, String nombre, String direccion, String contrasenia, double sueldo, ETurno turno) {
+        super(dni, nombre, direccion, contrasenia, sueldo, turno);
     }
 
     @Override

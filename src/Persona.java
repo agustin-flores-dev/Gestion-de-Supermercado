@@ -1,17 +1,17 @@
 public abstract class Persona {
+    private final String dni;
     private String nombre;
-    private String dni;
     private String direccion;
 
     public Persona(String dni, String nombre, String direccion) {
-        this.nombre = nombre;
         this.dni = dni;
+        this.nombre = nombre;
         this.direccion = direccion;
     }
 
     public Persona(String dni){
-        this.nombre = "";
         this.dni = dni;
+        this.nombre = "";
         this.direccion = "";
     }
 

@@ -1,6 +1,8 @@
 // TP GRUPAL - GESTION SUPERMERCADO
 // Flores, Agustin; Vicchio, Dylan; Lezcano, Juan Cruz
 
+import static java.lang.Thread.sleep;
+
 public static final String NOMBRE_SUPERMERCADO = "MARDEL";
 public static final ETurno TURNO_DEFAULT = ETurno.MANIANA;
 public static final int ROL_DEFAULT = 1;
@@ -21,12 +23,12 @@ void main() {
     HashSet<Producto> productos = new HashSet<>();
 
     Supermercado mardel = new Supermercado(NOMBRE_SUPERMERCADO, 1, dineroDelDia, dineroMes, repoEmpleados, sociosSuper, productos);
-    Admin admin1 = new Admin("Agustin Flores", "43.404.643", "Laboratorio 5", "123", 2.50, ETurno.MANIANA, gestoraGeneral);
-    Admin admin2 = new Admin("Dylan Vicchio", "43.404.644", "Laboratorio 6", "123",2.50, ETurno.TARDE, gestoraGeneral);
-    Admin admin3 = new Admin("Juan Cruz Lezcano", "43.404.645", "Laboratorio 7", "123",2.50, ETurno.NOCHE, gestoraGeneral);
-    Repositor repositor1 = new Repositor("Benjamin Burnley", "30.345.670", "123", "Matheu 4500", 100000, ETurno.TARDE);
-    Cajero cajero1 = new Cajero("34.469.231","Keith Wallen", "123","Perú 250", 100000, ETurno.MANIANA);
-    Socio socio1 = new Socio( "30.501.458", "Pepe", "123", "Ricardo Rojas 356", true);
+    Admin admin1 = new Admin("43.404.643", "Agustín Flores", "Laboratorio 5", "123", 2.50, ETurno.MANIANA, gestoraGeneral);
+    Admin admin2 = new Admin("43.404.644", "Dylan Vicchio", "Laboratorio 5", "123",2.50, ETurno.TARDE, gestoraGeneral);
+    Admin admin3 = new Admin("43.404.645", "Juan Cruz Lezcano", "Laboratorio 5", "123",2.50, ETurno.NOCHE, gestoraGeneral);
+    Repositor repositor1 = new Repositor("30.589.986", "Benjamin Burnley", "Matheu 4500", "123", 100000, ETurno.TARDE);
+    Cajero cajero1 = new Cajero("34.469.231","Keith Wallen", "Perú 250","123", 100000, ETurno.MANIANA);
+    Socio socio1 = new Socio( "30.501.458", "Aaron Bruch", "Ricardo Rojas 356", "123", true);
 
     LocalDate hoy = LocalDate.now();
     Fecha fechaActual = new Fecha(hoy.getMonthValue(), hoy.getYear());
@@ -63,7 +65,8 @@ void main() {
             saltarLinea(1);
             switch (opcionInicio) {
                 case 0: {
-                    System.out.println("< Cerrando programa... >");
+                    mensajeDeCarga(0, "> Cerrando aplicación", 2, true);
+                    System.out.println("< Aplicación cerrada con éxito >");
                     salirApp = true;
                     break;
                 } // Salir.
@@ -79,26 +82,28 @@ void main() {
                             usuario = emp;
                             saltarLinea(1);
                             System.out.println("< Sesión iniciada con éxito >");
-                            System.out.println("[¡Bienvenido/a, " + usuario.getNombre() + "!]");
-                            System.out.println("[Rol detectado: " + usuario.getClass().getSimpleName() + "]");
+                            System.out.println("[¡Bienvenido/a, " +usuario.getNombre() +"!]");
+                            System.out.println("[Rol detectado: " +usuario.getClass().getSimpleName() +"]");
+
+                            mensajeDeCarga(1, "> Iniciando aplicación", 2, true);
+                            limpiarPantalla(sc, "< Aplicación cargada correctamente >");
                         } else {
-                            System.out.println("[!] Contraseña incorrecta...");
+                            limpiarPantalla(sc, "\n[!] Contraseña / ID incorrectos...");
                         }
 
                     } catch (BusquedaFallidaException e) {
-                        System.out.println("[!] No se encontró ningún empleado con ese ID...");
+                        limpiarPantalla(sc, "\n[!] No se encontró ningún empleado con ese ID...");
                     } catch (InputMismatchException e) {
-                        System.out.println("[!] Entrada inválida...");
+                        limpiarPantalla(sc, "\n[!] Entrada inválida...");
                     }
                     break;
                 } // Iniciar sesión.
                 default: {
-                    System.out.println("! OPCIÓN INVÁLIDA !");
+                    limpiarPantalla(sc, "! OPCIÓN INVÁLIDA !");
                     break;
                 } // Error.
             }
 
-            if(opcionInicio != 0) limpiarPantalla(sc, "< Abriendo aplicación >"); // Limpiar pantalla.
         } // Inicio de sesión.
 
         if (salirApp) break; // Salir.
@@ -107,11 +112,11 @@ void main() {
         do {
             saltarLinea(1);
             opcionPrincipal = menuPrincipal(sc);
-            saltarLinea(1);
             switch (opcionPrincipal) {
                 case 0: {
                     usuario = null;
-                    System.out.println("< Sesión cerrada con éxito >");
+                    mensajeDeCarga(0,"> Cerrando sesión", 3, true);
+                    System.out.println("< Sesión cerrada correctamente >");
                     break;
                 } // Cerrar sesión.
                 case 1: {
@@ -128,6 +133,8 @@ void main() {
                             case 1: {
                                 // Mostrar lista Empleados.
                                 System.out.println("<< Listado de Empleados >>");
+                                mensajeDeCarga(0, "> Consiguendo Empleados", 1, true);
+
                                 try {
                                     Set<Empleados> lista = gestoraGeneral.obtenerEmpleados();
                                     mostrarEmpleados(lista);
@@ -144,6 +151,8 @@ void main() {
                                     int id = sc.nextInt();
                                     sc.nextLine();
                                     Empleados emp = admin1.buscarEmpleadoPorID(id);
+
+                                    mensajeDeCarga(0, "> Buscando Empleado", 1, true);
 
                                     if (emp != null) {
                                         System.out.println("< Empleado Encontrado >");
@@ -164,14 +173,14 @@ void main() {
                                 } // Validacion
 
                                 System.out.println("<< Agregar Empleado Nuevo >>");
-                                System.out.print("- Nombre: ");
-                                String nombre = sc.nextLine();
                                 System.out.print("- DNI (Con puntos): ");
                                 String dni = sc.nextLine();
-                                System.out.print("- Contraseña: ");
-                                String contrasenia = sc.nextLine();
+                                System.out.print("- Nombre: ");
+                                String nombre = sc.nextLine();
                                 System.out.print("- Dirección: ");
                                 String direccion = sc.nextLine();
+                                System.out.print("- Contraseña: ");
+                                String contrasenia = sc.nextLine();
                                 System.out.print("- Sueldo: ");
                                 double sueldo = validacionDouble(sc);
                                 sc.nextLine();
@@ -190,11 +199,12 @@ void main() {
                                 }
 
                                 Empleados nuevo = switch (opcionRol) {
-                                    case 2 -> new Repositor(nombre, dni, direccion, contrasenia, sueldo, turno);
-                                    case 3 -> new Admin(nombre, dni, contrasenia, direccion, sueldo, turno, gestoraGeneral);
-                                    default -> new Cajero(nombre, dni, contrasenia, direccion, sueldo, turno);
+                                    case 2 -> new Repositor(dni, nombre, direccion, contrasenia, sueldo, turno);
+                                    case 3 -> new Admin(dni, nombre, direccion, contrasenia, sueldo, turno, gestoraGeneral);
+                                    default -> new Cajero(dni, nombre, direccion, contrasenia, sueldo, turno);
                                 };
 
+                                mensajeDeCarga(1, "> Agregando Empleado", 1, true);
                                 if (admin1.agregarEmpleado(nuevo)) {
                                     System.out.println("> El Empleado fue agregado al sistema.");
                                 } else {
@@ -215,6 +225,8 @@ void main() {
                                     int id = sc.nextInt();
                                     sc.nextLine();
                                     Empleados emp = admin1.buscarEmpleadoPorID(id);
+
+                                    mensajeDeCarga(1, "> Despidiendo Empleado", 1, true);
                                     if (emp != null) {
                                         if (admin1.despedirEmpleado(emp)) {
                                             System.out.println("> Empleado despedido correctamente.");
@@ -234,7 +246,7 @@ void main() {
                             } // Error.
                         }
                         if (opcionEmpleados != 0) {
-                            limpiarPantalla(sc, "< Volviendo al menú principal... >");
+                            limpiarPantalla(sc, "\n< Volviendo al menú principal... >");
                         } // Limpiar pantalla.
                     } while (opcionEmpleados != 0); // Ciclo Menú Empleados.
                     break;
@@ -256,9 +268,12 @@ void main() {
                                     System.out.println("[!] ACCESO DENEGADO: No posees los permisos para realizar esta acción.");
                                     break;
                                 } // Validacion
+
                                 System.out.println("<< Calcular Plata del Día >>");
                                 double recaudadoDia = mardel.calcularPlataDia();
-                                System.out.println("> Recaudación total del día registrada: $" + recaudadoDia);
+
+                                mensajeDeCarga(1, "> Calculando", 1, true);
+                                System.out.println("> Recaudación total del día registrada: $" +recaudadoDia);
                                 break;
                             } // Calcular plata del día.
                             case 2: {
@@ -269,6 +284,8 @@ void main() {
                                 } // Validacion.
                                 System.out.println("<< Calcular Plata del Mes >>");
                                 double recaudadoMes = mardel.calcularPlataMes();
+
+                                mensajeDeCarga(1, "> Calculando", 1, true);
                                 System.out.println("< Cierre mensual registrado >: $" + recaudadoMes);
                                 break;
                             } // Calcular plata del mes.
@@ -280,6 +297,8 @@ void main() {
                                 } // Validacion
 
                                 System.out.println("<< Borrar Productos Vencidos >>");
+                                mensajeDeCarga(1, "> Buscando", 1, true);
+
                                 if (repositor1.sacarVencido(fechaActual, stockSupermercado)) {
                                     System.out.println("> Se eliminaron los productos vencidos del stock.");
                                 } else {
@@ -293,7 +312,7 @@ void main() {
                             } // Error.
                         }
                         if (opcionSuper != 0) {
-                            limpiarPantalla(sc, "< Volviendo al menú principal... >");
+                            limpiarPantalla(sc, "\n< Volviendo al menú principal... >");
                         } // Limpiar pantalla.
                     } while (opcionSuper != 0); // Ciclo Menú Supermercado.
                     break;
@@ -305,12 +324,12 @@ void main() {
             }
 
             if(opcionPrincipal != 0) {
-                limpiarPantalla(sc, "< Volviendo al Menú Principal >");
+                limpiarPantalla(sc, "\n< Volviendo al Menú Principal >");
             } else {
-                limpiarPantalla(sc, "< Volviendo al Inicio de sesión >");
+                limpiarPantalla(sc, "\n< Volviendo al Inicio de sesión >");
             } // Limpiar pantalla.
         } while (opcionPrincipal != 0 && usuario != null); // Ciclo Menú principal.
-    }
+    } // Ciclo Aplicación.
     sc.close();
 }
 
@@ -393,7 +412,6 @@ public static void mostrarEmpleados(Set<Empleados> listaEmpleados) {
 
 // Metodos Auxiliares
 public static void limpiarPantalla(Scanner sc, String mensaje) {
-    saltarLinea(1);
     System.out.println(mensaje);
     System.out.print("> Presione Enter para continuar...");
     sc.nextLine();
@@ -409,6 +427,24 @@ public static void separador(int num) {
         System.out.print("- ");
     }
     System.out.println();
+}
+public static void mensajeDeCarga(int saltos ,String mensaje, int vueltas, boolean eliminar) {
+    final String[] ESTADOS = {".   ", "..  ", "... ", "    "};
+    final int TIEMPO_ANIMACION = 500;
+
+    saltarLinea(saltos);
+    try {
+        for(int j = 0; j<vueltas; j++) {
+            for (int i = 0; i < 4; i++) {
+                System.out.print("\r" +mensaje +ESTADOS[i]);
+                Thread.sleep(TIEMPO_ANIMACION);
+                System.out.flush();
+            }
+        }
+        if(eliminar) System.out.print("\r");
+    } catch (InterruptedException e) {
+        Thread.currentThread().interrupt();
+    }
 }
 public static int validacionInt(Scanner sc) {
     int opcion = -1;

@@ -5,8 +5,8 @@ public final class Admin extends Empleados{
 
     private GestoraEmpleados gestor;
 
-    public Admin(String nombre, String dni, String direccion, String contrasenia, double sueldo, ETurno turno, GestoraEmpleados gestora) {
-        super(nombre, dni, direccion, contrasenia, sueldo, turno);
+    public Admin(String dni, String nombre, String direccion, String contrasenia, double sueldo, ETurno turno, GestoraEmpleados gestora) {
+        super(dni, nombre, direccion, contrasenia, sueldo, turno);
         this.gestor = gestora;
     }
 

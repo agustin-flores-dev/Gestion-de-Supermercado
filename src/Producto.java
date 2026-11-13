@@ -1,6 +1,6 @@
 public final class Producto {
     private static int contador = 0;
-    private int id;
+    private final int id;
     private String nombre;
     private String descripcion;
     private Fecha fechaVencimiento;
