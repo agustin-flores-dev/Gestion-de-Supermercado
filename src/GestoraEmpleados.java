@@ -4,12 +4,10 @@ import java.util.Set;
 public final class GestoraEmpleados {
     private HashSet<Empleados>listaEmpleados;
 
-    // agregue el que tome el set de uno preexistente para conectarlo con nuestra clase generica
     public GestoraEmpleados(HashSet<Empleados> emp){
         this.listaEmpleados = emp;
     }
 
-    // Metodo auxiliar
     private Empleados buscarPorDni(String dni) {
         for (Empleados e : listaEmpleados) {
             if (e.getDni().equalsIgnoreCase(dni)) {
@@ -39,7 +37,7 @@ public final class GestoraEmpleados {
         }
 
         if(buscarPorDni(nuevo.getDni()) == null) {
-            listaEmpleados.add(nuevo);
+
             if (nuevo instanceof Admin){
                 ConexionAdmin.insertarAdmin((Admin) nuevo);
             } else if(nuevo instanceof Repositor){
@@ -47,6 +45,7 @@ public final class GestoraEmpleados {
             } else {
                 ConexionAdmin.insertarCajero((Cajero) nuevo);
             }
+            listaEmpleados.add(nuevo);
             return true;
         }
 
@@ -55,13 +54,15 @@ public final class GestoraEmpleados {
 
     public boolean eliminarEmpleados(int id_buscar) throws ElementoNoEncontradoException, BusquedaFallidaException, ActualizacionUpdateException {
         Empleados emp = buscarPorID(id_buscar);
+
         if (emp instanceof Admin){
-            ConexionAdmin.actualizarAdmin(emp.getId_empleado(), emp.getDni(), emp.getNombre(), emp.getDireccion(), "", 0.00, null);
+            ConexionAdmin.eliminarAdmin(emp.getId_empleado());
         } else if(emp instanceof Repositor){
-            ConexionAdmin.actualizarRepositor(emp.getId_empleado(), emp.getDni(), emp.getNombre(), emp.getDireccion(), "", 0.00, null);
+            ConexionAdmin.eliminarRepositor(emp.getId_empleado());
         } else {
-            ConexionAdmin.actualizarCajero(emp.getId_empleado(), emp.getDni(), emp.getNombre(), "", emp.getDireccion(), 0.00, null, 0.00);
+            ConexionAdmin.eliminarCajero(emp.getId_empleado());
         }
+
         return listaEmpleados.remove(emp);
     }
 

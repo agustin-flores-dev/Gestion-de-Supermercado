@@ -9,8 +9,6 @@ public final class Cajero extends Empleados implements IGestionarCaja{
         this.plataRecaudadaDia = 0;
     }
 
-
-
     public double getPlataRecaudadaDia() {
         return plataRecaudadaDia;
     }
@@ -25,14 +23,11 @@ public final class Cajero extends Empleados implements IGestionarCaja{
     @Override
     public boolean realizarVenta(ArrayList<Producto> producto, ArrayList<Integer> cantidad) throws ListaVaciaException, ActualizacionUpdateException {
         if (producto == null || cantidad == null || producto.isEmpty() || cantidad.isEmpty()) {
-            throw new ListaVaciaException("[!] La lista de productos está vacía o es inexistente.");
+            throw new ListaVaciaException("[!] La lista de productos está vacía o es inexistente...");
         }
 
-        boolean alerta = false;
-        String nombreP = "";
-
         if (producto.size() != cantidad.size()) {
-            throw new IllegalArgumentException("[!] Las listas no contienen la misma cantidad.");
+            throw new IllegalArgumentException("[!] Las listas no contienen la misma cantidad...");
         }
 
         double valorVenta = 0;
@@ -40,27 +35,28 @@ public final class Cajero extends Empleados implements IGestionarCaja{
             Producto p = producto.get(i);
             int cantVendida = cantidad.get(i);
 
-            if (p.getStock() < cantVendida) {
-                alerta = true;
-                nombreP = p.getNombre();
-            }
-
-            // Actualizamos valorVenta y el stock.
+            // Permitimos que el stock baje incluso si queda en negativo.
             valorVenta += (p.getPrecioUnitario() * cantVendida);
             p.setStock(p.getStock() - cantVendida);
         }
 
         for (int i = 0; i < producto.size(); i++){
-            ConexionAdmin.actualizarProducto(producto.get(i).getId(), producto.get(i).getNombre(), producto.get(i).getDescripcion(), producto.get(i).getFechaVencimiento().getDia(), producto.get(i).getFechaVencimiento().getMes(), producto.get(i).getFechaVencimiento().getAnio(), producto.get(i).getStock(), producto.get(i).getPrecioUnitario());
+            ConexionAdmin.actualizarProducto(
+                    producto.get(i).getId(),
+                    producto.get(i).getNombre(),
+                    producto.get(i).getDescripcion(),
+                    producto.get(i).getFechaVencimiento().getDia(),
+                    producto.get(i).getFechaVencimiento().getMes(),
+                    producto.get(i).getFechaVencimiento().getAnio(),
+                    producto.get(i).getStock(),
+                    producto.get(i).getPrecioUnitario()
+            );
         }
 
         if (valorVenta > 0) {
             plataRecaudadaDia += valorVenta;
             ConexionAdmin.actualizarCajero(super.getId_empleado(), super.getDni(), super.getNombre(), super.getContrasenia(), super.getDireccion(), super.getSueldo(), super.getTurno(), this.plataRecaudadaDia);
-            if (alerta){
-                throw new IllegalArgumentException("[!] Stock desactualisado para el producto: " + nombreP +
-                        " llame al repositor para actualisar el stock") ;
-            }
+
             return true;
         }
 

@@ -1,4 +1,5 @@
 import java.util.HashSet;
+import java.util.Iterator;
 
 public final class Repositor extends Empleados implements IGestionarProductos{
 
@@ -60,16 +61,20 @@ public final class Repositor extends Empleados implements IGestionarProductos{
             return false;
         }
 
-        HashSet<Producto> iterador = lista;
-        for (Producto p : iterador){
-            if (p.getFechaVencimiento().vencido(fechaActual)){
+        boolean eliminar = false;
+        Iterator<Producto> iterator = lista.iterator();
+
+        while (iterator.hasNext()) {
+            Producto p = iterator.next();
+            if (p.getFechaVencimiento().vencido(fechaActual)) {
                 ConexionAdmin.actualizarProducto(p.getId(), p.getNombre(), p.getDescripcion(), p.getFechaVencimiento().getDia(), p.getFechaVencimiento().getMes(), p.getFechaVencimiento().getAnio(), 0, p.getPrecioUnitario());
-                lista.remove(p);
+
+                iterator.remove();
+                eliminar = true;
             }
         }
 
-        return true;
-
+        return eliminar;
     }
 
     @Override

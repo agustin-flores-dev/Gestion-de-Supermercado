@@ -213,8 +213,8 @@ public class ConexionAdmin {
                 c = new Cajero(
                         rs.getString("dni"),
                         rs.getString("nombre"),
-                        rs.getString("contrasenia"),
                         rs.getString("direccion"),
+                        rs.getString("contrasenia"),
                         rs.getDouble("sueldo"),
                         ETurno.valueOf(rs.getString("turno"))
                 );
@@ -232,6 +232,21 @@ public class ConexionAdmin {
         }
 
         return cajeros;
+    }
+
+    public static void eliminarCajero(int id) throws ActualizacionUpdateException {
+        try {
+            Connection conexion = ConexionDB.getConexion();
+            String query = "DELETE FROM Cajero WHERE id_empleado = ?";
+            PreparedStatement pt = conexion.prepareStatement(query);
+            pt.setInt(1, id);
+            pt.executeUpdate();
+            pt.close();
+        } catch (SQLException e) {
+            throw new ActualizacionUpdateException("[!] No se pudo eliminar el Cajero de la base de datos...");
+        } finally {
+            ConexionDB.closeConexion();
+        }
     }
 
 
@@ -321,8 +336,8 @@ public class ConexionAdmin {
                 s = new Socio(
                         rs.getString("dni"),
                         rs.getString("nombre"),
-                        rs.getString("contrasenia"),
                         rs.getString("direccion"),
+                        rs.getString("contrasenia"),
                         rs.getBoolean("estadoSocio")
                 );
 
@@ -450,6 +465,21 @@ public class ConexionAdmin {
         return repositores;
     }
 
+    public static void eliminarRepositor(int id) throws ActualizacionUpdateException {
+        try {
+            Connection conexion = ConexionDB.getConexion();
+            String query = "DELETE FROM Repositor WHERE id_empleado = ?";
+            PreparedStatement pt = conexion.prepareStatement(query);
+            pt.setInt(1, id);
+            pt.executeUpdate();
+            pt.close();
+        } catch (SQLException e) {
+            throw new ActualizacionUpdateException("[!] No se pudo eliminar el Repositor de la base de datos...");
+        } finally {
+            ConexionDB.closeConexion();
+        }
+    }
+
     public static void crearTablaAdmin() throws CreacionDeTablaException {
         try {
             Connection conexion = ConexionDB.getConexion();
@@ -535,8 +565,8 @@ public class ConexionAdmin {
             while (rs.next()) {
 
                 a = new Admin(
-                        rs.getString("nombre"),
                         rs.getString("dni"),
+                        rs.getString("nombre"),
                         rs.getString("direccion"),
                         rs.getString("contrasenia"),
                         rs.getDouble("sueldo"),
@@ -557,5 +587,20 @@ public class ConexionAdmin {
         }
 
         return admins;
+    }
+
+    public static void eliminarAdmin(int id) throws ActualizacionUpdateException {
+        try {
+            Connection conexion = ConexionDB.getConexion();
+            String query = "DELETE FROM Admin WHERE id_empleado = ?";
+            PreparedStatement pt = conexion.prepareStatement(query);
+            pt.setInt(1, id);
+            pt.executeUpdate();
+            pt.close();
+        } catch (SQLException e) {
+            throw new ActualizacionUpdateException("[!] No se pudo eliminar el Administrador de la base de datos...");
+        } finally {
+            ConexionDB.closeConexion();
+        }
     }
 }
