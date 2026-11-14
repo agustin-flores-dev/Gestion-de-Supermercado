@@ -20,9 +20,9 @@ void main() {
     ArrayList<Double> dineroDelDia = new ArrayList<>();
     HashMap<Fecha, Double> dineroMes = new HashMap<>();
     HashSet<Socio> sociosSuper = new HashSet<>();
-    HashSet<Producto> productos = new HashSet<>();
 
-    Supermercado mardel = new Supermercado(NOMBRE_SUPERMERCADO, 1, dineroDelDia, dineroMes, repoEmpleados, sociosSuper, productos);
+    Supermercado mardel = new Supermercado(NOMBRE_SUPERMERCADO, 1, dineroDelDia, dineroMes,
+            repoEmpleados, sociosSuper, stockSupermercado);
     Admin admin1 = new Admin("43.404.643", "Agustín Flores", "Laboratorio 5", "123", 2.50, ETurno.MANIANA, gestoraGeneral);
     Admin admin2 = new Admin("43.404.644", "Dylan Vicchio", "Laboratorio 5", "123",2.50, ETurno.TARDE, gestoraGeneral);
     Admin admin3 = new Admin("43.404.645", "Juan Cruz Lezcano", "Laboratorio 5", "123",2.50, ETurno.NOCHE, gestoraGeneral);
@@ -34,7 +34,6 @@ void main() {
     Fecha fechaActual = new Fecha(hoy.getMonthValue(), hoy.getYear());
     Fecha fecha1 = new Fecha(7, 11, 2026);
     Fecha fecha2 = new Fecha(6, 10, 2026);
-    Fecha fecha3 = new Fecha(11, 2026);
 
     Producto producto1 = new Producto("Cassancrem Light", "Queso blanco untable bajo en grasas.", fecha1, 10, 3500);
     Producto producto2 = new Producto("Dulce de Leche", "Producto lácteo concentrado azucarado.", fecha2, 15, 4000);
@@ -183,7 +182,6 @@ void main() {
                                 String contrasenia = sc.nextLine();
                                 System.out.print("- Sueldo: ");
                                 double sueldo = validacionDouble(sc);
-                                sc.nextLine();
 
                                 int opcionTurno = menuSeleccionarTurno(sc);
                                 ETurno turno = switch (opcionTurno) {
@@ -294,15 +292,19 @@ void main() {
                                 if(!validacionRol(Admin.class) && !validacionRol(Repositor.class)) {
                                     System.out.println("[!] ACCESO DENEGADO: No posees los permisos para realizar esta acción.");
                                     break;
-                                } // Validacion
+                                } // Validación
 
                                 System.out.println("<< Borrar Productos Vencidos >>");
                                 mensajeDeCarga(1, "> Buscando", 1, true);
 
-                                if (repositor1.sacarVencido(fechaActual, stockSupermercado)) {
-                                    System.out.println("> Se eliminaron los productos vencidos del stock.");
-                                } else {
-                                    System.out.println("[!] No hubo productos vencidos para eliminar...");
+                                try {
+                                    if (mardel.sacarVencido()) {
+                                        System.out.println("> Se eliminaron los productos vencidos del stock.");
+                                    } else {
+                                        System.out.println("[!] No hubo productos vencidos para eliminar...");
+                                    }
+                                } catch (IllegalArgumentException | ActualizacionUpdateException e) {
+                                    System.out.println(e.getMessage());
                                 }
                                 break;
                             } // Borrar productos vencidos.

@@ -1,33 +1,32 @@
 import java.sql.*;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 public class ConexionAdmin {
-    public static void crearTablaProducto() throws CreacionDeTablaException{
-    try {
-        Connection conexion = ConexionDB.getConexion();
-        String query = "CREATE TABLE IF NOT EXISTS Producto ("+
-                "id INT(10) NOT NULL,"+
-                "nombre VARCHAR(50) NOT NULL,"+
-                "descripcion VARCHAR(100) NOT NULL,"+
-                "dia INT(10) NOT NULL,"+
-                "mes INT(10) NOT NULL,"+
-                "anio INT(10) NOT NULL,"+
-                "stock INT(10) NOT NULL,"+
-                "precioUnitario DOUBLE(20) NOT NULL"+
-                "PRIMARY KEY (id))";
-        Statement pt = conexion.createStatement();
-        pt.execute(query);
-        pt.close();
-    }catch (SQLException e){
-        throw new CreacionDeTablaException("[!] no se pudo crear la tabla Producto");
-    }finally{
+    public static void crearTablaProducto() throws CreacionDeTablaException {
+        try {
+            Connection conexion = ConexionDB.getConexion();
+            String query = "CREATE TABLE IF NOT EXISTS Producto ("+
+                    "id INT(10) NOT NULL," +
+                    "nombre VARCHAR(50) NOT NULL," +
+                    "descripcion VARCHAR(100) NOT NULL," +
+                    "dia INT(10) NOT NULL," +
+                    "mes INT(10) NOT NULL," +
+                    "anio INT(10) NOT NULL," +
+                    "stock INT(10) NOT NULL," +
+                    "precioUnitario DOUBLE(20) NOT NULL," +
+                    "PRIMARY KEY (id))";
+            Statement pt = conexion.createStatement();
+            pt.execute(query);
+            pt.close();
+        } catch (SQLException e) {
+            throw new CreacionDeTablaException("[!] No se pudo crear la tabla Producto...");
+        } finally {
             ConexionDB.closeConexion();
         }
     }
 
-    public static void insertarProducto(Producto producto){
+    public static void insertarProducto(Producto producto) {
         try {
             crearTablaProducto();
             Connection conexion = ConexionDB.getConexion();
@@ -43,16 +42,16 @@ public class ConexionAdmin {
             pt.setDouble(8, producto.getPrecioUnitario());
             pt.executeUpdate();
             pt.close();
-        }catch (SQLException e){
-            throw new CreacionDeTablaException("[!] no se pudo crear el producto");
-        }finally{
+        } catch (SQLException e) {
+            throw new CreacionDeTablaException("[!] No se pudo crear el producto...");
+        } finally {
             ConexionDB.closeConexion();
         }
     }
 
 
     public static void actualizarProducto(int id, String nuevoNombre, String nuevaDescripcion,
-            int nuevoDia, int nuevoMes, int nuevoAnio, int nuevoStock, double nuevoPrecioUnitario) throws ActualizacionUpdateException {
+                                          int nuevoDia, int nuevoMes, int nuevoAnio, int nuevoStock, double nuevoPrecioUnitario) throws ActualizacionUpdateException {
         try {
             Connection conexion = ConexionDB.getConexion();
 
@@ -61,24 +60,24 @@ public class ConexionAdmin {
                     "WHERE id = ?";
 
             PreparedStatement pt = conexion.prepareStatement(query);
-            pt.setInt(1, id);
-            pt.setString(2, nuevoNombre);
-            pt.setString(3, nuevaDescripcion);
-            pt.setInt(4, nuevoDia);
-            pt.setInt(5, nuevoMes);
-            pt.setInt(6, nuevoAnio);
-            pt.setInt(7, nuevoStock);
-            pt.setDouble(8, nuevoPrecioUnitario);
+            pt.setString(1, nuevoNombre);
+            pt.setString(2, nuevaDescripcion);
+            pt.setInt(3, nuevoDia);
+            pt.setInt(4, nuevoMes);
+            pt.setInt(5, nuevoAnio);
+            pt.setInt(6, nuevoStock);
+            pt.setDouble(7, nuevoPrecioUnitario);
+            pt.setInt(8, id);
             pt.executeUpdate();
             pt.close();
         } catch (SQLException e) {
-            throw new ActualizacionUpdateException("[!] Hubo un error al actualizar Producto");
+            throw new ActualizacionUpdateException("[!] Hubo un error al actualizar Producto...");
         } finally {
             ConexionDB.closeConexion();
         }
     }
 
-    public static Set<Producto> listarProductos() throws ListarException{
+    public static Set<Producto> listarProductos() throws ListarException {
         Set<Producto> productos = new HashSet<>();
 
         try {
@@ -105,7 +104,6 @@ public class ConexionAdmin {
                         rs.getDouble("precioUnitario")
                 );
 
-
                 productos.add(p);
             }
 
@@ -113,7 +111,7 @@ public class ConexionAdmin {
             stmt.close();
 
         } catch (SQLException ex) {
-                throw new ListarException("[!] No se pudo lista los Productos ");
+            throw new ListarException("[!] No se pudo lista los Productos...");
         } finally {
             ConexionDB.closeConexion();
         }
@@ -122,32 +120,31 @@ public class ConexionAdmin {
     }
 
 
-    public static void crearTablaCajero()throws CreacionDeTablaException{
+    public static void crearTablaCajero() throws CreacionDeTablaException {
         try {
 
             Connection conexion = ConexionDB.getConexion();
-            String query = "CREATE TABLE IF NOT EXISTS Cajero ("+
-                    "id_empleado INT (15)NOT NULL)"+
-                    "dni VARCHAR(15) NOT NULL,"+
-                    "nombre VARCHAR(50) NOT NULL,"+
-                    "contrasenia VARCHAR(15) NOT NULL,"+
-                    "direccion VARCHAR(50) NOT NULL,"+
-                    "sueldo DOUBLE(15) NOT NULL ,"+
-                    "turno VARCHAR(15) NOT NULL ,"+
-                    "plataRecaudadaDia DOUBLE(15) NOT NULL ,"+
+            String query = "CREATE TABLE IF NOT EXISTS Cajero (" +
+                    "id_empleado INT (15)NOT NULL," +
+                    "dni VARCHAR(15) NOT NULL," +
+                    "nombre VARCHAR(50) NOT NULL," +
+                    "contrasenia VARCHAR(15) NOT NULL," +
+                    "direccion VARCHAR(50) NOT NULL," +
+                    "sueldo DOUBLE(15) NOT NULL," +
+                    "turno VARCHAR(15) NOT NULL," +
+                    "plataRecaudadaDia DOUBLE(15) NOT NULL," +
                     "PRIMARY KEY (dni))";
             Statement pt = conexion.createStatement();
             pt.execute(query);
             pt.close();
         } catch (SQLException e) {
-            throw new CreacionDeTablaException("[!] no se pudo crear la tabla cajero");
-        }finally {
+            throw new CreacionDeTablaException("[!] No se pudo crear la tabla cajero...");
+        } finally {
             ConexionDB.closeConexion();
         }
-
     }
 
-    public static void insertarCajero(Cajero cajero) throws CreacionDeTablaException{
+    public static void insertarCajero(Cajero cajero) throws CreacionDeTablaException {
         try {
             crearTablaCajero();
             Connection conexion = ConexionDB.getConexion();
@@ -164,43 +161,43 @@ public class ConexionAdmin {
             pt.executeUpdate();
             pt.close();
         } catch (SQLException e) {
-            throw new CreacionDeTablaException("[!] Hubo un error a UPDATEAR los datos");
-        }finally{
-            ConexionDB.closeConexion();
-        }
-    }
-
-
-    public static void actualizarCajero(int id,String nuevoDni, String nuevoNombre,String nuevaContrasenia, String nuevaDireccion,
-            double nuevoSueldo, ETurno nuevoTurno, double nuevaPlataRecaudadaDia) throws ActualizacionUpdateException {
-
-        try {
-            Connection conexion = ConexionDB.getConexion();
-
-            String query = "UPDATE Cajero SET nombre = ?, direccion = ?, " +
-                    "sueldo = ?, turno = ?, plataRecaudadaDia = ? " +
-                    "dni = ?, WHERE id = ?";
-
-            PreparedStatement pt = conexion.prepareStatement(query);
-            pt.setInt(1, id);
-            pt.setString(2, nuevoDni);
-            pt.setString(3, nuevoNombre);
-            pt.setString(4, nuevaContrasenia);
-            pt.setString(5, nuevaDireccion);
-            pt.setDouble(6, nuevoSueldo);
-            pt.setString(7, nuevoTurno.getTurno_nombre());
-            pt.setDouble(8, nuevaPlataRecaudadaDia);
-            pt.executeUpdate();
-            pt.close();
-
-        } catch (SQLException e) {
-            throw new ActualizacionUpdateException("[!] no se pudo actualizar cajero");
+            throw new CreacionDeTablaException("[!] Hubo un error a UPDATEAR los datos...");
         } finally {
             ConexionDB.closeConexion();
         }
     }
 
-    public static Set<Cajero> listarCajeros() throws ListarException{
+
+    public static void actualizarCajero(int id, String nuevoDni, String nuevoNombre, String nuevaContrasenia, String nuevaDireccion,
+                                        double nuevoSueldo, ETurno nuevoTurno, double nuevaPlataRecaudadaDia) throws ActualizacionUpdateException {
+
+        try {
+            Connection conexion = ConexionDB.getConexion();
+
+            String query = "UPDATE Cajero SET dni = ?, nombre = ?, contrasenia = ?, " +
+                    "direccion = ?, sueldo = ?, turno = ?, plataRecaudadaDia = ? " +
+                    "WHERE id_empleado = ?";
+
+            PreparedStatement pt = conexion.prepareStatement(query);
+            pt.setString(1, nuevoDni);
+            pt.setString(2, nuevoNombre);
+            pt.setString(3, nuevaContrasenia);
+            pt.setString(4, nuevaDireccion);
+            pt.setDouble(5, nuevoSueldo);
+            pt.setString(6, nuevoTurno.getTurno_nombre());
+            pt.setDouble(7, nuevaPlataRecaudadaDia);
+            pt.setInt(8, id);
+            pt.executeUpdate();
+            pt.close();
+
+        } catch (SQLException e) {
+            throw new ActualizacionUpdateException("[!] No se pudo actualizar cajero...");
+        } finally {
+            ConexionDB.closeConexion();
+        }
+    }
+
+    public static Set<Cajero> listarCajeros() throws ListarException {
         Set<Cajero> cajeros = new HashSet<>();
 
         try {
@@ -229,7 +226,7 @@ public class ConexionAdmin {
             stmt.close();
 
         } catch (SQLException ex) {
-                throw new ListarException("[!] No se pudo listar los Cajeros");
+            throw new ListarException("[!] No se pudo listar los Cajeros...");
         } finally {
             ConexionDB.closeConexion();
         }
@@ -238,28 +235,28 @@ public class ConexionAdmin {
     }
 
 
-    public static void crearTablaSocio() throws CreacionDeTablaException{
+    public static void crearTablaSocio() throws CreacionDeTablaException {
         try {
             Connection conexion = ConexionDB.getConexion();
             String query = "CREATE TABLE IF NOT EXISTS Socio ("+
-                    "id INT(15) NOT NULL,"+
-                    "nombre VARCHAR(50) NOT NULL"+
-                    "dni VARCHAR(15) NOT NULL"+
-                    "contrasenia VARCHAR(15) NOT NULL"+
-                    "direccion VARCHAR(50) NOT NULL"+
-                    "estadoSocio BOOLEAN NOT NULL"+
+                    "id INT(15) NOT NULL," +
+                    "nombre VARCHAR(50) NOT NULL," +
+                    "dni VARCHAR(15) NOT NULL," +
+                    "contrasenia VARCHAR(15) NOT NULL," +
+                    "direccion VARCHAR(50) NOT NULL," +
+                    "estadoSocio BOOLEAN NOT NULL," +
                     "PRIMARY KEY (id))";
             Statement pt = conexion.createStatement();
             pt.execute(query);
             pt.close();
-        }catch(SQLException e){
-            throw new CreacionDeTablaException("[!] no se pudo crear la tabla Socio");
-        }finally {
+        } catch (SQLException e) {
+            throw new CreacionDeTablaException("[!] No se pudo crear la tabla Socio...");
+        } finally {
             ConexionDB.closeConexion();
         }
     }
 
-    public static void insertarSocio(Socio socio)throws CreacionDeTablaException{
+    public static void insertarSocio(Socio socio) throws CreacionDeTablaException {
         try {
             crearTablaSocio();
             Connection conexion = ConexionDB.getConexion();
@@ -273,9 +270,9 @@ public class ConexionAdmin {
             pt.setBoolean(6, socio.isEstadoSocio());
             pt.executeUpdate();
             pt.close();
-        }catch (SQLException e){
-            throw new CreacionDeTablaException("[!] Hubo un error a UPDATEAR los datos");
-        }finally{
+        } catch (SQLException e) {
+            throw new CreacionDeTablaException("[!] Hubo un error a UPDATEAR los datos...");
+        } finally {
             ConexionDB.closeConexion();
         }
 
@@ -283,32 +280,32 @@ public class ConexionAdmin {
 
 
     public static void actualizarSocio(int id, String nuevoNombre, String nuevoDni, String nuevaContrasenia,
-                                       String nuevaDireccion, boolean nuevoEstadoSocio) throws ActualizacionUpdateException{
+                                       String nuevaDireccion, boolean nuevoEstadoSocio) throws ActualizacionUpdateException {
 
         try {
             Connection conexion = ConexionDB.getConexion();
 
-            String query = "UPDATE Socio SET nombre = ?, dni = ?, contrasenia = ?," +
+            String query = "UPDATE Socio SET nombre = ?, dni = ?, contrasenia = ?, " +
                     "direccion = ?, estadoSocio = ? WHERE id = ?";
 
             PreparedStatement pt = conexion.prepareStatement(query);
-            pt.setInt(1, id);
-            pt.setString(2, nuevoNombre);
-            pt.setString(3, nuevoDni);
-            pt.setString(4, nuevaContrasenia);
-            pt.setString(5, nuevaDireccion);
-            pt.setBoolean(6, nuevoEstadoSocio);
+            pt.setString(1, nuevoNombre);
+            pt.setString(2, nuevoDni);
+            pt.setString(3, nuevaContrasenia);
+            pt.setString(4, nuevaDireccion);
+            pt.setBoolean(5, nuevoEstadoSocio);
+            pt.setInt(6, id);
             pt.executeUpdate();
             pt.close();
         } catch (SQLException e) {
-            throw new ActualizacionUpdateException("[!] no se pudo actualizar Socio");
+            throw new ActualizacionUpdateException("[!] No se pudo actualizar Socio...");
         } finally {
             ConexionDB.closeConexion();
         }
     }
 
 
-    public static Set<Socio> listarSocio() throws ListarException{
+    public static Set<Socio> listarSocio() throws ListarException {
         Set<Socio> socios = new HashSet<>();
 
         try {
@@ -336,7 +333,7 @@ public class ConexionAdmin {
             stmt.close();
 
         } catch (SQLException ex) {
-            throw new ListarException("[!] No se pudo listar los Socios");
+            throw new ListarException("[!] No se pudo listar los Socios...");
         } finally {
             ConexionDB.closeConexion();
         }
@@ -344,30 +341,30 @@ public class ConexionAdmin {
         return socios;
     }
 
-    public static void crearTablaRepositor() throws CreacionDeTablaException{
+    public static void crearTablaRepositor() throws CreacionDeTablaException {
         try {
-           Connection conexion = ConexionDB.getConexion();
-           String query ="CREATE TABLE IF NOT EXISTS Repositor ("+
-                   "id_empleado INT(15) NOT NULL"+
-                   "dni VARCHAR(15) NOT NULL,"+
-                   "nombre VARCHAR(50) NOT NULL,"+
-                   "direccion VARCHAR(50) NOT NULL ,"+
-                   "contrasenia VARCHAR(15) NOT NULL ,"+
-                   "sueldo DOUBLE(15) NOT NULL,"+
-                   "turno VARCHAR(15) NOT NULL ,"+
-                   "PRIMARY KEY (dni))";
-           Statement pt = conexion.createStatement();
-           pt.execute(query);
-           pt.close();
-        }catch(SQLException e){
-            throw new CreacionDeTablaException("[!] Hubo un error en la creacion de la Tabla Repositor");
-        }finally{
+            Connection conexion = ConexionDB.getConexion();
+            String query = "CREATE TABLE IF NOT EXISTS Repositor (" +
+                    "id_empleado INT(15) NOT NULL," +
+                    "dni VARCHAR(15) NOT NULL," +
+                    "nombre VARCHAR(50) NOT NULL," +
+                    "direccion VARCHAR(50) NOT NULL ," +
+                    "contrasenia VARCHAR(15) NOT NULL ," +
+                    "sueldo DOUBLE(15) NOT NULL," +
+                    "turno VARCHAR(15) NOT NULL ," +
+                    "PRIMARY KEY (dni))";
+            Statement pt = conexion.createStatement();
+            pt.execute(query);
+            pt.close();
+        } catch (SQLException e) {
+            throw new CreacionDeTablaException("[!] Hubo un error en la creacion de la Tabla Repositor...");
+        } finally {
             ConexionDB.closeConexion();
         }
 
     }
 
-    public static void insertarRepositor(Repositor repositor) throws CreacionDeTablaException{
+    public static void insertarRepositor(Repositor repositor) throws CreacionDeTablaException {
         try {
             crearTablaRepositor();
             Connection conexion = ConexionDB.getConexion();
@@ -382,34 +379,35 @@ public class ConexionAdmin {
             pt.setString(7, repositor.getTurno().getTurno_nombre());
             pt.executeUpdate();
             pt.close();
-        }catch (SQLException e){
-            throw new CreacionDeTablaException("[!] Hubo un error a UPDATEAR los datos");
-        }finally {
+        } catch (SQLException e) {
+            throw new CreacionDeTablaException("[!] Hubo un error a UPDATEAR los datos...");
+        } finally {
             ConexionDB.closeConexion();
         }
     }
 
 
-    public static void actualizarRepositor(int id,String nuevoDni, String nuevoNombre, String nuevaDireccion, String nuevaContrasenia, double nuevoSueldo,
-            ETurno nuevoTurno) throws ActualizacionUpdateException {
+    public static void actualizarRepositor(int id, String nuevoDni, String nuevoNombre, String nuevaDireccion, String nuevaContrasenia, double nuevoSueldo,
+                                           ETurno nuevoTurno) throws ActualizacionUpdateException {
 
         try {
             Connection conexion = ConexionDB.getConexion();
-            String query = "UPDATE Repositor SET nombre = ?, direccion = ?, " +
-                    "contrasenia = ?, sueldo = ?, turno = ? , dni = ?,WHERE id = ?";
+            String query = "UPDATE Repositor SET dni = ?, nombre = ?, direccion = ?, " +
+                    "contrasenia = ?, sueldo = ?, turno = ? " +
+                    "WHERE id_empleado = ?";
 
             PreparedStatement pt = conexion.prepareStatement(query);
-            pt.setInt(1, id);
-            pt.setString(2, nuevoDni);
-            pt.setString(3, nuevoNombre);
-            pt.setString(4, nuevaDireccion);
-            pt.setString(5, nuevaContrasenia);
-            pt.setDouble(6, nuevoSueldo);
-            pt.setString(7, nuevoTurno.getTurno_nombre());
+            pt.setString(1, nuevoDni);
+            pt.setString(2, nuevoNombre);
+            pt.setString(3, nuevaDireccion);
+            pt.setString(4, nuevaContrasenia);
+            pt.setDouble(5, nuevoSueldo);
+            pt.setString(6, nuevoTurno.getTurno_nombre());
+            pt.setInt(7, id);
             pt.executeUpdate();
             pt.close();
         } catch (SQLException e) {
-            throw new ActualizacionUpdateException("[!] no se pudo actualizar Repositor");
+            throw new ActualizacionUpdateException("[!] No se pudo actualizar Repositor...");
         } finally {
             ConexionDB.closeConexion();
         }
@@ -444,7 +442,7 @@ public class ConexionAdmin {
             stmt.close();
 
         } catch (SQLException ex) {
-            throw new ListarException("[!] No se pudo listar los Repositores");
+            throw new ListarException("[!] No se pudo listar los Repositores...");
         } finally {
             ConexionDB.closeConexion();
         }
@@ -452,12 +450,12 @@ public class ConexionAdmin {
         return repositores;
     }
 
-    public static void crearTablaAdmin() throws CreacionDeTablaException{
+    public static void crearTablaAdmin() throws CreacionDeTablaException {
         try {
             Connection conexion = ConexionDB.getConexion();
 
-            String query = "CREATE TABLE IF NOT EXISTS Admin ("+
-                    "id_empleado VARCHAR(15) NOT NULL,"+
+            String query = "CREATE TABLE IF NOT EXISTS Admin (" +
+                    "id_empleado VARCHAR(15) NOT NULL," +
                     "dni VARCHAR(15) NOT NULL," +
                     "nombre VARCHAR(50) NOT NULL," +
                     "direccion VARCHAR(50) NOT NULL ," +
@@ -468,19 +466,19 @@ public class ConexionAdmin {
             Statement pt = conexion.createStatement();
             pt.execute(query);
             pt.close();
-        }catch (SQLException e){
-            throw new CreacionDeTablaException("[!] Hubo un error al crear la Tabla Admin");
-        }finally {
+        } catch (SQLException e) {
+            throw new CreacionDeTablaException("[!] Hubo un error al crear la Tabla Admin...");
+        } finally {
             ConexionDB.closeConexion();
         }
 
     }
 
-    public static void insertarAdmin(Admin admin) throws CreacionDeTablaException{
+    public static void insertarAdmin(Admin admin) throws CreacionDeTablaException {
         try {
             crearTablaAdmin();
             Connection conexion = ConexionDB.getConexion();
-            String query = "INSERT INTO Repositor Values(?, ?, ?, ?, ?, ?, ?)";
+            String query = "INSERT INTO Admin Values(?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement pt = conexion.prepareStatement(query);
             pt.setInt(1, admin.getId_empleado());
             pt.setString(2, admin.getDni());
@@ -491,34 +489,33 @@ public class ConexionAdmin {
             pt.setString(7, admin.getTurno().getTurno_nombre());
             pt.executeUpdate();
             pt.close();
-        }catch (SQLException e){
-            throw new CreacionDeTablaException("[!] Hubo un error al UPDATEAR los datos");
-        }finally {
+        } catch (SQLException e) {
+            throw new CreacionDeTablaException("[!] Hubo un error al UPDATEAR los datos...");
+        } finally {
             ConexionDB.closeConexion();
         }
     }
 
 
-
-    public static void actualizarAdmin(int id,String nuevoDni, String nuevoNombre, String nuevaDireccion,
-            String nuevaContrasenia, double nuevoSueldo, ETurno nuevoTurno)throws ActualizacionUpdateException {
+    public static void actualizarAdmin(int id, String nuevoDni, String nuevoNombre, String nuevaDireccion,
+                                       String nuevaContrasenia, double nuevoSueldo, ETurno nuevoTurno) throws ActualizacionUpdateException {
         try {
             Connection conexion = ConexionDB.getConexion();
-            String query = "UPDATE Admin SET nombre = ?, direccion = ?, " +
-                    "contrasenia = ?, sueldo = ?, turno = ?,  dni = ?, WHERE id = ?";
+            String query = "UPDATE Admin SET dni = ?, nombre = ?, direccion = ?, " +
+                    "contrasenia = ?, sueldo = ?, turno = ? WHERE id_empleado = ?";
 
             PreparedStatement pt = conexion.prepareStatement(query);
-            pt.setInt(1, id);
-            pt.setString(2, nuevoDni);
-            pt.setString(3, nuevoNombre);
-            pt.setString(4, nuevaDireccion);
-            pt.setString(5, nuevaContrasenia);
-            pt.setDouble(6, nuevoSueldo);
-            pt.setString(7, nuevoTurno.getTurno_nombre());
+            pt.setString(1, nuevoDni);
+            pt.setString(2, nuevoNombre);
+            pt.setString(3, nuevaDireccion);
+            pt.setString(4, nuevaContrasenia);
+            pt.setDouble(5, nuevoSueldo);
+            pt.setString(6, nuevoTurno.getTurno_nombre());
+            pt.setInt(7, id);
             pt.executeUpdate();
             pt.close();
         } catch (SQLException e) {
-            throw new ActualizacionUpdateException("[!] no se pudo actualizar Administrador");
+            throw new ActualizacionUpdateException("[!] No se pudo actualizar Administrador...");
         } finally {
             ConexionDB.closeConexion();
         }
@@ -554,13 +551,11 @@ public class ConexionAdmin {
             stmt.close();
 
         } catch (SQLException ex) {
-            throw new ListarException("[!] No se pudo listar los Admin");
+            throw new ListarException("[!] No se pudo listar los Admin...");
         } finally {
             ConexionDB.closeConexion();
         }
 
         return admins;
     }
-
-
 }
