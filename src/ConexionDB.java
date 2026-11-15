@@ -9,7 +9,8 @@ public class ConexionDB {
     private static final String password ="bdd1";
     public static Connection conexion;
 
-    public static Connection getConexion(){
+    public static Connection getConexion()throws ConexionFallidaException
+    {
         try {
             if(conexion != null) conexion.close();
             conexion = DriverManager.getConnection(url, userName, password);
@@ -19,7 +20,7 @@ public class ConexionDB {
         return conexion;
     }
 
-    public static void closeConexion(){
+    public static void closeConexion()throws ConexionFallidaException{
         try {
             if(conexion != null) conexion.close();
         }catch(SQLException e){

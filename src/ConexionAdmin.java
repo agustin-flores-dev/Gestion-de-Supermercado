@@ -26,7 +26,7 @@ public class ConexionAdmin {
         }
     }
 
-    public static void insertarProducto(Producto producto) {
+    public static void insertarProducto(Producto producto) throws CreacionDeTablaException{
         try {
             crearTablaProducto();
             Connection conexion = ConexionDB.getConexion();
