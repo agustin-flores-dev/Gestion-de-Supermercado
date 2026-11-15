@@ -1,4 +1,5 @@
 import java.sql.*;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -248,6 +249,141 @@ public class ConexionAdmin {
             ConexionDB.closeConexion();
         }
     }
+
+    public static void crearTablaGanancias() throws CreacionDeTablaException{
+        try {
+            Connection conexion = ConexionDB.getConexion();
+            String query = "CREATE TABLE IF NOT EXISTS Ganancias(" +
+                    "id INT NOT NULL AUTO_INCREMENT," +
+                    "gananciasDiarias DOUBLE NOT NULL," +
+                    "gananciasMensuales DOUBLE" +
+                    "dia INT NOT NULL," +
+                    "mes INT NOT NULL," +
+                    "anio, INT NOT NULL," +
+                    "PRIMARY KEY (id))";
+            Statement pt = conexion.createStatement();
+            pt.execute(query);
+            pt.close();
+        } catch (SQLException e){
+            throw new CreacionDeTablaException("[!] No se pudo crear la tabla Ganancias");
+        } finally {
+            ConexionDB.closeConexion();
+        }
+    }
+
+    public static void insertarNuevasGanancias (double ganDia, double ganMens, int dia, int mes, int anio) throws ActualizacionUpdateException{
+        try {
+            Connection con = ConexionDB.getConexion();
+            String query = "INSERT INTO Ganancias VALUES (?, ?, ?, ?, ?)";
+
+            PreparedStatement pr = con.prepareStatement(query);
+            pr.setDouble(1, ganDia);
+            pr.setDouble(2, ganMens);
+            pr.setInt(3, dia);
+            pr.setInt(4, mes);
+            pr.setInt(5, anio);
+            pr.executeUpdate();
+            con.close();
+        } catch (SQLException e){
+            throw new ActualizacionUpdateException("[!] No se pudo actualizar ganancias...");
+        } finally {
+            ConexionDB.closeConexion();
+        }
+    }
+
+    public static void actualisarGananciasDiarias (int dia, int mes, int anio, double nuevasGanDia) throws ActualizacionUpdateException{
+        try {
+            Connection conexion = ConexionDB.getConexion();
+            String query = "UPDATE Ganancias SET gananciasDiarias = ? WHERE dia = ?, mes = ?, anio = ?";
+            PreparedStatement pr = conexion.prepareStatement(query);
+            pr.setDouble(1, nuevasGanDia);
+            pr.setInt(2, dia);
+            pr.setInt(3, mes);
+            pr.setInt(4, anio);
+            pr.executeUpdate();
+            conexion.close();
+        } catch (SQLException e){
+            throw new ActualizacionUpdateException("[!] No se pudo actualizar ganancias...");
+        } finally {
+            ConexionDB.closeConexion();
+        }
+    }
+
+    public static void actualisarGananciasMensuales (int dia, int mes, int anio, double nuevasGanMen) throws ActualizacionUpdateException{
+        try {
+            Connection conexion = ConexionDB.getConexion();
+            String query = "UPDATE Ganancias SET gananciasMensuales = ? WHERE dia = ?, mes = ?, anio = ?";
+            PreparedStatement pr = conexion.prepareStatement(query);
+            pr.setDouble(1, nuevasGanMen);
+            pr.setInt(2, dia);
+            pr.setInt(3, mes);
+            pr.setInt(4, anio);
+            pr.executeUpdate();
+            conexion.close();
+        } catch (SQLException e){
+            throw new ActualizacionUpdateException("[!] No se pudo actualizar ganancias...");
+        } finally {
+            ConexionDB.closeConexion();
+        }
+    }
+
+    public static Set<Double> listarGananciasDiarias () throws ListarException{
+
+        Set<Double> d = new HashSet<Double>();
+
+        try{
+            Connection con = ConexionDB.getConexion();
+            Statement stmt = con.createStatement();
+            String query = "SELECT * FROM Ganancias";
+            ResultSet rs = stmt.executeQuery(query);
+
+            for (rs.next()){
+                d.add(rs.getDouble("gananciasDiarias"));
+            }
+
+            rs.close();
+            stmt.close();
+
+        } catch (SQLException e){
+            throw new ListarException("[!] No se pudo listar las ganacias diarias...");
+        } finally {
+            ConexionDB.closeConexion();
+        }
+
+        return d;
+
+    }
+
+    public static HashMap<Fecha, Double> listarGananciasMensual () throws ListarException{
+
+        HashMap<Fecha, Double> d = new HashMap<>();
+        Fecha f;
+
+        try{
+
+            Connection con = ConexionDB.getConexion();
+            Statement stmt = con.createStatement();
+            String query = "SELECT * FROM Ganancias";
+            ResultSet rs = stmt.executeQuery(query);
+
+            for (rs.next()){
+                f = new Fecha(rs.getInt("dia"), rs.getInt("mes"), rs.getInt("anio"));
+                d.put(f, rs.getDouble("gananciasMensuales"));
+            }
+
+            rs.close();
+            stmt.close();
+
+        } catch (SQLException e){
+            throw new ListarException("[!] No se pudo listar las ganacias Mensuales...");
+        } finally {
+            ConexionDB.closeConexion();
+        }
+
+        return d;
+
+    }
+
 
 
     public static void crearTablaSocio() throws CreacionDeTablaException {
@@ -549,7 +685,7 @@ public class ConexionAdmin {
         }
     }
 
-    public static Set<Admin> listarAdmin() throws ListarException {
+    public static Set<Admin> listarAdmin(GestoraEmpleados gestor) throws ListarException {
         Set<Admin> admins = new HashSet<>();
 
         try {
@@ -569,7 +705,7 @@ public class ConexionAdmin {
                         rs.getString("contrasenia"),
                         rs.getDouble("sueldo"),
                         ETurno.valueOf(rs.getString("turno")),
-                        gestora
+                        gestor
                 );
 
                 admins.add(a);

@@ -15,11 +15,14 @@ void main() {
     HashSet<Producto> stockSupermercado = new HashSet<>();
     RepositorioGenerico<Empleados> repoEmpleados = new RepositorioGenerico<>();
     HashSet<Socio> sociosSuper = new HashSet<>();
+    GestoraEmpleados gestoraGeneral = new GestoraEmpleados(repoEmpleados.obtenerTodos());
+    ArrayList<Double> dineroDelDia = new ArrayList<>();
+    HashMap<Fecha, Double> dineroMes = new HashMap<>();
 
     //////////////////////////////////////////////////////////////////////////////////////////
     //  conexion con la DB
     try {
-        for (Admin ad : ConexionAdmin.listarAdmin()) {
+        for (Admin ad : ConexionAdmin.listarAdmin(gestoraGeneral)) {
             repoEmpleados.agregar(ad);
         }
         for (Repositor repo : ConexionAdmin.listarRepositor()){
@@ -31,6 +34,9 @@ void main() {
 
         sociosSuper.addAll(ConexionAdmin.listarSocio());
         stockSupermercado.addAll(ConexionAdmin.listarProductos());
+        dineroDelDia.addAll(ConexionAdmin.listarGananciasDiarias());
+        dineroMes.putAll(ConexionAdmin.listarGananciasMensual());
+
 
     } catch (ListarException e){
         System.out.println(e.getMessage());
@@ -38,9 +44,13 @@ void main() {
 
     //////////////////////////////////////////////////////////////////////////////////////////
 
-    GestoraEmpleados gestoraGeneral = new GestoraEmpleados(repoEmpleados.obtenerTodos());
-    ArrayList<Double> dineroDelDia = new ArrayList<>();
-    HashMap<Fecha, Double> dineroMes = new HashMap<>();
+    for (Empleados m : repoEmpleados.obtenerTodos()){
+        try {
+            gestoraGeneral.agregarEmpleados(m);
+        } catch ( ElementoVacioException | EEstadoYaIngresado e) {
+            System.out.println(e.getMessage());
+        }
+    }
 
 
     Supermercado mardel = new Supermercado(NOMBRE_SUPERMERCADO, 1, dineroDelDia, dineroMes,
