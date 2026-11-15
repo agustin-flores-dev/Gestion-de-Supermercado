@@ -3,8 +3,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class ConexionDB {
-    private static final  String url = "jdbc:mysql://172.16.1.64:3306/midb";
-    private static final String urlPrueba = "jdbc:mysql://localhost:3306/midb";
+    //private static final  String url = "jdbc:mysql://172.16.1.64:3306/midb";
+    private static final String url = "jdbc:mysql://localhost:3306/midb";
     private static final  String userName ="bdd1";
     private static final String password ="bdd1";
     public static Connection conexion;

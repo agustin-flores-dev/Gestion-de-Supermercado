@@ -40,18 +40,31 @@ public final class Supermercado {
         return id;
     }
 
-    public Double calcularPlataMes() {
-        double plata = 0.0;
-        for (int i = 0; i < dineroDelDia.size(); i++){
-            plata += dineroDelDia.get(i);
-        }
-        int mes = hoy.getMonthValue();
-        int anio = hoy.getYear();
-        Fecha fechaAUX = new Fecha(mes, anio);
 
-        if (dineroMes.containsKey(fechaAUX)) throw new IllegalStateException("[!] El mes ya fue cerrado...");
-        this.dineroMes.put(fechaAUX, plata);
-        dineroDelDia.clear();
+    // Calcular mes por defecto.
+    public Double calcularPlataMes() {
+        return calcularPlataMes(fechaHoy.getMes(), fechaHoy.getAnio());
+    }
+    // Calcular mes específico.
+    public Double calcularPlataMes(int mes, int anio) {
+        if (anio > hoy.getYear() || (anio == hoy.getYear() && mes > hoy.getMonthValue())) {
+            throw new IllegalArgumentException("[!] No se puede calcular la plata de un mes futuro...");
+        }
+
+        Fecha fechaAUX = new Fecha(mes, anio);
+        if (dineroMes.containsKey(fechaAUX)) {
+            return dineroMes.get(fechaAUX);
+        }
+
+        double plata = 0.0;
+        if (mes == hoy.getMonthValue() && anio == hoy.getYear()) {
+            for (Double d : dineroDelDia) {
+                plata += d;
+            }
+        } else {
+            return 0.0;
+        }
+
         return plata;
     }
 
@@ -70,12 +83,13 @@ public final class Supermercado {
     public boolean funcionAdminAddEmp(int id, Empleados emp) throws BusquedaFallidaException{
 
         for (Empleados empAUX : empleados.obtenerTodos()){
-            if (empAUX.getId_empleado() == id && empAUX instanceof Admin){
-                if (((Admin) empAUX).agregarEmpleado(emp)){
-                    return ((Admin) empAUX).agregarEmpleado(emp);
+            if (empAUX.getId_empleado() == id && empAUX instanceof Admin admin){
+                if (admin.agregarEmpleado(emp)){
+                    return admin.agregarEmpleado(emp);
                 }
             }
-        } throw new BusquedaFallidaException("[!] El ID ingresado no pertenece a un empleado autorizado para realiza esta operación...");
+        } throw new BusquedaFallidaException
+                ("[!] El ID ingresado no pertenece a un empleado autorizado para realiza esta operación...");
 
     }
 
@@ -83,12 +97,13 @@ public final class Supermercado {
 
         Set<Empleados> lista = empleados.obtenerTodos();
         for (Empleados empAUX : lista){
-            if (empAUX.getId_empleado() == id && empAUX instanceof Admin){
-                if (((Admin) empAUX).despedirEmpleado(emp)){
-                    return ((Admin) empAUX).despedirEmpleado(emp);
+            if (empAUX.getId_empleado() == id && empAUX instanceof Admin admin){
+                if (admin.despedirEmpleado(emp)){
+                    return admin.agregarEmpleado(emp);
                 }
             }
-        } throw new BusquedaFallidaException("[!] El ID ingresado no pertenece a un empleado autorizado para realiza esta operación...");
+        } throw new BusquedaFallidaException
+                ("[!] El ID ingresado no pertenece a un empleado autorizado para realiza esta operación...");
 
     }
 
@@ -109,7 +124,8 @@ public final class Supermercado {
             }
         }
 
-        throw new BusquedaFallidaException("[!] El ID ingresado no pertenece a un empleado autorizado para realiza esta operación...");
+        throw new BusquedaFallidaException
+                ("[!] El ID ingresado no pertenece a un empleado autorizado para realiza esta operación...");
     }
 
     public String funcionAdminMostrarEmp(int id, int idEmp) throws BusquedaFallidaException{
@@ -127,7 +143,8 @@ public final class Supermercado {
             }
         }
 
-        throw new BusquedaFallidaException("[!] El ID ingresado no pertenece a un empleado autorizado para realiza esta operación...");
+        throw new BusquedaFallidaException
+                ("[!] El ID ingresado no pertenece a un empleado autorizado para realiza esta operación...");
 
     }
 
@@ -138,16 +155,13 @@ public final class Supermercado {
             if (empAUX.getId_empleado() == id && empAUX instanceof Cajero)  {
                 try{
                     return ((Cajero) empAUX).realizarVenta(prod, cant);
-                } catch (ListaVaciaException e) {
-                    System.out.println(e.getMessage());
-                } catch (IllegalArgumentException e){
-                    System.out.println(e.getMessage());
-                } catch (ActualizacionUpdateException e){
+                } catch (ListaVaciaException | IllegalArgumentException | ActualizacionUpdateException e) {
                     System.out.println(e.getMessage());
                 }
             }
         }
-        throw new BusquedaFallidaException("[!] El ID ingresado no pertenece a un empleado autorizado para realiza esta operación...");
+        throw new BusquedaFallidaException
+                ("[!] El ID ingresado no pertenece a un empleado autorizado para realiza esta operación...");
     }
 
     public double chequearPrecios(Producto prod) throws ElementoVacioException, ListaVaciaException{
@@ -158,7 +172,8 @@ public final class Supermercado {
                 return ((Cajero) emp).chequearPrecio(prod);
             }
         }
-        throw new ListaVaciaException(" [!]No hay cajero ingresado para realizar la operacion, por favor contacte con el admin");
+        throw new ListaVaciaException
+                ("[!] El ID ingresado no pertenece a un empleado autorizado para realiza esta operación...");
     }
 
     public Producto buscarProductoPorID(int idProdu) throws IllegalArgumentException, ListaVaciaException, ElementoNoEncontradoException{
@@ -168,7 +183,8 @@ public final class Supermercado {
                 return ((Repositor) emp).buscarProducto(productos, idProdu);
             }
         }
-        throw new IllegalArgumentException(" [!]No hay ningun repositor cargado acualmente, comuniquese con su admin para resolverlo");
+        throw new IllegalArgumentException
+                ("[!] El ID ingresado no pertenece a un empleado autorizado para realiza esta operación...");
     }
 
     public Producto buscarProductoPorNombre(String nombre) throws IllegalArgumentException, ListaVaciaException, ElementoNoEncontradoException{
@@ -178,27 +194,30 @@ public final class Supermercado {
                 return ((Repositor) emp).buscarProductoNombre(productos, nombre);
             }
         }
-        throw new IllegalArgumentException(" [!]No hay ningun repositor cargado acualmente, comuniquese con su admin para resolverlo");
+        throw new IllegalArgumentException
+                ("[!] El ID ingresado no pertenece a un empleado autorizado para realiza esta operación...");
     }
 
-    public boolean aumetarStockID (int id, int cant) throws ListaVaciaException, ElementoNoEncontradoException, EValorFueraDeRango, ActualizacionUpdateException {
+    public boolean aumentarStockID(int id, int cant) throws ListaVaciaException, ElementoNoEncontradoException, EValorFueraDeRango, ActualizacionUpdateException {
         Set<Empleados> lista = empleados.obtenerTodos();
         for (Empleados emp : lista){
             if (emp instanceof Repositor){
                 return ((Repositor) emp).agregarStock(((Repositor) emp).buscarProducto(productos, id), cant);
             }
         }
-        throw new IllegalArgumentException(" [!]No hay ningun repositor cargado acualmente, comuniquese con su admin para resolverlo");
+        throw new IllegalArgumentException
+                ("[!] El ID ingresado no pertenece a un empleado autorizado para realiza esta operación...");
     }
 
-    public boolean aumetarStockNombre(String nombre, int cant) throws ListaVaciaException, ElementoNoEncontradoException, EValorFueraDeRango, ActualizacionUpdateException {
+    public boolean aumentarStockNombre(String nombre, int cant) throws ListaVaciaException, ElementoNoEncontradoException, EValorFueraDeRango, ActualizacionUpdateException {
         Set<Empleados> lista = empleados.obtenerTodos();
         for (Empleados emp : lista){
             if (emp instanceof Repositor){
                 return ((Repositor) emp).agregarStock(((Repositor) emp).buscarProductoNombre(productos, nombre), cant);
             }
         }
-        throw new IllegalArgumentException(" [!]No hay ningun repositor cargado acualmente, comuniquese con su admin para resolverlo");
+        throw new IllegalArgumentException
+                ("[!] El ID ingresado no pertenece a un empleado autorizado para realiza esta operación...");
     }
 
     public boolean sacarVencido() throws IllegalArgumentException, ActualizacionUpdateException{
@@ -208,7 +227,8 @@ public final class Supermercado {
                 return ((Repositor) emp).sacarVencido(fechaHoy, productos);
             }
         }
-        throw new IllegalArgumentException(" [!]No hay ningun repositor cargado acualmente, comuniquese con su admin para resolverlo");
+        throw new IllegalArgumentException
+                ("[!] El ID ingresado no pertenece a un empleado autorizado para realiza esta operación...");
     }
 
     public boolean reducirPrecioProducto(int idProducto, int descuento) throws ListaVaciaException, ElementoNoEncontradoException, EValorFueraDeRango, ActualizacionUpdateException {
@@ -218,7 +238,8 @@ public final class Supermercado {
                 return ((Repositor) emp).reducirPrecioProducto(((Repositor) emp).buscarProducto(productos, idProducto), descuento);
             }
         }
-        throw new IllegalArgumentException(" [!]No hay ningun repositor cargado acualmente, comuniquese con su admin para resolverlo");
+        throw new IllegalArgumentException
+                ("[!] El ID ingresado no pertenece a un empleado autorizado para realiza esta operación...");
     }
 
     public boolean aumentarPrecioProducto(int idProducto, int aumento) throws ListaVaciaException, ElementoNoEncontradoException, EValorFueraDeRango, ActualizacionUpdateException {
@@ -228,7 +249,8 @@ public final class Supermercado {
                 return ((Repositor) emp).aumentarPrecioProducto(((Repositor) emp).buscarProducto(productos, idProducto), aumento);
             }
         }
-        throw new IllegalArgumentException(" [!]No hay ningun repositor cargado acualmente, comuniquese con su admin para resolverlo");
+        throw new IllegalArgumentException
+                ("[!] El ID ingresado no pertenece a un empleado autorizado para realiza esta operación...");
     }
 
     public boolean agregarProducto(Producto pro) throws ElementoVacioException {
@@ -238,7 +260,7 @@ public final class Supermercado {
                 return ((Repositor) emp).agregarProducto(productos, pro);
             }
         }
-        throw new IllegalArgumentException(" [!]No hay ningun repositor cargado acualmente, comuniquese con su admin para resolverlo");
+        throw new IllegalArgumentException
+                ("[!] El ID ingresado no pertenece a un empleado autorizado para realiza esta operación...");
     }
-
 }

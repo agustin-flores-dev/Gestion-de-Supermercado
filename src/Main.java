@@ -56,6 +56,7 @@ void main() {
     } // Instancia de Productos
 
     saltarLinea(1);
+
     while (!salirApp) {
 
         while (usuario == null && !salirApp) {
@@ -131,6 +132,11 @@ void main() {
                             } // Salir.
                             case 1: {
                                 // Mostrar lista Empleados.
+                                if(!validacionRol(Admin.class)) {
+                                    System.out.println("[!] ACCESO DENEGADO: No posees los permisos para realizar esta acción.");
+                                    break;
+                                } // Validacion
+
                                 System.out.println("<< Listado de Empleados >>");
                                 mensajeDeCarga(0, "> Consiguendo Empleados", 1, true);
 
@@ -144,12 +150,18 @@ void main() {
                             } // Mostrar lista Empleados.
                             case 2: {
                                 // Buscar Empleados.
+                                if(!validacionRol(Admin.class)) {
+                                    System.out.println("[!] ACCESO DENEGADO: No posees los permisos para realizar esta acción.");
+                                    break;
+                                } // Validacion
+                                Admin admin = (Admin) usuario;
+
                                 System.out.println("<< Buscar Empleado por ID >>");
                                 System.out.print("- Ingrese el ID a buscar: ");
                                 try {
                                     int id = sc.nextInt();
                                     sc.nextLine();
-                                    Empleados emp = admin1.buscarEmpleadoPorID(id);
+                                    Empleados emp = admin.buscarEmpleadoPorID(id);
 
                                     mensajeDeCarga(0, "> Buscando Empleado", 1, true);
 
@@ -160,7 +172,6 @@ void main() {
                                     }
                                 } catch (InputMismatchException e) {
                                     System.out.println("[!] ID no fue encontrado / es inválido...");
-                                    sc.next();
                                 }
                                 break;
                             } // Buscar Empleados.
@@ -170,6 +181,7 @@ void main() {
                                     System.out.println("[!] ACCESO DENEGADO: No posees los permisos para realizar esta acción.");
                                     break;
                                 } // Validacion
+                                Admin admin = (Admin) usuario;
 
                                 System.out.println("<< Agregar Empleado Nuevo >>");
                                 System.out.print("- DNI (Con puntos): ");
@@ -203,7 +215,7 @@ void main() {
                                 };
 
                                 mensajeDeCarga(1, "> Agregando Empleado", 1, true);
-                                if (admin1.agregarEmpleado(nuevo)) {
+                                if (admin.agregarEmpleado(nuevo)) {
                                     System.out.println("> El Empleado fue agregado al sistema.");
                                 } else {
                                     System.out.println("[!] No se pudo completar la operación...");
@@ -216,17 +228,18 @@ void main() {
                                     System.out.println("[!] ACCESO DENEGADO: No posees los permisos para realizar esta acción.");
                                     break;
                                 } // Validacion
+                                Admin admin = (Admin) usuario;
 
                                 System.out.println("<< Despedir Empleado >>");
                                 System.out.print("- Ingrese el ID del empleado a despedir: ");
                                 try {
                                     int id = sc.nextInt();
                                     sc.nextLine();
-                                    Empleados emp = admin1.buscarEmpleadoPorID(id);
+                                    Empleados emp = admin.buscarEmpleadoPorID(id);
 
                                     mensajeDeCarga(1, "> Despidiendo Empleado", 1, true);
                                     if (emp != null) {
-                                        if (admin1.despedirEmpleado(emp)) {
+                                        if (admin.despedirEmpleado(emp)) {
                                             System.out.println("> Empleado despedido correctamente.");
                                         } else {
                                             System.out.println("[!] No se pudo completar la operación...");
@@ -234,7 +247,6 @@ void main() {
                                     }
                                 } catch (InputMismatchException e) {
                                     System.out.println("[!] El ID no fue encontrado / es inválido...");
-                                    sc.next();
                                 }
                                 break;
                             } // Despedir Empleado.
@@ -364,8 +376,8 @@ public static int menuEmpleados(Scanner sc) {
     System.out.println("[ MENU EMPLEADOS ]");
     separador(20);
     System.out.println("[0.] Volver al Menú Principal.");
-    System.out.println("[1.] Mostrar lista de Empleados.");
-    System.out.println("[2.] Buscar Empleado por ID.");
+    System.out.println("[1.] Mostrar lista de Empleados. [Admin]");
+    System.out.println("[2.] Buscar Empleado por ID. [Admin]");
     System.out.println("[3.] Agregar Empleado nuevo [Admin].");
     System.out.println("[4.] Despedir Empleado [Admin].");
     separador(20);

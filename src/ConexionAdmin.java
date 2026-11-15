@@ -14,7 +14,7 @@ public class ConexionAdmin {
                     "mes INT(10) NOT NULL," +
                     "anio INT(10) NOT NULL," +
                     "stock INT(10) NOT NULL," +
-                    "precioUnitario DOUBLE(20) NOT NULL," +
+                    "precioUnitario DOUBLE NOT NULL," +
                     "PRIMARY KEY (id))";
             Statement pt = conexion.createStatement();
             pt.execute(query);
@@ -30,7 +30,7 @@ public class ConexionAdmin {
         try {
             crearTablaProducto();
             Connection conexion = ConexionDB.getConexion();
-            String query = "INSERT INTO Producto values (?, ?, ?, ?, ?, ?, ?, ?)";
+            String query = "REPLACE INTO Producto values (?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement pt = conexion.prepareStatement(query);
             pt.setInt(1, producto.getId());
             pt.setString(2, producto.getNombre());
@@ -130,9 +130,9 @@ public class ConexionAdmin {
                     "nombre VARCHAR(50) NOT NULL," +
                     "contrasenia VARCHAR(15) NOT NULL," +
                     "direccion VARCHAR(50) NOT NULL," +
-                    "sueldo DOUBLE(15) NOT NULL," +
+                    "sueldo DOUBLE NOT NULL," +
                     "turno VARCHAR(15) NOT NULL," +
-                    "plataRecaudadaDia DOUBLE(15) NOT NULL," +
+                    "plataRecaudadaDia DOUBLE NOT NULL," +
                     "PRIMARY KEY (dni))";
             Statement pt = conexion.createStatement();
             pt.execute(query);
@@ -148,7 +148,7 @@ public class ConexionAdmin {
         try {
             crearTablaCajero();
             Connection conexion = ConexionDB.getConexion();
-            String query = "INSERT INTO Cajero values (?,?,?, ?, ?, ?, ?, ?)";
+            String query = "REPLACE INTO Cajero values (?,?,?, ?, ?, ?, ?, ?)";
             PreparedStatement pt = conexion.prepareStatement(query);
             pt.setInt(1, cajero.getId_empleado());
             pt.setString(2, cajero.getDni());
@@ -254,7 +254,7 @@ public class ConexionAdmin {
         try {
             Connection conexion = ConexionDB.getConexion();
             String query = "CREATE TABLE IF NOT EXISTS Socio ("+
-                    "id INT(15) NOT NULL," +
+                    "id INT(15) NOT NULL AUTO_INCREMENT," +
                     "nombre VARCHAR(50) NOT NULL," +
                     "dni VARCHAR(15) NOT NULL," +
                     "contrasenia VARCHAR(15) NOT NULL," +
@@ -275,22 +275,20 @@ public class ConexionAdmin {
         try {
             crearTablaSocio();
             Connection conexion = ConexionDB.getConexion();
-            String query = "INSERT INTO Socio VALUES (?, ?, ?, ?, ?, ?)";
+            String query = "INSERT INTO Socio VALUES (?, ?, ?, ?, ?) ";
             PreparedStatement pt = conexion.prepareStatement(query);
-            pt.setInt(1, socio.getId());
-            pt.setString(2, socio.getNombre());
-            pt.setString(3, socio.getDni());
-            pt.setString(4, socio.contrasenia);
-            pt.setString(5, socio.getDireccion());
-            pt.setBoolean(6, socio.isEstadoSocio());
+            pt.setString(1, socio.getNombre());
+            pt.setString(2, socio.getDni());
+            pt.setString(3, socio.contrasenia);
+            pt.setString(4, socio.getDireccion());
+            pt.setBoolean(5, socio.isEstadoSocio());
             pt.executeUpdate();
             pt.close();
         } catch (SQLException e) {
-            throw new CreacionDeTablaException("[!] Hubo un error a UPDATEAR los datos...");
+            throw new CreacionDeTablaException("[!] Hubo un error al insertar el socio: " + e.getMessage());
         } finally {
             ConexionDB.closeConexion();
         }
-
     }
 
 
@@ -334,13 +332,13 @@ public class ConexionAdmin {
             while (rs.next()) {
 
                 s = new Socio(
+                        rs.getInt("id"),
                         rs.getString("dni"),
                         rs.getString("nombre"),
                         rs.getString("direccion"),
                         rs.getString("contrasenia"),
                         rs.getBoolean("estadoSocio")
                 );
-
                 socios.add(s);
             }
 
@@ -365,7 +363,7 @@ public class ConexionAdmin {
                     "nombre VARCHAR(50) NOT NULL," +
                     "direccion VARCHAR(50) NOT NULL ," +
                     "contrasenia VARCHAR(15) NOT NULL ," +
-                    "sueldo DOUBLE(15) NOT NULL," +
+                    "sueldo DOUBLE NOT NULL," +
                     "turno VARCHAR(15) NOT NULL ," +
                     "PRIMARY KEY (dni))";
             Statement pt = conexion.createStatement();
@@ -383,7 +381,7 @@ public class ConexionAdmin {
         try {
             crearTablaRepositor();
             Connection conexion = ConexionDB.getConexion();
-            String query = "INSERT INTO Repositor Values(?, ?, ?, ?, ?, ?, ?)";
+            String query = "REPLACE INTO Repositor Values(?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement pt = conexion.prepareStatement(query);
             pt.setInt(1, repositor.getId_empleado());
             pt.setString(2, repositor.getDni());
@@ -485,12 +483,12 @@ public class ConexionAdmin {
             Connection conexion = ConexionDB.getConexion();
 
             String query = "CREATE TABLE IF NOT EXISTS Admin (" +
-                    "id_empleado VARCHAR(15) NOT NULL," +
+                    "id_empleado INT(15) NOT NULL," +
                     "dni VARCHAR(15) NOT NULL," +
                     "nombre VARCHAR(50) NOT NULL," +
                     "direccion VARCHAR(50) NOT NULL ," +
                     "contrasenia VARCHAR(15) NOT NULL ," +
-                    "sueldo DOUBLE(15) NOT NULL," +
+                    "sueldo DOUBLE NOT NULL," +
                     "turno VARCHAR(15) NOT NULL ," +
                     "PRIMARY KEY (dni))";
             Statement pt = conexion.createStatement();
@@ -508,7 +506,7 @@ public class ConexionAdmin {
         try {
             crearTablaAdmin();
             Connection conexion = ConexionDB.getConexion();
-            String query = "INSERT INTO Admin Values(?, ?, ?, ?, ?, ?, ?)";
+            String query = "REPLACE INTO Admin Values(?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement pt = conexion.prepareStatement(query);
             pt.setInt(1, admin.getId_empleado());
             pt.setString(2, admin.getDni());
