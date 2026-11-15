@@ -1,8 +1,6 @@
 // TP GRUPAL - GESTION SUPERMERCADO
 // Flores, Agustin; Vicchio, Dylan; Lezcano, Juan Cruz
 
-import static java.lang.Thread.sleep;
-
 public static final String NOMBRE_SUPERMERCADO = "MARDEL";
 public static final ETurno TURNO_DEFAULT = ETurno.MANIANA;
 public static final int ROL_DEFAULT = 1;
@@ -23,11 +21,16 @@ void main() {
 
     Supermercado mardel = new Supermercado(NOMBRE_SUPERMERCADO, 1, dineroDelDia, dineroMes,
             repoEmpleados, sociosSuper, stockSupermercado);
-    Admin admin1 = new Admin("43.404.643", "Agustín Flores", "Laboratorio 5", "123", 2.50, ETurno.MANIANA, gestoraGeneral);
-    Admin admin2 = new Admin("43.404.644", "Dylan Vicchio", "Laboratorio 5", "123",2.50, ETurno.TARDE, gestoraGeneral);
-    Admin admin3 = new Admin("43.404.645", "Juan Cruz Lezcano", "Laboratorio 5", "123",2.50, ETurno.NOCHE, gestoraGeneral);
-    Repositor repositor1 = new Repositor("30.589.986", "Benjamin Burnley", "Matheu 4500", "123", 100000, ETurno.TARDE);
-    Cajero cajero1 = new Cajero("34.469.231","Keith Wallen", "Perú 250","123", 100000, ETurno.MANIANA);
+    Admin admin1 = new Admin("43.404.643", "Agustín Flores", "Laboratorio 5", "123",
+            2.50, ETurno.MANIANA, gestoraGeneral);
+    Admin admin2 = new Admin("43.404.644", "Dylan Vicchio", "Laboratorio 5", "123",
+            2.50, ETurno.TARDE, gestoraGeneral);
+    Admin admin3 = new Admin("43.404.645", "Juan Cruz Lezcano", "Laboratorio 5", "123",
+            2.50, ETurno.NOCHE, gestoraGeneral);
+    Repositor repositor1 = new Repositor("30.589.986", "Benjamin Burnley", "Matheu 4500", "123",
+            100000, ETurno.TARDE);
+    Cajero cajero1 = new Cajero("34.469.231","Keith Wallen", "Perú 250","123",
+            100000, ETurno.MANIANA);
     Socio socio1 = new Socio( "30.501.458", "Aaron Bruch", "Ricardo Rojas 356", "123", true);
 
     LocalDate hoy = LocalDate.now();
@@ -35,8 +38,10 @@ void main() {
     Fecha fecha1 = new Fecha(7, 11, 2026);
     Fecha fecha2 = new Fecha(6, 10, 2026);
 
-    Producto producto1 = new Producto("Cassancrem Light", "Queso blanco untable bajo en grasas.", fecha1, 10, 3500);
-    Producto producto2 = new Producto("Dulce de Leche", "Producto lácteo concentrado azucarado.", fecha2, 15, 4000);
+    Producto producto1 = new Producto("Cassancrem Light", "Queso blanco untable bajo en grasas.",
+            fecha1, 10, 3500);
+    Producto producto2 = new Producto("Dulce de Leche", "Producto lácteo concentrado azucarado.",
+            fecha2, 15, 4000);
 
     try {
         gestoraGeneral.agregarEmpleados(admin1);
@@ -56,8 +61,7 @@ void main() {
     } // Instancia de Productos
 
     saltarLinea(1);
-
-    while (!salirApp) {
+    while (!salirApp) { // Ciclo Aplicación.
 
         while (usuario == null && !salirApp) {
             saltarLinea(1);
@@ -172,6 +176,7 @@ void main() {
                                     }
                                 } catch (InputMismatchException e) {
                                     System.out.println("[!] ID no fue encontrado / es inválido...");
+                                    sc.next();
                                 }
                                 break;
                             } // Buscar Empleados.
@@ -247,11 +252,12 @@ void main() {
                                     }
                                 } catch (InputMismatchException e) {
                                     System.out.println("[!] El ID no fue encontrado / es inválido...");
+                                    sc.next();
                                 }
                                 break;
                             } // Despedir Empleado.
                             default: {
-                                System.out.println("! OPCIÓN INVÁLIDA EN MENÚ EMPLEADOS !");
+                                System.out.println("! OPCIÓN INVÁLIDA !");
                                 break;
                             } // Error.
                         }
@@ -321,7 +327,7 @@ void main() {
                                 break;
                             } // Borrar productos vencidos.
                             default: {
-                                System.out.println("! OPCIÓN INVÁLIDA EN MENÚ SUPERMERCADO !");
+                                System.out.println("! OPCIÓN INVÁLIDA !");
                                 break;
                             } // Error.
                         }
@@ -331,6 +337,72 @@ void main() {
                     } while (opcionSuper != 0); // Ciclo Menú Supermercado.
                     break;
                 } // Menu Supermercado.
+                case 3: {
+                    // Menú Productos y Stock.
+                    int opcionProd;
+                    do {
+                        opcionProd = menuProductos(sc);
+                        switch (opcionProd) {
+                            case 0: {
+                                break;
+                            } // Salir.
+                            case 1: { // Buscar Producto.
+                                if(!validacionRol(Admin.class) || !validacionRol(Repositor.class) || !validacionRol(Cajero.class)) {
+                                    System.out.println("[!] ACCESO DENEGADO: No posees los permisos para realizar esta acción.");
+                                    break;
+                                } // Validacion
+
+                                System.out.print("- Ingrese ID del producto a buscar: ");
+                                int idProd = validacionInt(sc);
+
+                                mensajeDeCarga(1, "Cargando", 1, true);
+                                try {
+                                    Producto p = mardel.buscarProductoPorID(idProd);
+                                    System.out.println("> Producto encontrado: ");
+                                    System.out.println(p);
+                                } catch (Exception e) {
+                                    System.out.println(e.getMessage());
+                                }
+                                break;
+                            } // Buscar Producto.
+                            case 3: { // Agregar stock.
+                                if(!validacionRol(Admin.class) || !validacionRol(Repositor.class) || !validacionRol(Cajero.class)) {
+                                    System.out.println("[!] ACCESO DENEGADO: No posees los permisos para realizar esta acción.");
+                                    break;
+                                } // Validacion
+
+                                System.out.print("- Ingrese ID del producto: ");
+                                int id = validacionInt(sc);
+                                System.out.print("- Cantidad a sumar al stock: ");
+                                int cant = validacionInt(sc);
+
+                                mensajeDeCarga(1, "Cargando", 1, true);
+                                try {
+                                    if(mardel.aumentarStockID(id, cant)) {
+                                        System.out.println("> Stock actualizado con éxito.");
+                                    }
+                                } catch (Exception e) {
+                                    System.out.println(e.getMessage());
+                                }
+                                break;
+                            } // Agregar stock.
+                            default: {
+                                System.out.println("! OPCIÓN INVÁLIDA !");
+                                break;
+                            } // Error.
+                        }
+                        if (opcionProd != 0) limpiarPantalla(sc, "\n< Presione Enter para continuar... >");
+                    } while (opcionProd != 0);
+                    break;
+                } // Menú Productos y Stock.
+                case 4: { // Menú Menu Caja y Ventas.
+                    // Menú Menu Caja y Ventas.
+                    break;
+                }
+                case 5: { // Menú Socios.
+                    // Menú Socios.
+                    break;
+                }
                 default: {
                     System.out.println("! INGRESE UNA OPCIÓN VÁLIDA !");
                     break;
@@ -365,8 +437,11 @@ public static int menuPrincipal(Scanner sc) {
     System.out.printf("[ GESTION SUPERMERCADO %s ]\n", NOMBRE_SUPERMERCADO);
     separador(20);
     System.out.println("[0.] Cerrar sesión.");
-    System.out.println("[1.] Menu Empleados.");
-    System.out.println("[2.] Menu Supermercado.");
+    System.out.println("[1.] Menu Empleados - [Admin]");
+    System.out.println("[2.] Menu Supermercado - [Cajero/Repositor");
+    System.out.println("[3.] (!) Menu Productos y Stock - [Cajero/Repositor]");
+    System.out.println("[4.] (!) Menu Caja y Ventas - [Cajero]");
+    System.out.println("[5.] (!) Menu Socios.");
     separador(20);
     System.out.print("- Ingrese una opción: ");
 
@@ -376,13 +451,55 @@ public static int menuEmpleados(Scanner sc) {
     System.out.println("[ MENU EMPLEADOS ]");
     separador(20);
     System.out.println("[0.] Volver al Menú Principal.");
-    System.out.println("[1.] Mostrar lista de Empleados. [Admin]");
-    System.out.println("[2.] Buscar Empleado por ID. [Admin]");
-    System.out.println("[3.] Agregar Empleado nuevo [Admin].");
-    System.out.println("[4.] Despedir Empleado [Admin].");
+    System.out.println("[1.] Mostrar lista de Empleados.");
+    System.out.println("[2.] Buscar Empleado por ID.");
+    System.out.println("[3.] Agregar Empleado nuevo.");
+    System.out.println("[4.] Despedir Empleado.");
     separador(20);
     System.out.print("- Ingrese una opción: ");
 
+    return validacionInt(sc);
+}
+public static int menuSupermercado(Scanner sc) {
+    System.out.println("[ MENU SUPERMERCADO ]");
+    separador(20);
+    System.out.println("[0.] Volver al Menú Principal.");
+    System.out.println("[1.] Calcular la plata del día - [Admin]");
+    System.out.println("[2.] Calcular la plata del mes - [Admin]");
+    System.out.println("[3.] Borrar productos vencidos - [Repositor]");
+    separador(20);
+    System.out.print("- Ingrese una opción: ");
+
+    return validacionInt(sc);
+}
+public static int menuProductos(Scanner sc) {
+    System.out.println("[ MENU PRODUCTOS Y STOCK ]");
+    separador(20);
+    System.out.println("[0.] Volver al Menú Principal.");
+    System.out.println("[1.] Buscar producto por ID.");
+    System.out.println("[2.] Buscar producto por Nombre.");
+    System.out.println("[3.] Aumentar stock de un producto.");
+    System.out.println("[4.] Agregar producto nuevo - [Repositor]");
+    separador(20);
+    System.out.print("- Ingrese una opción: ");
+    return validacionInt(sc);
+}
+public static int menuVentas(Scanner sc) {
+    System.out.println("[ MENU CAJA Y VENTAS ]");
+    separador(20);
+    System.out.println("[0.] Volver al Menú Principal.");
+    System.out.println("[1.] Chequear precio de un producto.");
+    System.out.println("[2.] Realizar venta [Cajero].");
+    separador(20);
+    System.out.print("- Ingrese una opción: ");
+    return validacionInt(sc);
+}
+public static int menuSocios(Scanner sc) {
+    System.out.println("[ MENU SOCIOS ]");
+    separador(20);
+    System.out.println("[0.] Volver al Menú Principal.");
+    separador(20);
+    System.out.print("- Ingrese una opción: ");
     return validacionInt(sc);
 }
 public static int menuSeleccionarTurno(Scanner sc) {
@@ -401,18 +518,6 @@ public static int menuSeleccionarRol(Scanner sc) {
     System.out.println("[2] Repositor");
     System.out.println("[3] Administrador");
     saltarLinea(1);
-    System.out.print("- Ingrese una opción: ");
-
-    return validacionInt(sc);
-}
-public static int menuSupermercado(Scanner sc) {
-    System.out.println("[ MENU SUPERMERCADO ]");
-    separador(20);
-    System.out.println("[0.] Volver al Menú Principal.");
-    System.out.println("[1.] Calcular la plata del día. [Admin]");
-    System.out.println("[2.] Calcular la plata del mes. [Admin]");
-    System.out.println("[3.] Borrar productos vencidos [Repositor].");
-    separador(20);
     System.out.print("- Ingrese una opción: ");
 
     return validacionInt(sc);

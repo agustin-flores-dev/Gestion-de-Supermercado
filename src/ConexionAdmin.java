@@ -156,7 +156,7 @@ public class ConexionAdmin {
             pt.setString(4, cajero.getContrasenia());
             pt.setString(5, cajero.getDireccion());
             pt.setDouble(6, cajero.getSueldo());
-            pt.setString(7, cajero.getTurno().getTurno_nombre());
+            pt.setString(7, cajero.getTurno().name());
             pt.setDouble(8, cajero.getPlataRecaudadaDia());
             pt.executeUpdate();
             pt.close();
@@ -389,7 +389,7 @@ public class ConexionAdmin {
             pt.setString(4, repositor.getDireccion());
             pt.setString(5, repositor.getContrasenia());
             pt.setDouble(6, repositor.getSueldo());
-            pt.setString(7, repositor.getTurno().getTurno_nombre());
+            pt.setString(7, repositor.getTurno().name());
             pt.executeUpdate();
             pt.close();
         } catch (SQLException e) {
@@ -514,7 +514,7 @@ public class ConexionAdmin {
             pt.setString(4, admin.getDireccion());
             pt.setString(5, admin.getContrasenia());
             pt.setDouble(6, admin.getSueldo());
-            pt.setString(7, admin.getTurno().getTurno_nombre());
+            pt.setString(7, admin.getTurno().name());
             pt.executeUpdate();
             pt.close();
         } catch (SQLException e) {
