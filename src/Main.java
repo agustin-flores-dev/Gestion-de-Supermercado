@@ -14,10 +14,34 @@ void main() {
 
     HashSet<Producto> stockSupermercado = new HashSet<>();
     RepositorioGenerico<Empleados> repoEmpleados = new RepositorioGenerico<>();
+    HashSet<Socio> sociosSuper = new HashSet<>();
+
+    //////////////////////////////////////////////////////////////////////////////////////////
+    //  conexion con la DB
+    try {
+        for (Admin ad : ConexionAdmin.listarAdmin()) {
+            repoEmpleados.agregar(ad);
+        }
+        for (Repositor repo : ConexionAdmin.listarRepositor()){
+            repoEmpleados.agregar(repo);
+        }
+        for (Cajero caj : ConexionAdmin.listarCajeros()){
+            repoEmpleados.agregar(caj);
+        }
+
+        sociosSuper.addAll(ConexionAdmin.listarSocio());
+        stockSupermercado.addAll(ConexionAdmin.listarProductos());
+
+    } catch (ListarException e){
+        System.out.println(e.getMessage());
+    }
+
+    //////////////////////////////////////////////////////////////////////////////////////////
+
     GestoraEmpleados gestoraGeneral = new GestoraEmpleados(repoEmpleados.obtenerTodos());
     ArrayList<Double> dineroDelDia = new ArrayList<>();
     HashMap<Fecha, Double> dineroMes = new HashMap<>();
-    HashSet<Socio> sociosSuper = new HashSet<>();
+
 
     Supermercado mardel = new Supermercado(NOMBRE_SUPERMERCADO, 1, dineroDelDia, dineroMes,
             repoEmpleados, sociosSuper, stockSupermercado);

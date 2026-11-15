@@ -549,7 +549,7 @@ public class ConexionAdmin {
         }
     }
 
-    public static Set<Admin> listarAdmin(GestoraEmpleados gestora) throws ListarException {
+    public static Set<Admin> listarAdmin() throws ListarException {
         Set<Admin> admins = new HashSet<>();
 
         try {
