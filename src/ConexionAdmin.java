@@ -4,6 +4,16 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class ConexionAdmin {
+
+    public static void crearTablas() throws CreacionDeTablaException {
+        crearTablaProducto();
+        crearTablaCajero();
+        crearTablaRepositor();
+        crearTablaAdmin();
+        crearTablaGanancias();
+        crearTablaSocio();
+    }
+
     public static void crearTablaProducto() throws CreacionDeTablaException {
         try {
             Connection conexion = ConexionDB.getConexion();
@@ -50,9 +60,9 @@ public class ConexionAdmin {
         }
     }
 
-
     public static void actualizarProducto(int id, String nuevoNombre, String nuevaDescripcion,
-                                          int nuevoDia, int nuevoMes, int nuevoAnio, int nuevoStock, double nuevoPrecioUnitario) throws ActualizacionUpdateException {
+                                          int nuevoDia, int nuevoMes, int nuevoAnio, int nuevoStock, double nuevoPrecioUnitario)
+            throws ActualizacionUpdateException {
         try {
             Connection conexion = ConexionDB.getConexion();
 
@@ -170,7 +180,8 @@ public class ConexionAdmin {
 
 
     public static void actualizarCajero(int id, String nuevoDni, String nuevoNombre, String nuevaContrasenia, String nuevaDireccion,
-                                        double nuevoSueldo, ETurno nuevoTurno, double nuevaPlataRecaudadaDia) throws ActualizacionUpdateException {
+                                        double nuevoSueldo, ETurno nuevoTurno, double nuevaPlataRecaudadaDia)
+            throws ActualizacionUpdateException {
 
         try {
             Connection conexion = ConexionDB.getConexion();
@@ -185,7 +196,7 @@ public class ConexionAdmin {
             pt.setString(3, nuevaContrasenia);
             pt.setString(4, nuevaDireccion);
             pt.setDouble(5, nuevoSueldo);
-            pt.setString(6, nuevoTurno.getTurno_nombre());
+            pt.setString(6, nuevoTurno.name());
             pt.setDouble(7, nuevaPlataRecaudadaDia);
             pt.setInt(8, id);
             pt.executeUpdate();
@@ -256,7 +267,7 @@ public class ConexionAdmin {
             String query = "CREATE TABLE IF NOT EXISTS Ganancias(" +
                     "id INT NOT NULL AUTO_INCREMENT," +
                     "gananciasDiarias DOUBLE NOT NULL," +
-                    "gananciasMensuales DOUBLE" +
+                    "gananciasMensuales DOUBLE," +
                     "dia INT NOT NULL," +
                     "mes INT NOT NULL," +
                     "anio, INT NOT NULL," +
@@ -271,14 +282,16 @@ public class ConexionAdmin {
         }
     }
 
-    public static void insertarNuevasGanancias (double ganDia, double ganMens, int dia, int mes, int anio) throws ActualizacionUpdateException{
+    public static void insertarNuevasGanancias (double ganDia, double ganMes, int dia, int mes, int anio)
+            throws ActualizacionUpdateException{
         try {
             Connection con = ConexionDB.getConexion();
-            String query = "INSERT INTO Ganancias VALUES (?, ?, ?, ?, ?)";
+            String query = "INSERT INTO Ganancias (gananciasDiarias, gananciasMensuales, dia, mes, anio)" +
+                    "VALUES (?, ?, ?, ?, ?)";
 
             PreparedStatement pr = con.prepareStatement(query);
             pr.setDouble(1, ganDia);
-            pr.setDouble(2, ganMens);
+            pr.setDouble(2, ganMes);
             pr.setInt(3, dia);
             pr.setInt(4, mes);
             pr.setInt(5, anio);
@@ -291,10 +304,11 @@ public class ConexionAdmin {
         }
     }
 
-    public static void actualisarGananciasDiarias (int dia, int mes, int anio, double nuevasGanDia) throws ActualizacionUpdateException{
+    public static void actualizarGananciasDiarias(int dia, int mes, int anio, double nuevasGanDia)
+            throws ActualizacionUpdateException{
         try {
             Connection conexion = ConexionDB.getConexion();
-            String query = "UPDATE Ganancias SET gananciasDiarias = ? WHERE dia = ?, mes = ?, anio = ?";
+            String query = "UPDATE Ganancias SET gananciasDiarias = ? WHERE dia = ? AND mes = ? AND anio = ?";
             PreparedStatement pr = conexion.prepareStatement(query);
             pr.setDouble(1, nuevasGanDia);
             pr.setInt(2, dia);
@@ -309,10 +323,11 @@ public class ConexionAdmin {
         }
     }
 
-    public static void actualisarGananciasMensuales (int dia, int mes, int anio, double nuevasGanMen) throws ActualizacionUpdateException{
+    public static void actualizarGananciasMensuales (int dia, int mes, int anio, double nuevasGanMen)
+            throws ActualizacionUpdateException{
         try {
             Connection conexion = ConexionDB.getConexion();
-            String query = "UPDATE Ganancias SET gananciasMensuales = ? WHERE dia = ?, mes = ?, anio = ?";
+            String query = "UPDATE Ganancias SET gananciasMensuales = ? WHERE dia = ? AND mes = ? AND anio = ?";
             PreparedStatement pr = conexion.prepareStatement(query);
             pr.setDouble(1, nuevasGanMen);
             pr.setInt(2, dia);
@@ -351,7 +366,6 @@ public class ConexionAdmin {
         }
 
         return d;
-
     }
 
     public static HashMap<Fecha, Double> listarGananciasMensual () throws ListarException{
@@ -381,10 +395,7 @@ public class ConexionAdmin {
         }
 
         return d;
-
     }
-
-
 
     public static void crearTablaSocio() throws CreacionDeTablaException {
         try {
@@ -411,7 +422,8 @@ public class ConexionAdmin {
         try {
             crearTablaSocio();
             Connection conexion = ConexionDB.getConexion();
-            String query = "INSERT INTO Socio VALUES (?, ?, ?, ?, ?) ";
+            String query = "INSERT INTO Socio (nombre, dni, contrasenia, direccion, estadoSocio)" +
+                    "VALUES (?, ?, ?, ?, ?)";
             PreparedStatement pt = conexion.prepareStatement(query);
             pt.setString(1, socio.getNombre());
             pt.setString(2, socio.getDni());
@@ -427,9 +439,9 @@ public class ConexionAdmin {
         }
     }
 
-
     public static void actualizarSocio(int id, String nuevoNombre, String nuevoDni, String nuevaContrasenia,
-                                       String nuevaDireccion, boolean nuevoEstadoSocio) throws ActualizacionUpdateException {
+                                       String nuevaDireccion, boolean nuevoEstadoSocio)
+            throws ActualizacionUpdateException {
 
         try {
             Connection conexion = ConexionDB.getConexion();
@@ -452,7 +464,6 @@ public class ConexionAdmin {
             ConexionDB.closeConexion();
         }
     }
-
 
     public static Set<Socio> listarSocio() throws ListarException {
         Set<Socio> socios = new HashSet<>();
@@ -536,8 +547,9 @@ public class ConexionAdmin {
     }
 
 
-    public static void actualizarRepositor(int id, String nuevoDni, String nuevoNombre, String nuevaDireccion, String nuevaContrasenia, double nuevoSueldo,
-                                           ETurno nuevoTurno) throws ActualizacionUpdateException {
+    public static void actualizarRepositor(int id, String nuevoDni, String nuevoNombre,
+                                           String nuevaDireccion, String nuevaContrasenia, double nuevoSueldo, ETurno nuevoTurno)
+            throws ActualizacionUpdateException {
 
         try {
             Connection conexion = ConexionDB.getConexion();
@@ -551,7 +563,7 @@ public class ConexionAdmin {
             pt.setString(3, nuevaDireccion);
             pt.setString(4, nuevaContrasenia);
             pt.setDouble(5, nuevoSueldo);
-            pt.setString(6, nuevoTurno.getTurno_nombre());
+            pt.setString(6, nuevoTurno.name());
             pt.setInt(7, id);
             pt.executeUpdate();
             pt.close();
@@ -662,7 +674,8 @@ public class ConexionAdmin {
 
 
     public static void actualizarAdmin(int id, String nuevoDni, String nuevoNombre, String nuevaDireccion,
-                                       String nuevaContrasenia, double nuevoSueldo, ETurno nuevoTurno) throws ActualizacionUpdateException {
+                                       String nuevaContrasenia, double nuevoSueldo, ETurno nuevoTurno)
+            throws ActualizacionUpdateException {
         try {
             Connection conexion = ConexionDB.getConexion();
             String query = "UPDATE Admin SET dni = ?, nombre = ?, direccion = ?, " +
@@ -674,7 +687,7 @@ public class ConexionAdmin {
             pt.setString(3, nuevaDireccion);
             pt.setString(4, nuevaContrasenia);
             pt.setDouble(5, nuevoSueldo);
-            pt.setString(6, nuevoTurno.getTurno_nombre());
+            pt.setString(6, nuevoTurno.name());
             pt.setInt(7, id);
             pt.executeUpdate();
             pt.close();

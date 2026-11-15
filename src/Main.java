@@ -23,6 +23,8 @@ void main() {
     //////////////////////////////////////////////////////////////////////////////////////////
     //  Conexión con la DB.
     try {
+        ConexionAdmin.crearTablas();
+
         for (Admin ad : ConexionAdmin.listarAdmin(gestoraGeneral)) {
             repoEmpleados.agregar(ad);
         }
