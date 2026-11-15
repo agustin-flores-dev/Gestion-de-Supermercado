@@ -337,7 +337,7 @@ public class ConexionAdmin {
             String query = "SELECT * FROM Ganancias";
             ResultSet rs = stmt.executeQuery(query);
 
-            for (rs.next()){
+            while (rs.next()){
                 d.add(rs.getDouble("gananciasDiarias"));
             }
 
@@ -366,7 +366,7 @@ public class ConexionAdmin {
             String query = "SELECT * FROM Ganancias";
             ResultSet rs = stmt.executeQuery(query);
 
-            for (rs.next()){
+            while (rs.next()){
                 f = new Fecha(rs.getInt("dia"), rs.getInt("mes"), rs.getInt("anio"));
                 d.put(f, rs.getDouble("gananciasMensuales"));
             }
