@@ -68,12 +68,11 @@ public final class Socio extends Persona implements Comparable<Socio>{
 
     @Override
     public String toString() {
-        return "Socio{" +
-                " id= " + id +
-                ", nombre= " + super.getNombre() +
-                ", DNI= " + super.getDni() +
-                ", Dirreccion= " + super.getDireccion() +
-                ", estadoSocio= " + estadoSocio +
-                '}';
+        return "[Socio]" +"\n"+
+                "[id] :" + id +"\n"+
+                "[nombre] :" + super.getNombre() + "\n"+
+                "[DNI] :" + super.getDni() + "\n"+
+                "[Dirreccion] :" + super.getDireccion() + "\n"+
+                "[estadoSocio] :" + estadoSocio +"\n";
     }
 }
