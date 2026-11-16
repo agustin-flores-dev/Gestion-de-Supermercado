@@ -4,9 +4,16 @@ public final class Cajero extends Empleados implements IGestionarCaja{
 
     private double plataRecaudadaDia;
 
+    // Cajeros en memoria.
     public Cajero(String dni, String nombre, String direccion, String contrasenia, double sueldo, ETurno turno) {
         super(dni, nombre, direccion, contrasenia, sueldo, turno);
         this.plataRecaudadaDia = 0;
+    }
+
+    //Cajeros en BD.
+    public Cajero(int id_empleado, String dni, String nombre, String direccion, String contrasenia, double sueldo, ETurno turno, double plataRecaudadaDia) {
+        super(id_empleado, dni, nombre, direccion, contrasenia, sueldo, turno);
+        this.plataRecaudadaDia = plataRecaudadaDia;
     }
 
     public double getPlataRecaudadaDia() {

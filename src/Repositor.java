@@ -3,8 +3,14 @@ import java.util.Iterator;
 
 public final class Repositor extends Empleados implements IGestionarProductos{
 
+    // Repositor en memoria.
     public Repositor(String dni, String nombre, String direccion, String contrasenia, double sueldo, ETurno turno) {
         super(dni, nombre, direccion, contrasenia, sueldo, turno);
+    }
+
+    // Repositor en BD.
+    public Repositor(int id_empleado, String dni, String nombre, String direccion, String contrasenia, double sueldo, ETurno turno) {
+        super(id_empleado, dni, nombre, direccion, contrasenia, sueldo, turno);
     }
 
     @Override

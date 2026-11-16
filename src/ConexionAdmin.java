@@ -108,6 +108,7 @@ public class ConexionAdmin {
                 );
 
                 p = new Producto(
+                        rs.getInt("id"),
                         rs.getString("nombre"),
                         rs.getString("descripcion"),
                         fecha,
@@ -223,12 +224,14 @@ public class ConexionAdmin {
             while (rs.next()) {
 
                 c = new Cajero(
+                        rs.getInt("id_empleado"),
                         rs.getString("dni"),
                         rs.getString("nombre"),
                         rs.getString("direccion"),
                         rs.getString("contrasenia"),
                         rs.getDouble("sueldo"),
-                        ETurno.valueOf(rs.getString("turno"))
+                        ETurno.valueOf(rs.getString("turno")),
+                        rs.getDouble("plataRecaudadaDia")
                 );
 
                 cajeros.add(c);
@@ -270,7 +273,7 @@ public class ConexionAdmin {
                     "gananciasMensuales DOUBLE," +
                     "dia INT NOT NULL," +
                     "mes INT NOT NULL," +
-                    "anio, INT NOT NULL," +
+                    "anio INT NOT NULL," +
                     "PRIMARY KEY (id))";
             Statement pt = conexion.createStatement();
             pt.execute(query);
@@ -588,6 +591,7 @@ public class ConexionAdmin {
             while (rs.next()) {
 
                 r = new Repositor(
+                        rs.getInt("id_empleado"),
                         rs.getString("dni"),
                         rs.getString("nombre"),
                         rs.getString("direccion"),
@@ -712,6 +716,7 @@ public class ConexionAdmin {
             while (rs.next()) {
 
                 a = new Admin(
+                        rs.getInt("id_empleado"),
                         rs.getString("dni"),
                         rs.getString("nombre"),
                         rs.getString("direccion"),

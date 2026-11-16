@@ -16,6 +16,20 @@ public final class Producto {
         this.precioUnitario = precioUnitario;
     }
 
+    public Producto(int id, String nombre, String descripcion, Fecha fechaVencimiento, int stock, double precioUnitario) {
+        this.id = id;
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.fechaVencimiento = fechaVencimiento;
+        this.stock = stock;
+        this.precioUnitario = precioUnitario;
+
+        // Si alguna vez se desfasa, el contador estático se actualiza.
+        if (id >= contador) {
+            contador = id + 1;
+        }
+    }
+
     public int getId() {
         return id;
     }

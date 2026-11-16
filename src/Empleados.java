@@ -7,6 +7,7 @@ public abstract class Empleados extends Persona{
     private double sueldo;
     private ETurno turno;
 
+    // Empleados en Memoria.
     public Empleados(String dni, String nombre, String direccion,String contrasenia, double sueldo, ETurno turno) {
         super(dni, nombre, direccion);
         if (turno == null) throw new IllegalArgumentException("[!] Turno inválido...");
@@ -15,6 +16,22 @@ public abstract class Empleados extends Persona{
         this.contrasenia = contrasenia;
         this.sueldo = sueldo;
         this.turno = turno;
+    }
+
+    // Empleados en BD.
+    public Empleados(int id_empleado, String dni, String nombre, String direccion, String contrasenia, double sueldo, ETurno turno) {
+        super(dni, nombre, direccion);
+        if (turno == null) throw new IllegalArgumentException("[!] Turno inválido...");
+
+        this.id_empleado = id_empleado;
+        this.contrasenia = contrasenia;
+        this.sueldo = sueldo;
+        this.turno = turno;
+
+        // Si alguna vez se desfasa, el contador estático se actualiza.
+        if (id_empleado >= contadorId) {
+            contadorId = id_empleado + 1;
+        }
     }
 
     public static int getContadorId() {
