@@ -3,10 +3,11 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class ConexionDB {
-    //private static final  String url = "jdbc:mysql://172.16.1.64:3306/midb"; // DB UTN
-    private static final String url = "jdbc:mysql://localhost:3306/midb"; // Prueba Local
+    private static final  String url = "jdbc:mysql://172.16.1.64:3306/SuperVicchioFloresLezcano"; // DB UTN
+    //private static final String url = "jdbc:mysql://localhost:3306/midb"; // Prueba Local
     private static final  String userName ="bdd1";
     private static final String password ="bdd1";
+
     public static Connection conexion;
 
     public static Connection getConexion()throws ConexionFallidaException
