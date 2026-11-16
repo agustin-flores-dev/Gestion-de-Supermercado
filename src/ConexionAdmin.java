@@ -288,6 +288,7 @@ public class ConexionAdmin {
     public static void insertarNuevasGanancias (double ganDia, double ganMes, int dia, int mes, int anio)
             throws ActualizacionUpdateException{
         try {
+            crearTablaGanancias();
             Connection con = ConexionDB.getConexion();
             String query = "INSERT INTO Ganancias (gananciasDiarias, gananciasMensuales, dia, mes, anio)" +
                     "VALUES (?, ?, ?, ?, ?)";
