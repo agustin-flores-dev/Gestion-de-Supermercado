@@ -695,7 +695,7 @@ public static int menuPrincipal(Scanner sc) {
     System.out.println("[1.] Menu Empleados - (Admin)");
     System.out.println("[2.] Menu Supermercado - (Repositor)");
     System.out.println("[3.] Menu Productos y Stock - (Cajero/Repositor)");
-    System.out.println("[4.] (!) Menu Caja y Ventas (Cajero)");
+    System.out.println("[4.] Menu Caja y Ventas (Cajero)");
     separador(20);
     System.out.print("- Ingrese una opción: ");
 
