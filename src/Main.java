@@ -97,7 +97,7 @@ void main() {
         System.out.println(e.getMessage());
     } // Instancia de Productos
 
-    saltarLinea(1);
+    saltarLinea(20);
     while (!salirApp) {
         // Ciclo Aplicación.
         while (usuario == null && !salirApp) {
